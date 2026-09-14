@@ -3334,7 +3334,9 @@ function resetView() {
               <input class="vc-bita-input" id="vc-bita-uploader-email" type="email" autocomplete="email" placeholder="correo@ejemplo.com">
             </div>
           </div>
-          <div class="vc-recording-status" id="vc-recording-status" aria-live="polite">Pendiente de carga. La bitácora no puede guardarse sin grabación.</div><div class="vc-recording-detected" id="vc-recording-detected" hidden></div>
+          <div class="vc-recording-status" id="vc-recording-status" aria-live="polite">Pendiente de carga. La bitácora no puede guardarse sin grabación.</div>
+          <button type="button" id="vc-bita-verify-upload" class="vc-bita-btn secondary" style="margin-top:10px;padding:10px 16px;display:none;">Ya cargué la grabación · Verificar ahora</button>
+          <div class="vc-recording-detected" id="vc-recording-detected" hidden></div>
         </div>
       </div>
       <div class="vc-bita-status" id="vc-bita-status" aria-live="polite"></div>
@@ -3362,6 +3364,7 @@ function resetView() {
   const statusEl = document.getElementById('vc-bita-status');
   const uploadBtn = document.getElementById('vc-bita-upload');
   const recordingStatusEl = document.getElementById('vc-recording-status');
+  const verifyUploadBtn = document.getElementById('vc-bita-verify-upload');
   const recordingDetectedEl = document.getElementById('vc-recording-detected');
 
   const f = {
@@ -3421,6 +3424,7 @@ function resetView() {
     saveBtn.disabled = true;
     recordingDetectedEl.hidden = true;
     recordingDetectedEl.innerHTML = '';
+    verifyUploadBtn.style.display = 'none';
     recordingStatusEl.textContent = 'Pendiente de carga. La bitácora no puede guardarse sin grabación.';
     recordingStatusEl.className = 'vc-recording-status';
   }
@@ -3439,6 +3443,7 @@ function resetView() {
     recordingStatusEl.textContent = 'Grabación detectada. Ya puedes guardar la bitácora.';
     recordingStatusEl.className = 'vc-recording-status ok';
     recordingDetectedEl.hidden = false;
+    verifyUploadBtn.style.display = 'none';
     recordingDetectedEl.innerHTML = `<strong>✓ Grabación lista para asociar</strong>${escapeHtml(name)}`;
     saveBtn.disabled = false;
   }
@@ -3586,6 +3591,7 @@ function resetView() {
     pendingSearchFailures = 0;
     saveBtn.disabled = true;
     recordingDetectedEl.hidden = true;
+    verifyUploadBtn.style.display = 'inline-flex';
     uploadStartedAt = new Date().toISOString();
     pollDeadline = Date.now() + 5 * 60 * 1000;
     try {
@@ -3599,6 +3605,29 @@ function resetView() {
     recordingStatusEl.className = 'vc-recording-status';
     stopPolling();
     pollTimer = setTimeout(checkPendingUpload, 2500);
+  });
+
+  verifyUploadBtn.addEventListener('click', function () {
+    if (!uploadStartedAt) {
+      recordingStatusEl.textContent = 'Primero pulsa “Cargar grabación” y completa la carga en OneDrive.';
+      recordingStatusEl.className = 'vc-recording-status error';
+      return;
+    }
+    recordingStatusEl.textContent = 'Verificando grabación cargada…';
+    recordingStatusEl.className = 'vc-recording-status';
+    stopPolling();
+    pollDeadline = Date.now() + 60 * 1000;
+    checkPendingUpload();
+  });
+
+  window.addEventListener('focus', function () {
+    if (uploadStartedAt && !detectedFile && modal.classList.contains('active')) {
+      recordingStatusEl.textContent = 'Verificando la grabación al volver de OneDrive…';
+      recordingStatusEl.className = 'vc-recording-status';
+      stopPolling();
+      pollDeadline = Math.max(pollDeadline, Date.now() + 60 * 1000);
+      setTimeout(checkPendingUpload, 500);
+    }
   });
 
   f.mentor.addEventListener('input', function () { if (!f.uploader.value.trim()) f.uploader.value = f.mentor.value; });
