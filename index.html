@@ -3320,7 +3320,7 @@ function resetView() {
             </div>
             <div class="vc-recording-copy">
               <div class="vc-recording-title">Cargar grabación de esta sesión</div>
-              <div class="vc-recording-help">La grabación es obligatoria. Al cargarla en OneDrive, la landing la detectará y habilitará el registro de la bitácora.</div>
+              <div class="vc-recording-help">La grabación puede cargarse en OneDrive. Si aún no está asociada, la bitácora puede guardarse y quedará marcada como pendiente.</div>
             </div>
             <button class="vc-recording-btn" id="vc-bita-upload" type="button">Cargar grabación</button>
           </div>
@@ -3334,8 +3334,8 @@ function resetView() {
               <input class="vc-bita-input" id="vc-bita-uploader-email" type="email" autocomplete="email" placeholder="correo@ejemplo.com">
             </div>
           </div>
-          <div class="vc-recording-status" id="vc-recording-status" aria-live="polite">Pendiente de carga. La bitácora no puede guardarse sin grabación.</div>
-          <button type="button" id="vc-bita-verify-upload" class="vc-bita-btn secondary" style="margin-top:10px;padding:10px 16px;display:none;">Ya cargué la grabación · Verificar ahora</button>
+          <div class="vc-recording-status" id="vc-recording-status" aria-live="polite">⚠ Falta agregar grabación. Puedes guardar la bitácora y asociarla después.</div>
+          
           <div class="vc-recording-detected" id="vc-recording-detected" hidden></div>
         </div>
       </div>
@@ -3364,7 +3364,7 @@ function resetView() {
   const statusEl = document.getElementById('vc-bita-status');
   const uploadBtn = document.getElementById('vc-bita-upload');
   const recordingStatusEl = document.getElementById('vc-recording-status');
-  const verifyUploadBtn = document.getElementById('vc-bita-verify-upload');
+  const verifyUploadBtn = document.getElementById('vc-bita-verify-upload') || { style: {}, addEventListener: function(){} };
   const recordingDetectedEl = document.getElementById('vc-recording-detected');
 
   const f = {
@@ -3421,11 +3421,11 @@ function resetView() {
     detectedFile = null;
     uploadStartedAt = null;
     pollDeadline = 0;
-    saveBtn.disabled = true;
+    saveBtn.disabled = false;
     recordingDetectedEl.hidden = true;
     recordingDetectedEl.innerHTML = '';
     verifyUploadBtn.style.display = 'none';
-    recordingStatusEl.textContent = 'Pendiente de carga. La bitácora no puede guardarse sin grabación.';
+    recordingStatusEl.textContent = '⚠ Falta agregar grabación. Puedes guardar la bitácora y asociarla después.';
     recordingStatusEl.className = 'vc-recording-status';
   }
   function isVideoFile(item) {
@@ -3535,10 +3535,7 @@ function resetView() {
   }
   function requestClose() {
     if (saving) return;
-    if (formHasWork() && !detectedFile) {
-      const discard = window.confirm('Esta bitácora todavía no tiene una grabación asociada. ¿Deseas descartar lo diligenciado y cerrar?');
-      if (!discard) return;
-    } else if (formHasWork()) {
+    if (formHasWork()) {
       const discard = window.confirm('¿Deseas descartar esta bitácora y cerrar la ventana?');
       if (!discard) return;
     }
@@ -3589,11 +3586,10 @@ function resetView() {
     }
     detectedFile = null;
     pendingSearchFailures = 0;
-    saveBtn.disabled = true;
+    saveBtn.disabled = false;
     recordingDetectedEl.hidden = true;
-    verifyUploadBtn.style.display = 'inline-flex';
     uploadStartedAt = new Date().toISOString();
-    pollDeadline = Date.now() + 5 * 60 * 1000;
+    pollDeadline = 0;
     try {
       sessionStorage.setItem('vcUploadContext', JSON.stringify({
         cedula: f.cedula.value.trim(), iniciativa: f.empresa.value.trim(), fechaSesion: f.fecha.value,
@@ -3601,33 +3597,9 @@ function resetView() {
       }));
     } catch (e) {}
     window.open(VC_UPLOAD_REQUEST_URL, '_blank', 'noopener,noreferrer');
-    recordingStatusEl.textContent = 'OneDrive abierto. Cuando termine la carga, vuelve a esta ventana: la grabación se detectará automáticamente.';
-    recordingStatusEl.className = 'vc-recording-status';
+    recordingStatusEl.textContent = '⚠ Grabación pendiente de asociar. Puedes guardar la bitácora y agregarla después.';
+    recordingStatusEl.className = 'vc-recording-status error';
     stopPolling();
-    pollTimer = setTimeout(checkPendingUpload, 2500);
-  });
-
-  verifyUploadBtn.addEventListener('click', function () {
-    if (!uploadStartedAt) {
-      recordingStatusEl.textContent = 'Primero pulsa “Cargar grabación” y completa la carga en OneDrive.';
-      recordingStatusEl.className = 'vc-recording-status error';
-      return;
-    }
-    recordingStatusEl.textContent = 'Verificando grabación cargada…';
-    recordingStatusEl.className = 'vc-recording-status';
-    stopPolling();
-    pollDeadline = Date.now() + 60 * 1000;
-    checkPendingUpload();
-  });
-
-  window.addEventListener('focus', function () {
-    if (uploadStartedAt && !detectedFile && modal.classList.contains('active')) {
-      recordingStatusEl.textContent = 'Verificando la grabación al volver de OneDrive…';
-      recordingStatusEl.className = 'vc-recording-status';
-      stopPolling();
-      pollDeadline = Math.max(pollDeadline, Date.now() + 60 * 1000);
-      setTimeout(checkPendingUpload, 500);
-    }
   });
 
   f.mentor.addEventListener('input', function () { if (!f.uploader.value.trim()) f.uploader.value = f.mentor.value; });
@@ -3639,22 +3611,18 @@ function resetView() {
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     if (!form.reportValidity()) return;
-    if (!detectedFile) {
-      setStatus('Debes cargar y detectar la grabación antes de guardar la bitácora.', true);
-      recordingStatusEl.textContent = 'Grabación obligatoria pendiente.';
-      recordingStatusEl.className = 'vc-recording-status error';
-      return;
-    }
+
     saving = true;
     saveBtn.disabled = true;
     saveBtn.textContent = 'Guardando…';
-    setStatus('Registrando la bitácora y asociando la grabación…');
+    setStatus(detectedFile ? 'Registrando la bitácora y asociando la grabación…' : 'Registrando la bitácora…');
 
     const payload = {
       cedula: f.cedula.value.trim(), nombre: f.nombre.value.trim(), empresa: f.empresa.value.trim(),
       fechaSesion: new Date(f.fecha.value).toISOString(), mentor: f.mentor.value.trim(),
       avances: f.avances.value.trim(), compromisos: f.compromisos.value.trim()
     };
+
     try {
       const createRes = await fetch(CREATE_BITACORA_URL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
@@ -3663,37 +3631,38 @@ function resetView() {
       const created = await createRes.json();
       if (!created || created.ok !== true || !created.BitacoraID) throw new Error('Power Automate no confirmó la creación de la bitácora.');
 
-      const associatePayload = {
-        archivoId: Number(detectedFile.ID || detectedFile.ItemInternalId),
-        nombreArchivo: String(detectedFile.NombreArchivo || detectedFile.Title || detectedFile['{Name}'] || ''),
-        identificadorArchivo: String(detectedFile.IdentificadorArchivo || ''),
-        rutaArchivo: String(detectedFile.RutaArchivo || ''),
-        fechaCarga: String(detectedFile.FechaCarga || '').substring(0,10),
-        bitacoraId: Number(created.BitacoraID),
-        cedula: payload.cedula,
-        iniciativa: payload.empresa,
-        fechaSesion: f.fecha.value.length === 16 ? f.fecha.value + ':00' : f.fecha.value,
-        fechaBitacora: String(created.FechaRegistro || new Date().toISOString()),
-        cargadoPor: f.uploader.value.trim() || f.mentor.value.trim(),
-        correoCargador: f.uploaderEmail.value.trim()
-      };
-      const assocRes = await fetch(ASSOCIATE_FILE_URL, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(associatePayload)
-      });
-      if (!assocRes.ok) throw new Error(`Asociar grabación respondió ${assocRes.status}`);
-      const associated = await assocRes.json();
-      if (!associated || associated.ok !== true) throw new Error('Power Automate no confirmó la asociación de la grabación.');
+      let recordingAssociated = false;
+      if (detectedFile) {
+        const associatePayload = {
+          archivoId: Number(detectedFile.ID || detectedFile.ItemInternalId),
+          nombreArchivo: String(detectedFile.NombreArchivo || detectedFile.Title || detectedFile['{Name}'] || ''),
+          identificadorArchivo: String(detectedFile.IdentificadorArchivo || ''),
+          rutaArchivo: String(detectedFile.RutaArchivo || ''),
+          fechaCarga: String(detectedFile.FechaCarga || '').substring(0,10),
+          bitacoraId: Number(created.BitacoraID),
+          cedula: payload.cedula,
+          iniciativa: payload.empresa,
+          fechaSesion: f.fecha.value.length === 16 ? f.fecha.value + ':00' : f.fecha.value,
+          fechaBitacora: String(created.FechaRegistro || new Date().toISOString()),
+          cargadoPor: f.uploader.value.trim() || f.mentor.value.trim(),
+          correoCargador: f.uploaderEmail.value.trim()
+        };
+        const assocRes = await fetch(ASSOCIATE_FILE_URL, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(associatePayload)
+        });
+        if (!assocRes.ok) throw new Error(`Asociar grabación respondió ${assocRes.status}`);
+        const associated = await assocRes.json();
+        if (!associated || associated.ok !== true) throw new Error('Power Automate no confirmó la asociación de la grabación.');
+        recordingAssociated = true;
+      }
 
-      const localRecording = { ...detectedFile, Estado: 'Asociado', BitacoraID: created.BitacoraID,
-        Documento: payload.cedula, Iniciativa: payload.empresa, FechaSesion: associatePayload.fechaSesion,
-        FechaBitacora: associatePayload.fechaBitacora, CargadoPor: associatePayload.cargadoPor,
-        CorreoCargador: associatePayload.correoCargador };
-      if (!Array.isArray(data.archivos)) data.archivos = [];
-      data.archivos = data.archivos.filter(a => String(a.ID) !== String(localRecording.ID));
-      data.archivos.push(localRecording);
-
-      setStatus('Bitácora y grabación registradas correctamente.');
-      if (typeof toast === 'function') toast('Bitácora y grabación asociadas correctamente');
+      if (recordingAssociated) {
+        setStatus('Bitácora y grabación registradas correctamente.');
+        if (typeof toast === 'function') toast('Bitácora y grabación asociadas correctamente');
+      } else {
+        setStatus('Bitácora registrada. Grabación pendiente de asociar.');
+        if (typeof toast === 'function') toast('Bitácora guardada · grabación pendiente');
+      }
 
       try {
         const refreshed = await consultarEmprendedor(payload.cedula);
@@ -3711,7 +3680,7 @@ function resetView() {
     } finally {
       saving = false;
       saveBtn.textContent = 'Guardar bitácora';
-      saveBtn.disabled = !detectedFile;
+      saveBtn.disabled = false;
     }
   });
 })();
