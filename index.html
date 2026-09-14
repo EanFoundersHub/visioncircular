@@ -3442,34 +3442,88 @@ function resetView() {
     recordingDetectedEl.innerHTML = `<strong>✓ Grabación lista para asociar</strong>${escapeHtml(name)}`;
     saveBtn.disabled = false;
   }
+  let pendingSearchFailures = 0;
+
+  function normalizedUploaderName() {
+    return String(f.uploader?.value || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+  }
+
+  function normalizedFileName(item) {
+    return String(item?.NombreArchivo || item?.Title || item?.['{Name}'] || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+  }
+
+  function presentationDayStartIso() {
+    const d = new Date();
+    d.setHours(0,0,0,0);
+    return d.toISOString();
+  }
+
+  async function fetchPendingFiles(desde) {
+    const res = await fetch(SEARCH_PENDING_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ desde })
+    });
+    if (!res.ok) {
+      let detail = '';
+      try { detail = await res.text(); } catch(e) {}
+      throw new Error(`Power Automate respondió ${res.status}${detail ? ': ' + detail.slice(0,180) : ''}`);
+    }
+    const result = await res.json();
+    return Array.isArray(result?.archivos) ? result.archivos : (Array.isArray(result) ? result : []);
+  }
+
   async function checkPendingUpload() {
     if (!uploadStartedAt || detectedFile || Date.now() > pollDeadline || !modal.classList.contains('active')) {
       if (!detectedFile && uploadStartedAt && Date.now() > pollDeadline) {
-        recordingStatusEl.textContent = 'No se detectó la grabación todavía. Puedes pulsar “Cargar grabación” para reanudar la detección.';
+        recordingStatusEl.textContent = 'No se detectó la grabación todavía. Pulsa “Cargar grabación” para reanudar la detección.';
         recordingStatusEl.className = 'vc-recording-status error';
       }
       return;
     }
+
     try {
-      const res = await fetch(SEARCH_PENDING_URL, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ desde: uploadStartedAt })
-      });
-      if (!res.ok) throw new Error(`Power Automate respondió ${res.status}`);
-      const result = await res.json();
-      const list = Array.isArray(result?.archivos) ? result.archivos : (Array.isArray(result) ? result : []);
-      const videos = list.filter(isVideoFile).sort((a,b) => fileCreatedTime(b) - fileCreatedTime(a));
+      // Primero usamos la hora exacta del clic, redondeada a segundos para evitar
+      // incompatibilidades de ticks() con milisegundos en Power Automate.
+      const preciseSince = String(uploadStartedAt).replace(/\.\d{3}Z$/, 'Z');
+      let list = await fetchPendingFiles(preciseSince);
+      let videos = list.filter(isVideoFile).sort((a,b) => fileCreatedTime(b) - fileCreatedTime(a));
+
+      // Fallback de presentación: si la consulta exacta no devuelve nada,
+      // buscar las cargas pendientes del día y priorizar las del nombre del cargador.
+      if (!videos.length) {
+        const broadList = await fetchPendingFiles(presentationDayStartIso());
+        const uploader = normalizedUploaderName();
+        const broadVideos = broadList.filter(isVideoFile).sort((a,b) => fileCreatedTime(b) - fileCreatedTime(a));
+        const uploaderVideos = uploader
+          ? broadVideos.filter(item => normalizedFileName(item).includes(uploader))
+          : [];
+        videos = uploaderVideos.length ? uploaderVideos : broadVideos;
+      }
+
       if (videos.length) {
+        pendingSearchFailures = 0;
         markDetected(videos[0]);
         return;
       }
+
+      pendingSearchFailures = 0;
       recordingStatusEl.textContent = 'Esperando la grabación de OneDrive…';
       recordingStatusEl.className = 'vc-recording-status';
     } catch (err) {
+      pendingSearchFailures += 1;
       console.warn('No fue posible consultar la carga todavía.', err);
-      recordingStatusEl.textContent = 'Buscando la grabación…';
+      recordingStatusEl.textContent = pendingSearchFailures >= 2
+        ? `Reintentando detección de la grabación… (${err.message})`
+        : 'Buscando la grabación…';
+      recordingStatusEl.className = pendingSearchFailures >= 2 ? 'vc-recording-status error' : 'vc-recording-status';
     }
-    pollTimer = setTimeout(checkPendingUpload, 4000);
+
+    pollTimer = setTimeout(checkPendingUpload, 3500);
   }
   function formHasWork() {
     return !!(f.mentor.value.trim() || f.avances.value.trim() || f.compromisos.value.trim() || uploadStartedAt || detectedFile);
@@ -3529,6 +3583,7 @@ function resetView() {
       return;
     }
     detectedFile = null;
+    pendingSearchFailures = 0;
     saveBtn.disabled = true;
     recordingDetectedEl.hidden = true;
     uploadStartedAt = new Date().toISOString();
@@ -3540,7 +3595,7 @@ function resetView() {
       }));
     } catch (e) {}
     window.open(VC_UPLOAD_REQUEST_URL, '_blank', 'noopener,noreferrer');
-    recordingStatusEl.textContent = 'OneDrive abierto. La landing detectará automáticamente el video cuando termine de cargar.';
+    recordingStatusEl.textContent = 'OneDrive abierto. Cuando termine la carga, vuelve a esta ventana: la grabación se detectará automáticamente.';
     recordingStatusEl.className = 'vc-recording-status';
     stopPolling();
     pollTimer = setTimeout(checkPendingUpload, 2500);
