@@ -1902,6 +1902,17 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
   .vc-recording-status.ok { color:var(--fh-gold); }
   .vc-recording-detected { margin-top:10px; padding:12px 14px; border-radius:14px; background:rgba(0,150,105,.08); border:1px solid rgba(0,150,105,.22); color:var(--fh-black); font-size:12.5px; line-height:1.45; }
   .vc-recording-detected strong { color:var(--fh-gold); display:block; margin-bottom:2px; }
+  .vc-recording-actions-manual { margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; }
+  .vc-recording-actions-manual .vc-bita-btn { width:auto; padding:10px 16px; }
+  .vc-recording-candidates { margin-top:12px; padding:12px; border-radius:16px; border:1px solid rgba(5,83,130,.18); background:rgba(105,166,216,.06); }
+  .vc-recording-candidates-title { font-size:12px; font-weight:900; color:var(--fh-black); margin-bottom:8px; }
+  .vc-recording-candidate { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 0; border-top:1px solid rgba(5,83,130,.10); }
+  .vc-recording-candidate:first-of-type { border-top:0; }
+  .vc-recording-candidate-copy { min-width:0; flex:1; }
+  .vc-recording-candidate-name { font-size:12.5px; font-weight:900; color:var(--fh-black); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .vc-recording-candidate-meta { margin-top:2px; font-size:11px; color:var(--fh-muted); }
+  .vc-recording-select { border:0; border-radius:999px; padding:9px 12px; cursor:pointer; background:var(--fh-teal-dark); color:#fff; font:inherit; font-size:11.5px; font-weight:900; white-space:nowrap; }
+  .vc-recording-select:hover { filter:brightness(1.05); }
   .fh-bita-tab.has-recording .fh-bita-dot { background:#009669 !important; box-shadow:0 0 0 3px rgba(0,150,105,.18) !important; }
   .fh-bita-tab.recording-pending .fh-bita-dot { background:#d3aa24 !important; box-shadow:0 0 0 3px rgba(211,170,36,.18) !important; }
   .vc-history-recording { display:flex; align-items:center; gap:12px; margin:0 0 16px; padding:13px 15px; border-radius:15px; font-size:13px; line-height:1.45; }
@@ -3320,7 +3331,7 @@ function resetView() {
             </div>
             <div class="vc-recording-copy">
               <div class="vc-recording-title">Cargar grabación de esta sesión</div>
-              <div class="vc-recording-help">La grabación puede cargarse en OneDrive. Si aún no está asociada, la bitácora puede guardarse y quedará marcada como pendiente.</div>
+              <div class="vc-recording-help">Carga la grabación en OneDrive, vuelve a esta ventana y pulsa “Ya cargué la grabación · Verificar”. Después confirma el archivo correcto.</div>
             </div>
             <button class="vc-recording-btn" id="vc-bita-upload" type="button">Cargar grabación</button>
           </div>
@@ -3334,8 +3345,11 @@ function resetView() {
               <input class="vc-bita-input" id="vc-bita-uploader-email" type="email" autocomplete="email" placeholder="correo@ejemplo.com">
             </div>
           </div>
-          <div class="vc-recording-status" id="vc-recording-status" aria-live="polite">⚠ Falta agregar grabación. Puedes guardar la bitácora y asociarla después.</div>
-          
+          <div class="vc-recording-status" id="vc-recording-status" aria-live="polite">La grabación es obligatoria para guardar esta bitácora.</div>
+          <div class="vc-recording-actions-manual">
+            <button type="button" id="vc-bita-verify-upload" class="vc-bita-btn secondary" hidden>Ya cargué la grabación · Verificar</button>
+          </div>
+          <div class="vc-recording-candidates" id="vc-recording-candidates" hidden></div>
           <div class="vc-recording-detected" id="vc-recording-detected" hidden></div>
         </div>
       </div>
@@ -3363,8 +3377,9 @@ function resetView() {
   const saveBtn = document.getElementById('vc-bita-save');
   const statusEl = document.getElementById('vc-bita-status');
   const uploadBtn = document.getElementById('vc-bita-upload');
+  const verifyBtn = document.getElementById('vc-bita-verify-upload');
   const recordingStatusEl = document.getElementById('vc-recording-status');
-  const verifyUploadBtn = document.getElementById('vc-bita-verify-upload') || { style: {}, addEventListener: function(){} };
+  const candidatesEl = document.getElementById('vc-recording-candidates');
   const recordingDetectedEl = document.getElementById('vc-recording-detected');
 
   const f = {
@@ -3381,307 +3396,113 @@ function resetView() {
 
   let detectedFile = null;
   let uploadStartedAt = null;
-  let pollTimer = null;
-  let pollDeadline = 0;
+  let createdBitacora = null;
   let saving = false;
+  let verifying = false;
 
-  function normalizeKey(s) {
-    return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
-  }
+  function esc(v) { return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
+  function normalizeKey(s) { return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim(); }
+  function normalizeLoose(s) { return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,' ').trim(); }
   function findPrediagValue(keywords) {
     const row = (typeof data !== 'undefined' && data && data.prediagnostico) ? data.prediagnostico : null;
     if (!row) return '';
     const entries = Object.entries(row);
-    for (const wanted of keywords) {
-      const nWanted = normalizeKey(wanted);
-      const exact = entries.find(([k, v]) => normalizeKey(k) === nWanted && String(v || '').trim());
-      if (exact) return String(exact[1]).trim();
-    }
-    for (const wanted of keywords) {
-      const nWanted = normalizeKey(wanted);
-      const partial = entries.find(([k, v]) => normalizeKey(k).includes(nWanted) && String(v || '').trim());
-      if (partial) return String(partial[1]).trim();
-    }
+    for (const wanted of keywords) { const n=normalizeKey(wanted); const x=entries.find(([k,v])=>normalizeKey(k)===n && String(v||'').trim()); if(x) return String(x[1]).trim(); }
+    for (const wanted of keywords) { const n=normalizeKey(wanted); const x=entries.find(([k,v])=>normalizeKey(k).includes(n) && String(v||'').trim()); if(x) return String(x[1]).trim(); }
     return '';
   }
-  function localDateTimeValue(d = new Date()) {
-    const pad = n => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  }
-  function setStatus(msg = '', isError = false) {
-    statusEl.textContent = msg;
-    statusEl.classList.toggle('error', !!isError);
-  }
-  function stopPolling() {
-    if (pollTimer) clearTimeout(pollTimer);
-    pollTimer = null;
-  }
-  function resetRecording() {
-    stopPolling();
-    detectedFile = null;
-    uploadStartedAt = null;
-    pollDeadline = 0;
-    saveBtn.disabled = false;
-    recordingDetectedEl.hidden = true;
-    recordingDetectedEl.innerHTML = '';
-    verifyUploadBtn.style.display = 'none';
-    recordingStatusEl.textContent = '⚠ Falta agregar grabación. Puedes guardar la bitácora y asociarla después.';
-    recordingStatusEl.className = 'vc-recording-status';
-  }
-  function isVideoFile(item) {
-    const name = String(item?.NombreArchivo || item?.Title || item?.['{Name}'] || '').toLowerCase();
-    return /\.(mp4|mov|m4v|webm|avi|mkv)$/i.test(name);
-  }
-  function fileCreatedTime(item) {
-    const t = Date.parse(item?.Created || item?.Modified || item?.FechaCarga || '');
-    return Number.isNaN(t) ? 0 : t;
-  }
-  function markDetected(item) {
-    detectedFile = item;
-    stopPolling();
-    const name = String(item?.NombreArchivo || item?.Title || item?.['{Name}'] || 'Grabación detectada');
-    recordingStatusEl.textContent = 'Grabación detectada. Ya puedes guardar la bitácora.';
-    recordingStatusEl.className = 'vc-recording-status ok';
-    recordingDetectedEl.hidden = false;
-    verifyUploadBtn.style.display = 'none';
-    recordingDetectedEl.innerHTML = `<strong>✓ Grabación lista para asociar</strong>${escapeHtml(name)}`;
-    saveBtn.disabled = false;
-  }
-  let pendingSearchFailures = 0;
-
-  function normalizedUploaderName() {
-    return String(f.uploader?.value || '')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
-  }
-
-  function normalizedFileName(item) {
-    return String(item?.NombreArchivo || item?.Title || item?.['{Name}'] || '')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
-  }
-
-  function presentationDayStartIso() {
-    const d = new Date();
-    d.setHours(0,0,0,0);
-    return d.toISOString();
-  }
+  function localDateTimeValue(d=new Date()) { const p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+  function setStatus(msg='',err=false) { statusEl.textContent=msg; statusEl.classList.toggle('error',!!err); }
+  function setRecordingStatus(msg,kind='') { recordingStatusEl.textContent=msg; recordingStatusEl.className='vc-recording-status'+(kind?' '+kind:''); }
+  function isVideoFile(item) { return /\.(mp4|mov|m4v|webm|avi|mkv)$/i.test(String(item?.NombreArchivo||item?.Title||item?.['{Name}']||'')); }
+  function fileName(item) { return String(item?.NombreArchivo||item?.Title||item?.['{Name}']||'Archivo sin nombre'); }
+  function fileCreatedTime(item) { const t=Date.parse(item?.Created||item?.Modified||item?.FechaCarga||''); return Number.isNaN(t)?0:t; }
+  function fileCreatedLabel(item) { const t=fileCreatedTime(item); if(!t) return 'Hora no disponible'; try { return new Intl.DateTimeFormat('es-CO',{dateStyle:'short',timeStyle:'short',timeZone:'America/Bogota'}).format(new Date(t)); } catch(e) { return new Date(t).toLocaleString(); } }
+  function currentDayStartIso() { const d=new Date(); d.setHours(0,0,0,0); return d.toISOString(); }
+  function uploaderTokens() { return normalizeLoose(f.uploader.value).split(' ').filter(t=>t.length>=3); }
+  function scoreCandidate(item) { const name=normalizeLoose(fileName(item)); let score=0; for(const token of uploaderTokens()) if(name.includes(token)) score+=10; const c=fileCreatedTime(item); if(c) score+=Math.max(0,5-((Date.now()-c)/600000)); return score; }
 
   async function fetchPendingFiles(desde) {
-    const res = await fetch(SEARCH_PENDING_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ desde })
-    });
-    if (!res.ok) {
-      let detail = '';
-      try { detail = await res.text(); } catch(e) {}
-      throw new Error(`Power Automate respondió ${res.status}${detail ? ': ' + detail.slice(0,180) : ''}`);
-    }
-    const result = await res.json();
-    return Array.isArray(result?.archivos) ? result.archivos : (Array.isArray(result) ? result : []);
+    const res=await fetch(SEARCH_PENDING_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({desde})});
+    if(!res.ok) { let detail=''; try{detail=await res.text();}catch(e){} throw new Error(`Buscar cargas pendientes respondió ${res.status}${detail?': '+detail.slice(0,160):''}`); }
+    const result=await res.json();
+    return Array.isArray(result?.archivos)?result.archivos:(Array.isArray(result)?result:[]);
   }
 
-  async function checkPendingUpload() {
-    if (!uploadStartedAt || detectedFile || Date.now() > pollDeadline || !modal.classList.contains('active')) {
-      if (!detectedFile && uploadStartedAt && Date.now() > pollDeadline) {
-        recordingStatusEl.textContent = 'No se detectó la grabación todavía. Pulsa “Cargar grabación” para reanudar la detección.';
-        recordingStatusEl.className = 'vc-recording-status error';
-      }
-      return;
-    }
+  function clearCandidates() { candidatesEl.hidden=true; candidatesEl.innerHTML=''; }
+  function resetRecording() { detectedFile=null; uploadStartedAt=null; createdBitacora=null; verifying=false; clearCandidates(); recordingDetectedEl.hidden=true; recordingDetectedEl.innerHTML=''; verifyBtn.hidden=true; verifyBtn.disabled=false; verifyBtn.textContent='Ya cargué la grabación · Verificar'; saveBtn.disabled=true; saveBtn.textContent='Guardar bitácora'; setRecordingStatus('La grabación es obligatoria para guardar esta bitácora.'); }
+  function chooseFile(item) { detectedFile=item; clearCandidates(); const name=fileName(item); recordingDetectedEl.hidden=false; recordingDetectedEl.innerHTML=`<strong>✓ Grabación confirmada</strong>${esc(name)}<br><span style="color:var(--fh-muted)">Se asociará a esta bitácora al guardar.</span>`; setRecordingStatus('Grabación confirmada. Ya puedes guardar la bitácora.','ok'); saveBtn.disabled=false; verifyBtn.hidden=false; verifyBtn.textContent='Cambiar grabación'; }
 
+  function renderCandidates(items) {
+    const videos=items.filter(isVideoFile).sort((a,b)=>{ const sd=scoreCandidate(b)-scoreCandidate(a); return sd!==0?sd:fileCreatedTime(b)-fileCreatedTime(a); }).slice(0,5);
+    if(!videos.length) { clearCandidates(); setRecordingStatus('No encontré una grabación pendiente. Confirma que la carga terminó en OneDrive y pulsa “Verificar” nuevamente.','error'); return false; }
+    candidatesEl.innerHTML=`<div class="vc-recording-candidates-title">Encontré ${videos.length} grabación(es) pendiente(s). Confirma la correcta:</div>`+videos.map((item,idx)=>`<div class="vc-recording-candidate"><div class="vc-recording-candidate-copy"><div class="vc-recording-candidate-name">${esc(fileName(item))}</div><div class="vc-recording-candidate-meta">Cargado: ${esc(fileCreatedLabel(item))}</div></div><button type="button" class="vc-recording-select" data-vc-file-index="${idx}">Usar esta grabación</button></div>`).join('');
+    candidatesEl.hidden=false; setRecordingStatus('Selecciona la grabación que corresponde a esta sesión.');
+    candidatesEl.querySelectorAll('[data-vc-file-index]').forEach(btn=>btn.addEventListener('click',()=>{ const idx=Number(btn.getAttribute('data-vc-file-index')); if(Number.isInteger(idx)&&videos[idx]) chooseFile(videos[idx]); }));
+    return true;
+  }
+
+  async function verifyUpload() {
+    if(verifying) return;
+    if(!uploadStartedAt) { setRecordingStatus('Primero pulsa “Cargar grabación” y termina la carga en OneDrive.','error'); return; }
+    verifying=true; verifyBtn.disabled=true; verifyBtn.textContent='Verificando…'; clearCandidates(); recordingDetectedEl.hidden=true; detectedFile=null; saveBtn.disabled=true; setRecordingStatus('Consultando las cargas pendientes de OneDrive…');
     try {
-      // Primero usamos la hora exacta del clic, redondeada a segundos para evitar
-      // incompatibilidades de ticks() con milisegundos en Power Automate.
-      const preciseSince = String(uploadStartedAt).replace(/\.\d{3}Z$/, 'Z');
-      let list = await fetchPendingFiles(preciseSince);
-      let videos = list.filter(isVideoFile).sort((a,b) => fileCreatedTime(b) - fileCreatedTime(a));
-
-      // Fallback de presentación: si la consulta exacta no devuelve nada,
-      // buscar las cargas pendientes del día y priorizar las del nombre del cargador.
-      if (!videos.length) {
-        const broadList = await fetchPendingFiles(presentationDayStartIso());
-        const uploader = normalizedUploaderName();
-        const broadVideos = broadList.filter(isVideoFile).sort((a,b) => fileCreatedTime(b) - fileCreatedTime(a));
-        const uploaderVideos = uploader
-          ? broadVideos.filter(item => normalizedFileName(item).includes(uploader))
-          : [];
-        videos = uploaderVideos.length ? uploaderVideos : broadVideos;
-      }
-
-      if (videos.length) {
-        pendingSearchFailures = 0;
-        markDetected(videos[0]);
-        return;
-      }
-
-      pendingSearchFailures = 0;
-      recordingStatusEl.textContent = 'Esperando la grabación de OneDrive…';
-      recordingStatusEl.className = 'vc-recording-status';
-    } catch (err) {
-      pendingSearchFailures += 1;
-      console.warn('No fue posible consultar la carga todavía.', err);
-      recordingStatusEl.textContent = pendingSearchFailures >= 2
-        ? `Reintentando detección de la grabación… (${err.message})`
-        : 'Buscando la grabación…';
-      recordingStatusEl.className = pendingSearchFailures >= 2 ? 'vc-recording-status error' : 'vc-recording-status';
-    }
-
-    pollTimer = setTimeout(checkPendingUpload, 3500);
-  }
-  function formHasWork() {
-    return !!(f.mentor.value.trim() || f.avances.value.trim() || f.compromisos.value.trim() || uploadStartedAt || detectedFile);
-  }
-  function requestClose() {
-    if (saving) return;
-    if (formHasWork()) {
-      const discard = window.confirm('¿Deseas descartar esta bitácora y cerrar la ventana?');
-      if (!discard) return;
-    }
-    closeModal();
-  }
-  function openModal(ev) {
-    if (ev) ev.preventDefault();
-    const currentCedula = (typeof data !== 'undefined' && data && data.cedula) ? String(data.cedula).trim() : '';
-    if (!currentCedula) {
-      if (typeof toast === 'function') toast('Primero consulta una cédula para asociar la bitácora.', true);
-      return;
-    }
-    f.cedula.value = currentCedula;
-    f.nombre.value = findPrediagValue(['Nombre completo de quien diligencia el formulario', 'Nombre completo del emprendedor', 'Nombre completo']) || '—';
-    f.empresa.value = findPrediagValue(['Nombre del proyecto o iniciativa', 'Empresa o emprendimiento', 'Empresa']) || '—';
-    f.fecha.value = localDateTimeValue();
-    f.mentor.value = '';
-    f.avances.value = '';
-    f.compromisos.value = '';
-    f.uploader.value = '';
-    f.uploaderEmail.value = '';
-    setStatus('');
-    resetRecording();
-    modal.classList.add('active');
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => f.mentor.focus(), 50);
-  }
-  function closeModal() {
-    stopPolling();
-    modal.classList.remove('active');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+      const precise=String(uploadStartedAt).replace(/\.\d{3}Z$/,'Z');
+      let items=await fetchPendingFiles(precise);
+      if(!items.some(isVideoFile)) items=await fetchPendingFiles(currentDayStartIso());
+      renderCandidates(items);
+    } catch(err) { console.error(err); setRecordingStatus('No fue posible consultar las grabaciones: '+err.message,'error'); }
+    finally { verifying=false; verifyBtn.disabled=false; verifyBtn.textContent=detectedFile?'Cambiar grabación':'Ya cargué la grabación · Verificar'; }
   }
 
-  document.querySelectorAll('[data-feoracle-link="bitacora"]').forEach(btn => {
-    btn.removeAttribute('aria-disabled'); btn.removeAttribute('target'); btn.removeAttribute('rel'); btn.href = '#'; btn.onclick = openModal;
+  function formHasWork() { return !!(f.mentor.value.trim()||f.avances.value.trim()||f.compromisos.value.trim()||detectedFile||uploadStartedAt); }
+  function requestClose() { if(saving) return; if(formHasWork()) { const msg=createdBitacora?'La bitácora ya fue creada, pero la asociación de la grabación no terminó. ¿Deseas cerrar de todas formas?':'¿Deseas descartar esta bitácora y cerrar la ventana?'; if(!window.confirm(msg)) return; } closeModal(); }
+  function openModal(e) {
+    if(e) e.preventDefault();
+    const currentCedula=(typeof getCurrentCedula==='function'?getCurrentCedula():'')||(typeof data!=='undefined'&&data?.cedula?data.cedula:'');
+    if(!currentCedula) { if(typeof toast==='function') toast('Primero consulta una cédula para asociar la bitácora.',true); return; }
+    f.cedula.value=currentCedula;
+    f.nombre.value=findPrediagValue(['Nombre completo de quien diligencia el formulario','Nombre completo del emprendedor','Nombre completo'])||'—';
+    f.empresa.value=findPrediagValue(['Nombre del proyecto o iniciativa','Empresa o emprendimiento','Empresa'])||'—';
+    f.fecha.value=localDateTimeValue(); f.mentor.value=''; f.avances.value=''; f.compromisos.value=''; f.uploader.value=''; f.uploaderEmail.value=''; setStatus(''); resetRecording();
+    modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>f.mentor.focus(),50);
+  }
+  function closeModal() { modal.classList.remove('active'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+
+  document.querySelectorAll('[data-feoracle-link="bitacora"]').forEach(btn=>{ btn.removeAttribute('aria-disabled'); btn.removeAttribute('target'); btn.removeAttribute('rel'); btn.href='#'; btn.onclick=openModal; });
+
+  uploadBtn.addEventListener('click',function() {
+    const uploader=String(f.uploader.value||f.mentor.value||'').trim(); const email=String(f.uploaderEmail.value||'').trim();
+    if(!uploader||!email) { setRecordingStatus('Completa el nombre y el correo de quien realizará la carga.','error'); if(!uploader) f.uploader.focus(); else f.uploaderEmail.focus(); return; }
+    f.uploader.value=uploader; detectedFile=null; createdBitacora=null; clearCandidates(); recordingDetectedEl.hidden=true; saveBtn.disabled=true; uploadStartedAt=new Date().toISOString();
+    try { sessionStorage.setItem('vcUploadContext',JSON.stringify({cedula:f.cedula.value.trim(),iniciativa:f.empresa.value.trim(),fechaSesion:f.fecha.value,mentor:f.mentor.value.trim(),cargadoPor:uploader,correoCargador:email,iniciadoEn:uploadStartedAt})); } catch(e) {}
+    window.open(VC_UPLOAD_REQUEST_URL,'_blank','noopener,noreferrer');
+    verifyBtn.hidden=false; verifyBtn.disabled=false; verifyBtn.textContent='Ya cargué la grabación · Verificar';
+    setRecordingStatus('OneDrive se abrió en otra pestaña. Termina la carga, vuelve aquí y pulsa “Ya cargué la grabación · Verificar”.');
   });
 
-  uploadBtn.addEventListener('click', function () {
-    const uploader = String(f.uploader.value || f.mentor.value || '').trim();
-    const email = String(f.uploaderEmail.value || '').trim();
-    if (!uploader || !email) {
-      recordingStatusEl.textContent = 'Completa el nombre y el correo de quien realizará la carga.';
-      recordingStatusEl.className = 'vc-recording-status error';
-      if (!uploader) f.uploader.focus(); else f.uploaderEmail.focus();
-      return;
-    }
-    detectedFile = null;
-    pendingSearchFailures = 0;
-    saveBtn.disabled = false;
-    recordingDetectedEl.hidden = true;
-    uploadStartedAt = new Date().toISOString();
-    pollDeadline = 0;
+  verifyBtn.addEventListener('click',verifyUpload);
+  f.mentor.addEventListener('input',function(){ if(!f.uploader.value.trim()) f.uploader.value=f.mentor.value; });
+  closeBtn.addEventListener('click',requestClose); cancelBtn.addEventListener('click',requestClose); modal.addEventListener('click',e=>{if(e.target===modal) requestClose();}); document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('active')) requestClose();});
+
+  async function refreshAfterSave(payload) {
+    try { const refreshed=await consultarEmprendedor(payload.cedula); data.bitacoras=prepareBitacoras(Array.isArray(refreshed.bitacoras)?refreshed.bitacoras:[],payload.cedula); if(Array.isArray(refreshed.archivos)) data.archivos=refreshed.archivos; renderDashboard(); switchMainTab('bitas'); setQueryStatus(`${data.bitacoras.length} bitácora(s) encontrada(s).`); } catch(err) { console.warn('Se guardó correctamente, pero el refresco automático falló.',err); }
+  }
+
+  form.addEventListener('submit',async function(e) {
+    e.preventDefault(); if(!form.reportValidity()) return;
+    if(!detectedFile) { setRecordingStatus('Debes cargar, verificar y confirmar una grabación antes de guardar.','error'); saveBtn.disabled=true; return; }
+    saving=true; saveBtn.disabled=true; saveBtn.textContent=createdBitacora?'Reintentando asociación…':'Guardando…'; setStatus(createdBitacora?'Reintentando asociación de la grabación…':'Registrando la bitácora y asociando la grabación…');
+    const payload={cedula:f.cedula.value.trim(),nombre:f.nombre.value.trim(),empresa:f.empresa.value.trim(),fechaSesion:new Date(f.fecha.value).toISOString(),mentor:f.mentor.value.trim(),avances:f.avances.value.trim(),compromisos:f.compromisos.value.trim()};
     try {
-      sessionStorage.setItem('vcUploadContext', JSON.stringify({
-        cedula: f.cedula.value.trim(), iniciativa: f.empresa.value.trim(), fechaSesion: f.fecha.value,
-        mentor: f.mentor.value.trim(), cargadoPor: uploader, correoCargador: email, iniciadoEn: uploadStartedAt
-      }));
-    } catch (e) {}
-    window.open(VC_UPLOAD_REQUEST_URL, '_blank', 'noopener,noreferrer');
-    recordingStatusEl.textContent = '⚠ Grabación pendiente de asociar. Puedes guardar la bitácora y agregarla después.';
-    recordingStatusEl.className = 'vc-recording-status error';
-    stopPolling();
-  });
-
-  f.mentor.addEventListener('input', function () { if (!f.uploader.value.trim()) f.uploader.value = f.mentor.value; });
-  closeBtn.addEventListener('click', requestClose);
-  cancelBtn.addEventListener('click', requestClose);
-  modal.addEventListener('click', e => { if (e.target === modal) requestClose(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('active')) requestClose(); });
-
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    if (!form.reportValidity()) return;
-
-    saving = true;
-    saveBtn.disabled = true;
-    saveBtn.textContent = 'Guardando…';
-    setStatus(detectedFile ? 'Registrando la bitácora y asociando la grabación…' : 'Registrando la bitácora…');
-
-    const payload = {
-      cedula: f.cedula.value.trim(), nombre: f.nombre.value.trim(), empresa: f.empresa.value.trim(),
-      fechaSesion: new Date(f.fecha.value).toISOString(), mentor: f.mentor.value.trim(),
-      avances: f.avances.value.trim(), compromisos: f.compromisos.value.trim()
-    };
-
-    try {
-      const createRes = await fetch(CREATE_BITACORA_URL, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-      });
-      if (!createRes.ok) throw new Error(`Crear bitácora respondió ${createRes.status}`);
-      const created = await createRes.json();
-      if (!created || created.ok !== true || !created.BitacoraID) throw new Error('Power Automate no confirmó la creación de la bitácora.');
-
-      let recordingAssociated = false;
-      if (detectedFile) {
-        const associatePayload = {
-          archivoId: Number(detectedFile.ID || detectedFile.ItemInternalId),
-          nombreArchivo: String(detectedFile.NombreArchivo || detectedFile.Title || detectedFile['{Name}'] || ''),
-          identificadorArchivo: String(detectedFile.IdentificadorArchivo || ''),
-          rutaArchivo: String(detectedFile.RutaArchivo || ''),
-          fechaCarga: String(detectedFile.FechaCarga || '').substring(0,10),
-          bitacoraId: Number(created.BitacoraID),
-          cedula: payload.cedula,
-          iniciativa: payload.empresa,
-          fechaSesion: f.fecha.value.length === 16 ? f.fecha.value + ':00' : f.fecha.value,
-          fechaBitacora: String(created.FechaRegistro || new Date().toISOString()),
-          cargadoPor: f.uploader.value.trim() || f.mentor.value.trim(),
-          correoCargador: f.uploaderEmail.value.trim()
-        };
-        const assocRes = await fetch(ASSOCIATE_FILE_URL, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(associatePayload)
-        });
-        if (!assocRes.ok) throw new Error(`Asociar grabación respondió ${assocRes.status}`);
-        const associated = await assocRes.json();
-        if (!associated || associated.ok !== true) throw new Error('Power Automate no confirmó la asociación de la grabación.');
-        recordingAssociated = true;
-      }
-
-      if (recordingAssociated) {
-        setStatus('Bitácora y grabación registradas correctamente.');
-        if (typeof toast === 'function') toast('Bitácora y grabación asociadas correctamente');
-      } else {
-        setStatus('Bitácora registrada. Grabación pendiente de asociar.');
-        if (typeof toast === 'function') toast('Bitácora guardada · grabación pendiente');
-      }
-
-      try {
-        const refreshed = await consultarEmprendedor(payload.cedula);
-        data.bitacoras = prepareBitacoras(Array.isArray(refreshed.bitacoras) ? refreshed.bitacoras : [], payload.cedula);
-        if (Array.isArray(refreshed.archivos) && refreshed.archivos.length) data.archivos = refreshed.archivos;
-        renderDashboard(); switchMainTab('bitas'); setQueryStatus(`${data.bitacoras.length} bitácora(s) encontrada(s).`);
-      } catch (refreshErr) {
-        console.warn('Se guardó correctamente, pero el refresco automático falló.', refreshErr);
-      }
-      setTimeout(closeModal, 450);
-    } catch (err) {
-      console.error(err);
-      setStatus('No fue posible completar el registro: ' + err.message, true);
-      if (typeof toast === 'function') toast('Error: ' + err.message, true);
-    } finally {
-      saving = false;
-      saveBtn.textContent = 'Guardar bitácora';
-      saveBtn.disabled = false;
-    }
+      if(!createdBitacora) { const createRes=await fetch(CREATE_BITACORA_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); if(!createRes.ok) throw new Error(`Crear bitácora respondió ${createRes.status}`); const created=await createRes.json(); if(!created||created.ok!==true||!created.BitacoraID) throw new Error('Power Automate no confirmó la creación de la bitácora.'); createdBitacora=created; }
+      const associatePayload={archivoId:Number(detectedFile.ID||detectedFile.ItemInternalId),nombreArchivo:fileName(detectedFile),identificadorArchivo:String(detectedFile.IdentificadorArchivo||''),rutaArchivo:String(detectedFile.RutaArchivo||''),fechaCarga:String(detectedFile.FechaCarga||'').substring(0,10),bitacoraId:Number(createdBitacora.BitacoraID),cedula:payload.cedula,iniciativa:payload.empresa,fechaSesion:f.fecha.value.length===16?f.fecha.value+':00':f.fecha.value,fechaBitacora:String(createdBitacora.FechaRegistro||new Date().toISOString()),cargadoPor:f.uploader.value.trim()||f.mentor.value.trim(),correoCargador:f.uploaderEmail.value.trim()};
+      const assocRes=await fetch(ASSOCIATE_FILE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(associatePayload)});
+      if(!assocRes.ok) { let detail=''; try{detail=await assocRes.text();}catch(e){} throw new Error(`Asociar grabación respondió ${assocRes.status}${detail?': '+detail.slice(0,160):''}`); }
+      const associated=await assocRes.json(); if(!associated||associated.ok!==true) throw new Error('Power Automate no confirmó la asociación de la grabación.');
+      setStatus('Bitácora y grabación asociadas correctamente.'); setRecordingStatus('✓ Grabación asociada correctamente.','ok'); if(typeof toast==='function') toast('Bitácora y grabación registradas correctamente'); await refreshAfterSave(payload); setTimeout(closeModal,500);
+    } catch(err) { console.error(err); if(createdBitacora) { setStatus('La bitácora ya fue creada (ID '+createdBitacora.BitacoraID+'), pero la grabación no se pudo asociar. Pulsa “Reintentar asociación”.',true); saveBtn.textContent='Reintentar asociación'; } else { setStatus('No fue posible crear la bitácora: '+err.message,true); saveBtn.textContent='Guardar bitácora'; } if(typeof toast==='function') toast('Error: '+err.message,true); }
+    finally { saving=false; saveBtn.disabled=false; if(!createdBitacora) saveBtn.textContent='Guardar bitácora'; }
   });
 })();
 </script>
