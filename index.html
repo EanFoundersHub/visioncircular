@@ -1861,6 +1861,13 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
   .vc-modal-body { padding:24px 26px 28px; }
   .vc-bita-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   .vc-bita-field { display:flex; flex-direction:column; gap:7px; }
+
+/* En cargas documentales, hidden debe ganar sobre cualquier display del formulario */
+#vc-bita-form .vc-bita-field[hidden],
+#vc-bita-form .vc-recording-meta[hidden],
+#vc-bita-form #vc-support-note[hidden] {
+  display: none !important;
+}
   .vc-bita-field.full { grid-column:1 / -1; }
   .vc-bita-field label { font-size:12px; font-weight:900; color:var(--fh-charcoal); text-transform:uppercase; letter-spacing:.055em; }
   .vc-bita-input, .vc-bita-textarea {
@@ -1960,11 +1967,11 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
   .vc-required-card.is-complete{border-color:rgba(0,150,105,.28);background:linear-gradient(135deg,#fff,rgba(173,206,87,.09))}
   .vc-required-check{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:1000;font-size:20px;background:rgba(255,208,0,.16);color:#886d00;border:1px solid rgba(255,208,0,.25)}
   .vc-required-card.is-complete .vc-required-check{background:rgba(0,150,105,.12);color:var(--fh-green);border-color:rgba(0,150,105,.2)}
-  .vc-required-name{font-weight:900;color:var(--fh-navy);font-size:16px;margin-bottom:4px}
+  .vc-required-name{font-weight:900;color:var(--fh-black, #1F3464);font-size:16px;margin-bottom:4px}
   .vc-required-status{font-size:12.5px;color:var(--fh-muted);line-height:1.35;overflow-wrap:anywhere}
   .vc-required-card.is-complete .vc-required-status{color:#39755f;font-weight:700}
-  .vc-required-action{appearance:none;border:0;border-radius:12px;padding:11px 14px;background:var(--fh-navy);color:#fff;font-weight:900;font-size:12px;cursor:pointer;white-space:nowrap}
-  .vc-required-card.is-complete .vc-required-action{background:#eef5f2;color:var(--fh-green)}
+  .vc-required-action{appearance:none;border:0;border-radius:12px;padding:11px 14px;background:var(--fh-black, #1F3464);color:#fff;font-weight:900;font-size:12px;cursor:pointer;white-space:nowrap}
+  .vc-required-card.is-complete .vc-required-action{background:#eef5f2;color:var(--fh-gold, #009669)}
   .vc-required-action:hover{transform:translateY(-1px)}
   .vc-required-focus{animation:vcRequiredPulse 1.15s ease 2}
   @keyframes vcRequiredPulse{0%,100%{box-shadow:0 12px 34px rgba(31,52,100,.07)}50%{box-shadow:0 0 0 6px rgba(173,206,87,.24),0 18px 42px rgba(31,52,100,.12)}}
@@ -1974,23 +1981,23 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
   .vc-reminder{width:min(610px,100%);background:#fff;border-radius:25px;box-shadow:0 30px 90px rgba(11,27,49,.28);overflow:hidden;border:1px solid rgba(105,166,216,.18)}
   .vc-reminder-top{padding:26px 28px 20px;background:linear-gradient(135deg,rgba(255,208,0,.15),rgba(173,206,87,.12),rgba(105,166,216,.10))}
   .vc-reminder-kicker{font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;color:var(--fh-teal-dark)}
-  .vc-reminder h2{margin:6px 0 10px;color:var(--fh-navy);font-size:27px;line-height:1.08}
+  .vc-reminder h2{margin:6px 0 10px;color:var(--fh-black, #1F3464);font-size:27px;line-height:1.08}
   .vc-reminder p{margin:0;color:#40516a;line-height:1.58;font-size:15px}
   .vc-reminder-docs{display:grid;gap:9px;padding:18px 28px 2px}
-  .vc-reminder-doc{display:flex;align-items:center;gap:10px;font-weight:850;color:var(--fh-navy)}
-  .vc-reminder-doc span{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:rgba(0,150,105,.10);color:var(--fh-green)}
+  .vc-reminder-doc{display:flex;align-items:center;gap:10px;font-weight:850;color:var(--fh-black, #1F3464)}
+  .vc-reminder-doc span{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:rgba(0,150,105,.10);color:var(--fh-gold, #009669)}
   .vc-reminder-actions{display:flex;justify-content:flex-end;gap:10px;padding:22px 28px 26px}
   .vc-reminder-btn{appearance:none;border:0;border-radius:13px;padding:12px 17px;font-weight:900;cursor:pointer}
-  .vc-reminder-btn.primary{background:var(--fh-navy);color:#fff}.vc-reminder-btn.secondary{background:#eef2f4;color:#536176}
+  .vc-reminder-btn.primary{background:var(--fh-black, #1F3464);color:#fff}.vc-reminder-btn.secondary{background:#eef2f4;color:#536176}
 
   .vc-upload-frame-shell{width:min(1120px,96vw);height:min(820px,92vh);background:#fff;border-radius:24px;box-shadow:0 32px 100px rgba(0,0,0,.32);display:flex;flex-direction:column;overflow:hidden}
   .vc-upload-frame-head{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:15px 18px;border-bottom:1px solid #e6edf1;background:#fbfcfc}
-  .vc-upload-frame-title{font-weight:950;color:var(--fh-navy);font-size:16px}.vc-upload-frame-help{font-size:12px;color:var(--fh-muted);margin-top:2px}
+  .vc-upload-frame-title{font-weight:950;color:var(--fh-black, #1F3464);font-size:16px}.vc-upload-frame-help{font-size:12px;color:var(--fh-muted);margin-top:2px}
   .vc-upload-frame-close{appearance:none;border:0;background:#edf2f3;color:#435269;width:38px;height:38px;border-radius:50%;font-size:22px;cursor:pointer}
   .vc-upload-frame-body{position:relative;flex:1;min-height:0;background:#f3f5f6}.vc-upload-frame-body iframe{width:100%;height:100%;border:0;background:#fff}
   .vc-upload-frame-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;border-top:1px solid #e6edf1;background:#fff}
   .vc-upload-frame-note{font-size:11.5px;color:var(--fh-muted);max-width:560px;line-height:1.35}
-  .vc-upload-frame-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.vc-upload-frame-btn{appearance:none;border:0;border-radius:11px;padding:10px 14px;font-weight:900;font-size:12px;cursor:pointer}.vc-upload-frame-btn.primary{background:var(--fh-green);color:#fff}.vc-upload-frame-btn.secondary{background:#edf2f3;color:var(--fh-navy)}
+  .vc-upload-frame-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.vc-upload-frame-btn{appearance:none;border:0;border-radius:11px;padding:10px 14px;font-weight:900;font-size:12px;cursor:pointer}.vc-upload-frame-btn.primary{background:var(--fh-gold, #009669);color:#fff}.vc-upload-frame-btn.secondary{background:#edf2f3;color:var(--fh-black, #1F3464)}
   .vc-query-highlight{animation:vcQueryPulse 1.1s ease 2}@keyframes vcQueryPulse{50%{box-shadow:0 0 0 7px rgba(173,206,87,.24)}}
   @media(max-width:760px){.vc-required-grid{grid-template-columns:1fr}.vc-required-card{grid-template-columns:auto 1fr}.vc-required-action{grid-column:1/-1;width:100%}.vc-reminder-actions{flex-direction:column-reverse}.vc-reminder-btn{width:100%}.vc-upload-frame-shell{width:100%;height:94vh;border-radius:18px}.vc-upload-frame-foot{align-items:stretch;flex-direction:column}.vc-upload-frame-actions{justify-content:stretch}.vc-upload-frame-btn{flex:1}}
 </style>
@@ -2152,7 +2159,7 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
           <article class="vc-required-card" id="vc-required-plan">
             <div class="vc-required-check" id="vc-required-plan-check">2</div>
             <div><div class="vc-required-name">Plan de Trabajo Individual</div><div class="vc-required-status" id="vc-required-plan-status">Pendiente de cargar</div></div>
-            <button type="button" class="vc-required-action" id="vc-required-plan-btn">Cargar Plan de Trabajo</button>
+            <button type="button" class="vc-required-action" id="vc-required-plan-btn">Cargar Plan de Trabajo Individual</button>
           </article>
         </div>
       </section>
@@ -3072,7 +3079,7 @@ function renderRequiredDocs() {
       btn.textContent = 'Reemplazar / añadir otro';
     } else {
       status.textContent = 'Pendiente de cargar';
-      btn.textContent = doc.key === 'linea' ? 'Cargar Línea Base' : 'Cargar Plan de Trabajo';
+      btn.textContent = doc.key === 'linea' ? 'Cargar Línea Base' : 'Cargar Plan de Trabajo Individual';
     }
     btn.onclick = () => {
       if (typeof window.vcOpenRequiredDoc === 'function') window.vcOpenRequiredDoc(doc.type);
@@ -3532,7 +3539,7 @@ function resetView() {
     </div>
     <div class="vc-reminder-actions">
       <button type="button" class="vc-reminder-btn secondary" id="vc-required-reminder-skip">Omitir</button>
-      <button type="button" class="vc-reminder-btn primary" id="vc-required-reminder-go">Ir a cargarlos</button>
+      <button type="button" class="vc-reminder-btn primary" id="vc-required-reminder-go">Ir a cargar documentos</button>
     </div>
   </section>
 </div>
@@ -3558,7 +3565,7 @@ function resetView() {
   <section class="vc-modal" role="dialog" aria-modal="true" aria-labelledby="vc-bita-title">
     <div class="vc-modal-head">
       <div>
-        <div class="vc-modal-eyebrow">Visión Circular · Mentoría</div>
+        <div class="vc-modal-eyebrow" id="vc-modal-eyebrow">Visión Circular · Mentoría</div>
         <h2 class="vc-modal-title" id="vc-bita-title">Registrar nueva bitácora</h2>
         <div class="vc-modal-sub" id="vc-bita-subtitle">La sesión quedará asociada a la cédula consultada y aparecerá en el historial al guardar.</div>
       </div>
@@ -3658,6 +3665,9 @@ function resetView() {
   const fileSectionLabelEl = document.getElementById('vc-file-section-label');
   const fileTitleEl = document.getElementById('vc-file-title');
   const fileHelpEl = document.getElementById('vc-file-help');
+  const recordingMetaEl = document.querySelector('#vc-bita-form .vc-recording-meta');
+  const supportNoteEl = document.getElementById('vc-support-note');
+  const modalEyebrowEl = document.getElementById('vc-modal-eyebrow');
   const detailFields = Array.from(document.querySelectorAll('#vc-bita-form > .vc-bita-grid > .vc-bita-field:not(.vc-recording-section)'));
 
   const f = {
@@ -3722,7 +3732,7 @@ function resetView() {
     detectedFile=null; uploadStartedAt=null; createdBitacora=null; verifying=false; clearCandidates();
     recordingDetectedEl.hidden=true; recordingDetectedEl.innerHTML=''; verifyBtn.hidden=true; verifyBtn.disabled=false;
     verifyBtn.textContent=isSupportMode()?'Ya cargué el archivo · Verificar':'Ya cargué la grabación · Verificar';
-    saveBtn.disabled=true; saveBtn.textContent=isRequiredDocMode()?'Asociar documento':(isExistingMode()?'Asociar archivo':'Guardar bitácora');
+    saveBtn.disabled=true; saveBtn.textContent=isRequiredDocMode()?`Asociar ${requiredDocType}`:(isExistingMode()?'Asociar archivo':'Guardar bitácora');
     setRecordingStatus(isRequiredDocMode()
       ? `Carga ${requiredDocType}, verifícalo y confirma el archivo correcto para asociarlo a esta empresa.`
       : (isSupportMode()
@@ -3733,9 +3743,9 @@ function resetView() {
   function chooseFile(item) {
     detectedFile=item; clearCandidates(); const name=fileName(item);
     recordingDetectedEl.hidden=false;
-    recordingDetectedEl.innerHTML=`<strong>✓ Archivo confirmado</strong>${esc(name)}<br><span style="color:var(--fh-muted)">Se asociará a esta bitácora al guardar.</span>`;
+    recordingDetectedEl.innerHTML=`<strong>✓ Archivo confirmado</strong>${esc(name)}<br><span style="color:var(--fh-muted)">${isRequiredDocMode() ? 'Se asociará directamente a esta empresa.' : 'Se asociará a esta bitácora al guardar.'}</span>`;
     setRecordingStatus(isRequiredDocMode()?`${requiredDocType} confirmado. Ya puedes asociarlo a esta empresa.`:(isSupportMode()?'Archivo de apoyo confirmado. Ya puedes asociarlo a esta sesión.':(isExistingMode()?'Grabación confirmada. Ya puedes asociarla a esta sesión.':'Grabación confirmada. Ya puedes guardar la bitácora.')),'ok');
-    saveBtn.disabled=false; saveBtn.textContent=isRequiredDocMode()?'Asociar documento':(isExistingMode()?'Asociar archivo':'Guardar bitácora');
+    saveBtn.disabled=false; saveBtn.textContent=isRequiredDocMode()?`Asociar ${requiredDocType}`:(isExistingMode()?'Asociar archivo':'Guardar bitácora');
     verifyBtn.hidden=false; verifyBtn.textContent='Cambiar archivo';
   }
 
@@ -3748,7 +3758,7 @@ function resetView() {
       return false;
     }
     candidatesEl.innerHTML=`<div class="vc-recording-candidates-title">Encontré ${matches.length} ${label}${matches.length===1?'':'s'} pendiente${matches.length===1?'':'s'}. Confirma el correcto:</div>`+matches.map((item,idx)=>`<div class="vc-recording-candidate"><div class="vc-recording-candidate-copy"><div class="vc-recording-candidate-name">${esc(fileName(item))}</div><div class="vc-recording-candidate-meta">Cargado: ${esc(fileCreatedLabel(item))}</div></div><button type="button" class="vc-recording-select" data-vc-file-index="${idx}">Usar este archivo</button></div>`).join('');
-    candidatesEl.hidden=false; setRecordingStatus(`Selecciona el ${label} que corresponde a esta sesión.`);
+    candidatesEl.hidden=false; setRecordingStatus(isRequiredDocMode() ? `Selecciona el archivo que corresponde a ${requiredDocType}.` : `Selecciona el ${label} que corresponde a esta sesión.`);
     candidatesEl.querySelectorAll('[data-vc-file-index]').forEach(btn=>btn.addEventListener('click',()=>{ const idx=Number(btn.getAttribute('data-vc-file-index')); if(Number.isInteger(idx)&&matches[idx]) chooseFile(matches[idx]); }));
     return true;
   }
@@ -3771,19 +3781,55 @@ function resetView() {
     if (isRequiredDocMode()) return !!(f.uploader.value.trim()||f.uploaderEmail.value.trim()||detectedFile||uploadStartedAt);
     return !!(f.mentor.value.trim()||f.avances.value.trim()||f.compromisos.value.trim()||detectedFile||uploadStartedAt);
   }
-  function requestClose() { if(saving) return; if(formHasWork()) { const msg=createdBitacora?'La bitácora ya existe, pero la asociación del archivo no terminó. ¿Deseas cerrar de todas formas?':'¿Deseas descartar esta bitácora y cerrar la ventana?'; if(!window.confirm(msg)) return; } closeModal(); }
+  function requestClose() {
+    if(saving) return;
+    if(formHasWork()) {
+      const msg = isRequiredDocMode()
+        ? `La carga de ${requiredDocType} no ha terminado. ¿Deseas cerrar de todas formas?`
+        : (createdBitacora
+            ? 'La bitácora ya existe, pero la asociación del archivo no terminó. ¿Deseas cerrar de todas formas?'
+            : '¿Deseas descartar esta bitácora y cerrar la ventana?');
+      if(!window.confirm(msg)) return;
+    }
+    closeModal();
+  }
   function setModalMode(nextMode, docType='') {
     mode = nextMode;
     requiredDocType = isRequiredDocMode() ? String(docType || requiredDocType || 'Documento') : '';
     const existing = isExistingMode();
     const support = isSupportMode();
     const required = isRequiredDocMode();
-    detailFields.forEach(node => { node.hidden = existing; });
+
+    // Línea Base y Plan de Trabajo Individual NO son bitácoras.
+    // En este modo solo mostramos la carga/verificación del documento.
+    detailFields.forEach(node => {
+      node.hidden = existing;
+      node.style.display = existing ? 'none' : '';
+    });
+    if (recordingMetaEl) {
+      recordingMetaEl.hidden = required;
+      recordingMetaEl.style.display = required ? 'none' : '';
+    }
+    if (supportNoteEl) {
+      supportNoteEl.hidden = required;
+      supportNoteEl.style.display = required ? 'none' : '';
+    }
+
+    // Evita que campos ocultos de bitácora bloqueen el submit por "required".
+    f.fecha.disabled = required;
+    f.mentor.disabled = required;
+    f.avances.disabled = required;
+    f.compromisos.disabled = required;
+    f.fecha.required = !required;
+    f.mentor.required = !required;
+    f.avances.required = !required;
+    f.compromisos.required = !required;
+    if (modalEyebrowEl) modalEyebrowEl.textContent = required ? 'Visión Circular · Entregable inicial' : 'Visión Circular · Mentoría';
     if (titleEl) titleEl.textContent = required
       ? `Cargar ${requiredDocType}`
       : (existing ? `${support ? 'Añadir archivo de apoyo' : 'Añadir grabación'} · Sesión ${existingSessionNum || ''}`.trim() : 'Registrar nueva bitácora');
     if (subtitleEl) subtitleEl.textContent = required
-      ? 'Este documento se asociará directamente a la empresa seleccionada y quedará marcado en el checklist documental.'
+      ? 'Solo debes cargar el documento. No se creará una bitácora ni tendrás que registrar avances o próximos pasos.'
       : (existing
           ? (support
               ? 'Adjunta un documento, presentación, imagen u otro soporte relacionado con esta sesión. Es opcional y quedará asociado a la misma bitácora.'
@@ -3792,7 +3838,7 @@ function resetView() {
     if (fileSectionLabelEl) fileSectionLabelEl.textContent = required ? requiredDocType : (support ? 'Archivo de apoyo de la sesión (opcional)' : 'Grabación de la sesión');
     if (fileTitleEl) fileTitleEl.textContent = required ? `Cargar ${requiredDocType}` : (support ? 'Cargar archivo de apoyo' : 'Cargar grabación de esta sesión');
     if (fileHelpEl) fileHelpEl.textContent = required
-      ? `Usa el mismo cargador de OneDrive. Cuando termine la carga, vuelve y verifica cuál archivo corresponde a ${requiredDocType}.`
+      ? `Carga ${requiredDocType} en OneDrive. Cuando termine, verifica el archivo correcto y asócialo directamente a la empresa.`
       : (support
           ? 'Carga el archivo en OneDrive, vuelve a esta ventana y pulsa “Ya cargué el archivo · Verificar”. Puede ser PDF, Word, Excel, PowerPoint, imagen u otro soporte no audiovisual.'
           : 'Carga la grabación en OneDrive, vuelve a esta ventana y pulsa “Ya cargué la grabación · Verificar”. Después confirma el archivo correcto.');
@@ -3859,16 +3905,16 @@ function resetView() {
     f.nombre.value = String(findPrediagValue(['Nombre completo de quien diligencia el formulario']) || '—');
     f.empresa.value = String(data?.empresaConsulta || '—');
     f.fecha.value = localDateTimeValue();
-    f.mentor.value = 'Carga documental';
-    f.avances.value = `Carga documental: ${docType}`;
-    f.compromisos.value = 'No aplica';
+    f.mentor.value = '';
+    f.avances.value = '';
+    f.compromisos.value = '';
     f.uploader.value = '';
     f.uploaderEmail.value = '';
     setStatus('');
     resetRecording();
     createdBitacora = { BitacoraID: 0, FechaRegistro: new Date().toISOString() };
-    saveBtn.textContent = 'Asociar documento';
-    modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>f.uploader.focus(),50);
+    saveBtn.textContent = `Asociar ${docType}`;
+    modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>uploadBtn.focus(),50);
   }
 
   window.vcOpenRecordingForBitacora = openExistingRecordingModal;
@@ -3903,9 +3949,21 @@ function resetView() {
   document.querySelectorAll('[data-feoracle-link="bitacora"]').forEach(btn=>{ btn.removeAttribute('aria-disabled'); btn.removeAttribute('target'); btn.removeAttribute('rel'); btn.href='#'; btn.onclick=openModal; });
 
   uploadBtn.addEventListener('click',function() {
-    const uploader=String(f.uploader.value||f.mentor.value||'').trim(); const email=String(f.uploaderEmail.value||'').trim();
-    if(!uploader||!email) { setRecordingStatus('Completa el nombre y el correo de quien realizará la carga.','error'); if(!uploader) f.uploader.focus(); else f.uploaderEmail.focus(); return; }
-    f.uploader.value=uploader; detectedFile=null; if(!isExistingMode()) createdBitacora=null; clearCandidates(); recordingDetectedEl.hidden=true; saveBtn.disabled=true; uploadStartedAt=new Date().toISOString();
+    const uploader = isRequiredDocMode()
+      ? 'Mentor'
+      : String(f.uploader.value||f.mentor.value||'').trim();
+    const email = isRequiredDocMode()
+      ? ''
+      : String(f.uploaderEmail.value||'').trim();
+
+    if(!isRequiredDocMode() && (!uploader||!email)) {
+      setRecordingStatus('Completa el nombre y el correo de quien realizará la carga.','error');
+      if(!uploader) f.uploader.focus(); else f.uploaderEmail.focus();
+      return;
+    }
+
+    if (!isRequiredDocMode()) f.uploader.value=uploader;
+    detectedFile=null; if(!isExistingMode()) createdBitacora=null; clearCandidates(); recordingDetectedEl.hidden=true; saveBtn.disabled=true; uploadStartedAt=new Date().toISOString();
     const tipoArchivo=currentTipoArchivo();
     try { sessionStorage.setItem('vcUploadContext',JSON.stringify({cedula:f.cedula.value.trim(),iniciativa:f.empresa.value.trim(),fechaSesion:f.fecha.value,mentor:f.mentor.value.trim(),cargadoPor:uploader,correoCargador:email,tipoArchivo,iniciadoEn:uploadStartedAt})); } catch(e) {}
     openUploadPortal();
@@ -3927,7 +3985,7 @@ function resetView() {
       data.cedula = refreshed.cedula || payload.cedula;
       data.empresaConsulta = refreshed.empresa || data.empresaConsulta;
       renderDashboard();
-      switchMainTab('bitas');
+      if (!isRequiredDocMode()) switchMainTab('bitas');
       setQueryStatus(`${data.bitacoras.length} bitácora(s) · ${data.archivos.length} archivo(s) asociado(s).`);
     } catch(err) { console.warn('Se guardó correctamente, pero el refresco automático falló.',err); }
   }
@@ -3939,7 +3997,7 @@ function resetView() {
     const payload={cedula:f.cedula.value.trim(),nombre:f.nombre.value.trim(),empresa:f.empresa.value.trim(),fechaSesion:new Date(f.fecha.value).toISOString(),mentor:f.mentor.value.trim(),avances:f.avances.value.trim(),compromisos:f.compromisos.value.trim()};
     try {
       if(!createdBitacora) { const createRes=await fetch(CREATE_BITACORA_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); if(!createRes.ok) throw new Error(`Crear bitácora respondió ${createRes.status}`); const created=await createRes.json(); if(!created||created.ok!==true||!created.BitacoraID) throw new Error('Power Automate no confirmó la creación de la bitácora.'); createdBitacora=created; }
-      const associatePayload={archivoId:Number(detectedFile.ID||detectedFile.ItemInternalId),nombreArchivo:fileName(detectedFile),identificadorArchivo:String(detectedFile.IdentificadorArchivo||''),rutaArchivo:String(detectedFile.RutaArchivo||''),fechaCarga:String(detectedFile.FechaCarga||'').substring(0,10),bitacoraId:Number(createdBitacora.BitacoraID),cedula:payload.cedula,iniciativa:payload.empresa,fechaSesion:f.fecha.value.length===16?f.fecha.value+':00':f.fecha.value,fechaBitacora:String(createdBitacora.FechaRegistro||new Date().toISOString()),cargadoPor:f.uploader.value.trim()||f.mentor.value.trim(),correoCargador:f.uploaderEmail.value.trim(),tipoArchivo:currentTipoArchivo()};
+      const associatePayload={archivoId:Number(detectedFile.ID||detectedFile.ItemInternalId),nombreArchivo:fileName(detectedFile),identificadorArchivo:String(detectedFile.IdentificadorArchivo||''),rutaArchivo:String(detectedFile.RutaArchivo||''),fechaCarga:String(detectedFile.FechaCarga||'').substring(0,10),bitacoraId:Number(createdBitacora.BitacoraID),cedula:payload.cedula,iniciativa:payload.empresa,fechaSesion:f.fecha.value.length===16?f.fecha.value+':00':f.fecha.value,fechaBitacora:String(createdBitacora.FechaRegistro||new Date().toISOString()),cargadoPor:isRequiredDocMode()?'Mentor':(f.uploader.value.trim()||f.mentor.value.trim()),correoCargador:isRequiredDocMode()?'':f.uploaderEmail.value.trim(),tipoArchivo:currentTipoArchivo()};
       const assocRes=await fetch(ASSOCIATE_FILE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(associatePayload)});
       if(!assocRes.ok) { let detail=''; try{detail=await assocRes.text();}catch(e){} throw new Error(`Asociar archivo respondió ${assocRes.status}${detail?': '+detail.slice(0,160):''}`); }
       const associated=await assocRes.json(); if(!associated||associated.ok!==true) throw new Error('Power Automate no confirmó la asociación del archivo.');
@@ -3955,7 +4013,7 @@ function resetView() {
     }
     finally {
       saving=false; saveBtn.disabled=false;
-      if(isRequiredDocMode()) saveBtn.textContent='Asociar documento';
+      if(isRequiredDocMode()) saveBtn.textContent=`Asociar ${requiredDocType}`;
       else if(isExistingMode()) saveBtn.textContent='Asociar archivo';
       else if(!createdBitacora) saveBtn.textContent='Guardar bitácora';
     }
