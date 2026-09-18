@@ -1948,6 +1948,53 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
   }
 </style>
 
+
+<style id="vc-required-docs-styles">
+  .vc-required-docs{margin:0 0 20px;padding:22px;border:1.5px solid rgba(5,83,130,.13);border-radius:22px;background:linear-gradient(135deg,rgba(255,251,244,.96),rgba(238,249,247,.96));box-shadow:0 12px 34px rgba(31,52,100,.07)}
+  .vc-required-docs-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}
+  .vc-required-docs-kicker{font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--fh-teal-dark)}
+  .vc-required-docs-title{margin:4px 0 4px;font-size:21px;line-height:1.15;color:var(--fh-black)}
+  .vc-required-docs-sub{margin:0;color:var(--fh-muted);font-size:13px;line-height:1.45}
+  .vc-required-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .vc-required-card{display:grid;grid-template-columns:auto 1fr auto;gap:13px;align-items:center;padding:17px 18px;background:#fff;border:1.5px solid rgba(105,166,216,.18);border-radius:18px;min-height:108px;transition:.2s ease}
+  .vc-required-card.is-complete{border-color:rgba(0,150,105,.28);background:linear-gradient(135deg,#fff,rgba(173,206,87,.09))}
+  .vc-required-check{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:1000;font-size:20px;background:rgba(255,208,0,.16);color:#886d00;border:1px solid rgba(255,208,0,.25)}
+  .vc-required-card.is-complete .vc-required-check{background:rgba(0,150,105,.12);color:var(--fh-green);border-color:rgba(0,150,105,.2)}
+  .vc-required-name{font-weight:900;color:var(--fh-navy);font-size:16px;margin-bottom:4px}
+  .vc-required-status{font-size:12.5px;color:var(--fh-muted);line-height:1.35;overflow-wrap:anywhere}
+  .vc-required-card.is-complete .vc-required-status{color:#39755f;font-weight:700}
+  .vc-required-action{appearance:none;border:0;border-radius:12px;padding:11px 14px;background:var(--fh-navy);color:#fff;font-weight:900;font-size:12px;cursor:pointer;white-space:nowrap}
+  .vc-required-card.is-complete .vc-required-action{background:#eef5f2;color:var(--fh-green)}
+  .vc-required-action:hover{transform:translateY(-1px)}
+  .vc-required-focus{animation:vcRequiredPulse 1.15s ease 2}
+  @keyframes vcRequiredPulse{0%,100%{box-shadow:0 12px 34px rgba(31,52,100,.07)}50%{box-shadow:0 0 0 6px rgba(173,206,87,.24),0 18px 42px rgba(31,52,100,.12)}}
+
+  .vc-reminder-backdrop,.vc-upload-frame-backdrop{position:fixed;inset:0;z-index:10050;background:rgba(20,33,55,.56);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px}
+  .vc-reminder-backdrop.active,.vc-upload-frame-backdrop.active{display:flex}
+  .vc-reminder{width:min(610px,100%);background:#fff;border-radius:25px;box-shadow:0 30px 90px rgba(11,27,49,.28);overflow:hidden;border:1px solid rgba(105,166,216,.18)}
+  .vc-reminder-top{padding:26px 28px 20px;background:linear-gradient(135deg,rgba(255,208,0,.15),rgba(173,206,87,.12),rgba(105,166,216,.10))}
+  .vc-reminder-kicker{font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;color:var(--fh-teal-dark)}
+  .vc-reminder h2{margin:6px 0 10px;color:var(--fh-navy);font-size:27px;line-height:1.08}
+  .vc-reminder p{margin:0;color:#40516a;line-height:1.58;font-size:15px}
+  .vc-reminder-docs{display:grid;gap:9px;padding:18px 28px 2px}
+  .vc-reminder-doc{display:flex;align-items:center;gap:10px;font-weight:850;color:var(--fh-navy)}
+  .vc-reminder-doc span{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:rgba(0,150,105,.10);color:var(--fh-green)}
+  .vc-reminder-actions{display:flex;justify-content:flex-end;gap:10px;padding:22px 28px 26px}
+  .vc-reminder-btn{appearance:none;border:0;border-radius:13px;padding:12px 17px;font-weight:900;cursor:pointer}
+  .vc-reminder-btn.primary{background:var(--fh-navy);color:#fff}.vc-reminder-btn.secondary{background:#eef2f4;color:#536176}
+
+  .vc-upload-frame-shell{width:min(1120px,96vw);height:min(820px,92vh);background:#fff;border-radius:24px;box-shadow:0 32px 100px rgba(0,0,0,.32);display:flex;flex-direction:column;overflow:hidden}
+  .vc-upload-frame-head{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:15px 18px;border-bottom:1px solid #e6edf1;background:#fbfcfc}
+  .vc-upload-frame-title{font-weight:950;color:var(--fh-navy);font-size:16px}.vc-upload-frame-help{font-size:12px;color:var(--fh-muted);margin-top:2px}
+  .vc-upload-frame-close{appearance:none;border:0;background:#edf2f3;color:#435269;width:38px;height:38px;border-radius:50%;font-size:22px;cursor:pointer}
+  .vc-upload-frame-body{position:relative;flex:1;min-height:0;background:#f3f5f6}.vc-upload-frame-body iframe{width:100%;height:100%;border:0;background:#fff}
+  .vc-upload-frame-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;border-top:1px solid #e6edf1;background:#fff}
+  .vc-upload-frame-note{font-size:11.5px;color:var(--fh-muted);max-width:560px;line-height:1.35}
+  .vc-upload-frame-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.vc-upload-frame-btn{appearance:none;border:0;border-radius:11px;padding:10px 14px;font-weight:900;font-size:12px;cursor:pointer}.vc-upload-frame-btn.primary{background:var(--fh-green);color:#fff}.vc-upload-frame-btn.secondary{background:#edf2f3;color:var(--fh-navy)}
+  .vc-query-highlight{animation:vcQueryPulse 1.1s ease 2}@keyframes vcQueryPulse{50%{box-shadow:0 0 0 7px rgba(173,206,87,.24)}}
+  @media(max-width:760px){.vc-required-grid{grid-template-columns:1fr}.vc-required-card{grid-template-columns:auto 1fr}.vc-required-action{grid-column:1/-1;width:100%}.vc-reminder-actions{flex-direction:column-reverse}.vc-reminder-btn{width:100%}.vc-upload-frame-shell{width:100%;height:94vh;border-radius:18px}.vc-upload-frame-foot{align-items:stretch;flex-direction:column}.vc-upload-frame-actions{justify-content:stretch}.vc-upload-frame-btn{flex:1}}
+</style>
+
 </head>
 
 <body>
@@ -2086,6 +2133,29 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
         </div>
       </div>
     </div>
+
+
+      <section class="vc-required-docs" id="vc-required-docs" aria-label="Documentos requeridos del acompañamiento">
+        <div class="vc-required-docs-head">
+          <div>
+            <div class="vc-required-docs-kicker">Inicio del acompañamiento</div>
+            <h3 class="vc-required-docs-title">Entregables iniciales del acompañamiento</h3>
+            <p class="vc-required-docs-sub">Carga la Línea Base y el Plan de Trabajo Individual una sola vez por empresa. La plataforma marcará cada entregable como completado cuando quede asociado.</p>
+          </div>
+        </div>
+        <div class="vc-required-grid">
+          <article class="vc-required-card" id="vc-required-linea">
+            <div class="vc-required-check" id="vc-required-linea-check">1</div>
+            <div><div class="vc-required-name">Línea Base</div><div class="vc-required-status" id="vc-required-linea-status">Pendiente de cargar</div></div>
+            <button type="button" class="vc-required-action" id="vc-required-linea-btn">Cargar Línea Base</button>
+          </article>
+          <article class="vc-required-card" id="vc-required-plan">
+            <div class="vc-required-check" id="vc-required-plan-check">2</div>
+            <div><div class="vc-required-name">Plan de Trabajo Individual</div><div class="vc-required-status" id="vc-required-plan-status">Pendiente de cargar</div></div>
+            <button type="button" class="vc-required-action" id="vc-required-plan-btn">Cargar Plan de Trabajo</button>
+          </article>
+        </div>
+      </section>
 
     <div class="fh-maintabs">
       <button class="fh-maintab active" data-pane="prediag" onclick="switchMainTab('prediag')">
@@ -2494,6 +2564,8 @@ function setLoading(isLoading) {
   querySubmit.disabled = isLoading;
   empresaInput.disabled = isLoading;
   querySubmitText.textContent = isLoading ? 'Consultando...' : 'Consultar empresa';
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) overlay.classList.toggle('active', !!isLoading);
 }
 
 function prediagnosticoRowsToObject(rows) {
@@ -2576,6 +2648,9 @@ queryForm.addEventListener('submit', async (event) => {
     renderDashboard();
     setQueryStatus(`${data.bitacoras.length} bitácora(s) · ${data.archivos.length} archivo(s) asociado(s).`);
     toast('Información de Visión Circular cargada correctamente');
+    if (!requiredDocsComplete() && typeof window.vcShowRequiredReminder === 'function') {
+      setTimeout(() => window.vcShowRequiredReminder(), 420);
+    }
   } catch (err) {
     console.error(err);
     setQueryStatus(err.message, true);
@@ -2595,6 +2670,7 @@ function renderDashboard() {
   renderBanner();
   renderPrediagnostico();
   renderBitacoras();
+  renderRequiredDocs();
   switchMainTab('prediag');
 }
 
@@ -2937,8 +3013,91 @@ function findAssociatedFilesForBitacora(row) {
   });
 }
 
+function isRecordingAssociatedFile(file) {
+  const name = vcArchivoValue(file, ['NombreArchivo', 'Title', '{Name}']);
+  if (/\.(mp4|mov|m4v|webm|avi|mkv)$/i.test(name)) return true;
+  const tipo = norm(vcArchivoValue(file, ['TipoArchivo', 'tipoArchivo']));
+  const knownSupport = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|csv|txt|jpg|jpeg|png|gif|webp|zip|rar)$/i.test(name);
+  return !knownSupport && tipo.includes('grabacion');
+}
+
 function findRecordingForBitacora(row) {
-  return findAssociatedFilesForBitacora(row)[0] || null;
+  return findAssociatedFilesForBitacora(row).find(isRecordingAssociatedFile) || null;
+}
+
+function findSupportFilesForBitacora(row) {
+  return findAssociatedFilesForBitacora(row).filter(file => !isRecordingAssociatedFile(file));
+}
+
+
+const VC_REQUIRED_DOCS = [
+  { key: 'linea', type: 'Línea Base', label: 'Línea Base' },
+  { key: 'plan', type: 'Plan de Trabajo Individual', label: 'Plan de Trabajo Individual' }
+];
+
+function findRequiredDocFiles(type) {
+  const wanted = norm(type);
+  if (!Array.isArray(data.archivos)) return [];
+  return data.archivos.filter(file => {
+    const estado = norm(vcArchivoValue(file, ['Estado', 'estado']));
+    if (estado !== 'asociado') return false;
+    const tipo = norm(vcArchivoValue(file, ['TipoArchivo', 'tipoArchivo']));
+    const nombre = norm(vcArchivoValue(file, ['NombreArchivo', 'Title', '{Name}']));
+    if (tipo === wanted || tipo.includes(wanted)) return true;
+    if (wanted === 'linea base') return nombre.includes('linea base');
+    if (wanted === 'plan de trabajo individual') return nombre.includes('plan de trabajo') || nombre.includes('pti');
+    return false;
+  });
+}
+
+function requiredDocsComplete() {
+  return VC_REQUIRED_DOCS.every(doc => findRequiredDocFiles(doc.type).length > 0);
+}
+
+function renderRequiredDocs() {
+  VC_REQUIRED_DOCS.forEach(doc => {
+    const card = document.getElementById(`vc-required-${doc.key}`);
+    const check = document.getElementById(`vc-required-${doc.key}-check`);
+    const status = document.getElementById(`vc-required-${doc.key}-status`);
+    const btn = document.getElementById(`vc-required-${doc.key}-btn`);
+    if (!card || !check || !status || !btn) return;
+    const files = findRequiredDocFiles(doc.type);
+    const complete = files.length > 0;
+    card.classList.toggle('is-complete', complete);
+    check.textContent = complete ? '✓' : (doc.key === 'linea' ? '1' : '2');
+    if (complete) {
+      const latest = files.slice().sort((a,b) => Date.parse(b?.Modified || b?.Created || b?.FechaCarga || 0) - Date.parse(a?.Modified || a?.Created || a?.FechaCarga || 0))[0];
+      const name = vcArchivoValue(latest, ['NombreArchivo', 'Title', '{Name}']) || 'Archivo asociado';
+      status.textContent = `Cargado · ${name}`;
+      btn.textContent = 'Reemplazar / añadir otro';
+    } else {
+      status.textContent = 'Pendiente de cargar';
+      btn.textContent = doc.key === 'linea' ? 'Cargar Línea Base' : 'Cargar Plan de Trabajo';
+    }
+    btn.onclick = () => {
+      if (typeof window.vcOpenRequiredDoc === 'function') window.vcOpenRequiredDoc(doc.type);
+      else if (typeof toast === 'function') toast('El cargador documental todavía no está disponible.', true);
+    };
+  });
+
+  if (data?.empresaId) {
+    try {
+      localStorage.setItem('vcLastEmpresaId', String(data.empresaId));
+      if (requiredDocsComplete()) localStorage.setItem(`vcRequiredDocsComplete:${data.empresaId}`, '1');
+      else localStorage.removeItem(`vcRequiredDocsComplete:${data.empresaId}`);
+    } catch (_) {}
+  }
+}
+
+function goToRequiredDocs() {
+  if (!data?.empresaId) return;
+  setTimeout(() => {
+    const box = document.getElementById('vc-required-docs');
+    if (!box) return;
+    box.classList.add('vc-required-focus');
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => box.classList.remove('vc-required-focus'), 2600);
+  }, 120);
 }
 
 function renderBitacoras() {
@@ -2966,7 +3125,8 @@ function renderBitacoras() {
     window._bitaSessionMap[sessionNum] = row;
 
     const associatedFiles = findAssociatedFilesForBitacora(row);
-    const recording = associatedFiles[0] || null;
+    const recording = findRecordingForBitacora(row);
+    const supportFiles = findSupportFilesForBitacora(row);
     const tab = el('button', {
       class: 'fh-bita-tab has-data ' + (recording ? 'has-recording' : 'recording-pending'),
       attrs: { 'data-session': sessionNum }
@@ -2975,7 +3135,9 @@ function renderBitacoras() {
     tab.appendChild(document.createTextNode('Sesión ' + sessionNum));
     tab.appendChild(el('span', {
       class: 'vc-bita-recording-badge',
-      text: recording ? `✓ ${associatedFiles.length} archivo${associatedFiles.length === 1 ? '' : 's'}` : 'Falta grabación'
+      text: recording
+        ? `✓ Grabación${supportFiles.length ? ` · ${supportFiles.length} apoyo` : ''}`
+        : `Falta grabación${supportFiles.length ? ` · ${supportFiles.length} apoyo` : ''}`
     }));
     tab.addEventListener('click', () => selectBitaSession(sessionNum));
     tabsEl.appendChild(tab);
@@ -3113,31 +3275,45 @@ function selectBitaSession(num) {
   content.appendChild(headerEl);
 
   const associatedFiles = findAssociatedFilesForBitacora(bita);
-  const recording = associatedFiles[0] || null;
+  const recording = findRecordingForBitacora(bita);
+  const supportFiles = findSupportFilesForBitacora(bita);
   const recordingBox = el('div', { class: 'vc-history-recording ' + (recording ? 'ok' : 'pending') });
   recordingBox.appendChild(el('div', { class: 'vc-history-recording-icon', text: recording ? '✓' : '!' }));
 
   const recordingCopy = el('div', { class: 'vc-history-recording-copy' });
-  recordingCopy.appendChild(el('strong', { text: recording
-    ? `${associatedFiles.length} archivo${associatedFiles.length === 1 ? '' : 's'} asociado${associatedFiles.length === 1 ? '' : 's'} a esta sesión`
-    : 'Grabación pendiente'
-  }));
+  recordingCopy.appendChild(el('strong', { text: recording ? 'Grabación cargada' : 'Grabación pendiente' }));
 
   const filesWrap = el('div', { class: 'vc-history-files' });
   if (recording) {
-    associatedFiles.forEach(file => {
-      const name = vcArchivoValue(file, ['NombreArchivo', 'Title', '{Name}']) || 'Archivo asociado';
-      filesWrap.appendChild(el('div', { text: '✓ ' + name }));
-    });
+    const recordingName = vcArchivoValue(recording, ['NombreArchivo', 'Title', '{Name}']) || 'Grabación asociada';
+    filesWrap.appendChild(el('div', { text: '🎥 ' + recordingName }));
   } else {
     filesWrap.appendChild(el('div', { text: 'Esta bitácora todavía no tiene una grabación asociada.' }));
+  }
+
+  const supportTitle = el('div', { text: `Archivos de apoyo: ${supportFiles.length} (opcional)` });
+  supportTitle.style.marginTop = '8px';
+  supportTitle.style.fontWeight = '800';
+  filesWrap.appendChild(supportTitle);
+  if (supportFiles.length) {
+    supportFiles.forEach(file => {
+      const name = vcArchivoValue(file, ['NombreArchivo', 'Title', '{Name}']) || 'Archivo de apoyo';
+      filesWrap.appendChild(el('div', { text: '📎 ' + name }));
+    });
+  } else {
+    filesWrap.appendChild(el('div', { text: 'No hay archivos de apoyo asociados a esta sesión.' }));
   }
   recordingCopy.appendChild(filesWrap);
   recordingBox.appendChild(recordingCopy);
 
+  const actionsWrap = el('div');
+  actionsWrap.style.display = 'flex';
+  actionsWrap.style.flexWrap = 'wrap';
+  actionsWrap.style.gap = '8px';
+
   const addRecordingBtn = el('button', {
     class: 'vc-history-recording-action',
-    text: recording ? 'Añadir otro archivo' : 'Añadir grabación',
+    text: recording ? 'Añadir otra grabación' : 'Añadir grabación',
     attrs: { type: 'button' }
   });
   addRecordingBtn.addEventListener('click', () => {
@@ -3147,7 +3323,23 @@ function selectBitaSession(num) {
       toast('El cargador de grabaciones todavía no está disponible.', true);
     }
   });
-  recordingBox.appendChild(addRecordingBtn);
+  actionsWrap.appendChild(addRecordingBtn);
+
+  const addSupportBtn = el('button', {
+    class: 'vc-history-recording-action',
+    text: 'Añadir archivo de apoyo',
+    attrs: { type: 'button' }
+  });
+  addSupportBtn.addEventListener('click', () => {
+    if (typeof window.vcOpenSupportFileForBitacora === 'function') {
+      window.vcOpenSupportFileForBitacora(bita, num);
+    } else if (typeof toast === 'function') {
+      toast('El cargador de archivos de apoyo todavía no está disponible.', true);
+    }
+  });
+  actionsWrap.appendChild(addSupportBtn);
+
+  recordingBox.appendChild(actionsWrap);
   content.appendChild(recordingBox);
 
   const idSec = bitaSection('🪪', 'Identificación de la sesión', [
@@ -3252,49 +3444,8 @@ function resetView() {
   }
 })();
 
-// Intercept form submit for premium loading
-(function() {
-  const overlay = document.getElementById('loading-overlay');
-  const loadingText = document.getElementById('loading-text');
-  const form = document.getElementById('query-form');
-  if (!form || !overlay) return;
+// El estado de carga de la consulta se controla desde setLoading().
 
-  const messages = [
-    'Consultando Visión Circular...',
-    'Identificando la empresa...',
-    'Cargando prediagnóstico...',
-    'Casi listo...'
-  ];
-  let msgInterval;
-  let msgIdx = 0;
-
-  form.addEventListener('submit', function() {
-    // Show overlay on submit
-    setTimeout(() => {
-      if (overlay && document.getElementById('query-submit').disabled) {
-        overlay.classList.add('active');
-        if (loadingText) loadingText.textContent = messages[0];
-        msgIdx = 0;
-        msgInterval = setInterval(() => {
-          msgIdx = (msgIdx + 1) % messages.length;
-          if (loadingText) loadingText.textContent = messages[msgIdx];
-        }, 1200);
-      }
-    }, 50);
-  }, true);
-
-  // Hide overlay when loading ends
-  const submitBtn = document.getElementById('query-submit');
-  if (submitBtn) {
-    const observer = new MutationObserver(() => {
-      if (!submitBtn.disabled) {
-        overlay.classList.remove('active');
-        clearInterval(msgInterval);
-      }
-    });
-    observer.observe(submitBtn, { attributes: true, attributeFilter: ['disabled'] });
-  }
-})();
 
 // Section open/close smooth animation
 (function() {
@@ -3367,6 +3518,42 @@ function resetView() {
 </script>
 
 
+
+<div class="vc-reminder-backdrop" id="vc-required-reminder" aria-hidden="true">
+  <section class="vc-reminder" role="dialog" aria-modal="true" aria-labelledby="vc-required-reminder-title">
+    <div class="vc-reminder-top">
+      <div class="vc-reminder-kicker">Visión Circular · Importante</div>
+      <h2 id="vc-required-reminder-title">Entregables iniciales del acompañamiento</h2>
+      <p><strong>Estimado Mentor,</strong> te pedimos que cargues la <strong>Línea Base</strong> y el <strong>Plan de Trabajo Individual</strong> antes del <strong>miércoles 23 de septiembre</strong>.</p>
+    </div>
+    <div class="vc-reminder-docs">
+      <div class="vc-reminder-doc"><span>1</span>Línea Base</div>
+      <div class="vc-reminder-doc"><span>2</span>Plan de Trabajo Individual</div>
+    </div>
+    <div class="vc-reminder-actions">
+      <button type="button" class="vc-reminder-btn secondary" id="vc-required-reminder-skip">Omitir</button>
+      <button type="button" class="vc-reminder-btn primary" id="vc-required-reminder-go">Ir a cargarlos</button>
+    </div>
+  </section>
+</div>
+
+<div class="vc-upload-frame-backdrop" id="vc-upload-frame-modal" aria-hidden="true">
+  <section class="vc-upload-frame-shell" role="dialog" aria-modal="true" aria-labelledby="vc-upload-frame-title">
+    <div class="vc-upload-frame-head">
+      <div><div class="vc-upload-frame-title" id="vc-upload-frame-title">Cargar archivo en OneDrive</div><div class="vc-upload-frame-help">Carga el archivo y después vuelve con el botón inferior para verificarlo.</div></div>
+      <button type="button" class="vc-upload-frame-close" id="vc-upload-frame-close" aria-label="Cerrar">×</button>
+    </div>
+    <div class="vc-upload-frame-body"><iframe id="vc-upload-frame" title="Carga de archivos Visión Circular" loading="eager" referrerpolicy="no-referrer"></iframe></div>
+    <div class="vc-upload-frame-foot">
+      <div class="vc-upload-frame-note">Si Microsoft impide mostrar el cargador dentro de esta ventana, usa “Abrir aparte”. La asociación del archivo se hará igualmente desde Visión Circular.</div>
+      <div class="vc-upload-frame-actions">
+        <button type="button" class="vc-upload-frame-btn secondary" id="vc-upload-frame-external">Abrir aparte</button>
+        <button type="button" class="vc-upload-frame-btn primary" id="vc-upload-frame-done">Ya terminé de cargar · Verificar</button>
+      </div>
+    </div>
+  </section>
+</div>
+
 <div class="vc-modal-backdrop" id="vc-bita-modal" aria-hidden="true">
   <section class="vc-modal" role="dialog" aria-modal="true" aria-labelledby="vc-bita-title">
     <div class="vc-modal-head">
@@ -3408,14 +3595,14 @@ function resetView() {
           <textarea class="vc-bita-textarea" id="vc-bita-compromisos" required placeholder="Registra compromisos, responsables y próximos pasos acordados."></textarea>
         </div>
         <div class="vc-bita-field full vc-recording-section">
-          <label>Grabación de la sesión</label>
+          <label id="vc-file-section-label">Grabación de la sesión</label>
           <div class="vc-recording-card">
             <div class="vc-recording-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             </div>
             <div class="vc-recording-copy">
-              <div class="vc-recording-title">Cargar grabación de esta sesión</div>
-              <div class="vc-recording-help">Carga la grabación en OneDrive, vuelve a esta ventana y pulsa “Ya cargué la grabación · Verificar”. Después confirma el archivo correcto.</div>
+              <div class="vc-recording-title" id="vc-file-title">Cargar grabación de esta sesión</div>
+              <div class="vc-recording-help" id="vc-file-help">Carga la grabación en OneDrive, vuelve a esta ventana y pulsa “Ya cargué la grabación · Verificar”. Después confirma el archivo correcto.</div>
             </div>
             <button class="vc-recording-btn" id="vc-bita-upload" type="button">Cargar grabación</button>
           </div>
@@ -3430,6 +3617,7 @@ function resetView() {
             </div>
           </div>
           <div class="vc-recording-status" id="vc-recording-status" aria-live="polite">La grabación es obligatoria para guardar esta bitácora.</div>
+          <div class="vc-recording-help" id="vc-support-note" style="margin-top:8px">Después de guardar la bitácora puedes añadir archivos de apoyo opcionales desde esta misma sesión.</div>
           <div class="vc-recording-actions-manual">
             <button type="button" id="vc-bita-verify-upload" class="vc-bita-btn secondary" hidden>Ya cargué la grabación · Verificar</button>
           </div>
@@ -3467,6 +3655,9 @@ function resetView() {
   const recordingDetectedEl = document.getElementById('vc-recording-detected');
   const titleEl = document.getElementById('vc-bita-title');
   const subtitleEl = document.getElementById('vc-bita-subtitle');
+  const fileSectionLabelEl = document.getElementById('vc-file-section-label');
+  const fileTitleEl = document.getElementById('vc-file-title');
+  const fileHelpEl = document.getElementById('vc-file-help');
   const detailFields = Array.from(document.querySelectorAll('#vc-bita-form > .vc-bita-grid > .vc-bita-field:not(.vc-recording-section)'));
 
   const f = {
@@ -3488,6 +3679,7 @@ function resetView() {
   let verifying = false;
   let mode = 'new';
   let existingSessionNum = null;
+  let requiredDocType = '';
 
   function esc(v) { return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
   function normalizeKey(s) { return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim(); }
@@ -3519,41 +3711,92 @@ function resetView() {
   }
 
   function clearCandidates() { candidatesEl.hidden=true; candidatesEl.innerHTML=''; }
-  function resetRecording() { detectedFile=null; uploadStartedAt=null; createdBitacora=null; verifying=false; clearCandidates(); recordingDetectedEl.hidden=true; recordingDetectedEl.innerHTML=''; verifyBtn.hidden=true; verifyBtn.disabled=false; verifyBtn.textContent='Ya cargué la grabación · Verificar'; saveBtn.disabled=true; saveBtn.textContent=mode==='existing'?'Asociar archivo':'Guardar bitácora'; setRecordingStatus(mode==='existing'?'Carga un archivo y luego verifícalo para asociarlo a esta sesión.':'La grabación es obligatoria para guardar esta bitácora.'); }
-  function chooseFile(item) { detectedFile=item; clearCandidates(); const name=fileName(item); recordingDetectedEl.hidden=false; recordingDetectedEl.innerHTML=`<strong>✓ Archivo confirmado</strong>${esc(name)}<br><span style="color:var(--fh-muted)">Se asociará a esta bitácora al guardar.</span>`; setRecordingStatus(mode==='existing'?'Archivo confirmado. Ya puedes asociarlo a esta sesión.':'Grabación confirmada. Ya puedes guardar la bitácora.','ok'); saveBtn.disabled=false; saveBtn.textContent=mode==='existing'?'Asociar archivo':'Guardar bitácora'; verifyBtn.hidden=false; verifyBtn.textContent='Cambiar archivo'; }
+  function isRequiredDocMode() { return mode === 'required-doc'; }
+  function isSupportMode() { return mode === 'existing-support' || isRequiredDocMode(); }
+  function isExistingMode() { return mode === 'existing-recording' || mode === 'existing-support' || isRequiredDocMode(); }
+  function candidateMatchesMode(item) { return isSupportMode() ? !isVideoFile(item) : isVideoFile(item); }
+  function currentFileLabel() { return isRequiredDocMode() ? requiredDocType : (isSupportMode() ? 'archivo de apoyo' : 'grabación'); }
+  function currentTipoArchivo() { return isRequiredDocMode() ? requiredDocType : (isSupportMode() ? 'Archivo de apoyo' : 'Grabación'); }
+
+  function resetRecording() {
+    detectedFile=null; uploadStartedAt=null; createdBitacora=null; verifying=false; clearCandidates();
+    recordingDetectedEl.hidden=true; recordingDetectedEl.innerHTML=''; verifyBtn.hidden=true; verifyBtn.disabled=false;
+    verifyBtn.textContent=isSupportMode()?'Ya cargué el archivo · Verificar':'Ya cargué la grabación · Verificar';
+    saveBtn.disabled=true; saveBtn.textContent=isRequiredDocMode()?'Asociar documento':(isExistingMode()?'Asociar archivo':'Guardar bitácora');
+    setRecordingStatus(isRequiredDocMode()
+      ? `Carga ${requiredDocType}, verifícalo y confirma el archivo correcto para asociarlo a esta empresa.`
+      : (isSupportMode()
+          ? 'El archivo de apoyo es opcional. Cárgalo y verifícalo para asociarlo a esta sesión.'
+          : (isExistingMode()?'Carga una grabación y luego verifícala para asociarla a esta sesión.':'La grabación es obligatoria para guardar esta bitácora.')));
+  }
+
+  function chooseFile(item) {
+    detectedFile=item; clearCandidates(); const name=fileName(item);
+    recordingDetectedEl.hidden=false;
+    recordingDetectedEl.innerHTML=`<strong>✓ Archivo confirmado</strong>${esc(name)}<br><span style="color:var(--fh-muted)">Se asociará a esta bitácora al guardar.</span>`;
+    setRecordingStatus(isRequiredDocMode()?`${requiredDocType} confirmado. Ya puedes asociarlo a esta empresa.`:(isSupportMode()?'Archivo de apoyo confirmado. Ya puedes asociarlo a esta sesión.':(isExistingMode()?'Grabación confirmada. Ya puedes asociarla a esta sesión.':'Grabación confirmada. Ya puedes guardar la bitácora.')),'ok');
+    saveBtn.disabled=false; saveBtn.textContent=isRequiredDocMode()?'Asociar documento':(isExistingMode()?'Asociar archivo':'Guardar bitácora');
+    verifyBtn.hidden=false; verifyBtn.textContent='Cambiar archivo';
+  }
 
   function renderCandidates(items) {
-    const videos=items.filter(isVideoFile).sort((a,b)=>{ const sd=scoreCandidate(b)-scoreCandidate(a); return sd!==0?sd:fileCreatedTime(b)-fileCreatedTime(a); }).slice(0,5);
-    if(!videos.length) { clearCandidates(); setRecordingStatus('No encontré una grabación pendiente. Confirma que la carga terminó en OneDrive y pulsa “Verificar” nuevamente.','error'); return false; }
-    candidatesEl.innerHTML=`<div class="vc-recording-candidates-title">Encontré ${videos.length} grabación(es) pendiente(s). Confirma la correcta:</div>`+videos.map((item,idx)=>`<div class="vc-recording-candidate"><div class="vc-recording-candidate-copy"><div class="vc-recording-candidate-name">${esc(fileName(item))}</div><div class="vc-recording-candidate-meta">Cargado: ${esc(fileCreatedLabel(item))}</div></div><button type="button" class="vc-recording-select" data-vc-file-index="${idx}">Usar esta grabación</button></div>`).join('');
-    candidatesEl.hidden=false; setRecordingStatus('Selecciona la grabación que corresponde a esta sesión.');
-    candidatesEl.querySelectorAll('[data-vc-file-index]').forEach(btn=>btn.addEventListener('click',()=>{ const idx=Number(btn.getAttribute('data-vc-file-index')); if(Number.isInteger(idx)&&videos[idx]) chooseFile(videos[idx]); }));
+    const matches=items.filter(candidateMatchesMode).sort((a,b)=>{ const sd=scoreCandidate(b)-scoreCandidate(a); return sd!==0?sd:fileCreatedTime(b)-fileCreatedTime(a); }).slice(0,8);
+    const label=currentFileLabel();
+    if(!matches.length) {
+      clearCandidates();
+      setRecordingStatus(`No encontré ningún ${label} pendiente. Confirma que la carga terminó en OneDrive y pulsa “Verificar” nuevamente.`,'error');
+      return false;
+    }
+    candidatesEl.innerHTML=`<div class="vc-recording-candidates-title">Encontré ${matches.length} ${label}${matches.length===1?'':'s'} pendiente${matches.length===1?'':'s'}. Confirma el correcto:</div>`+matches.map((item,idx)=>`<div class="vc-recording-candidate"><div class="vc-recording-candidate-copy"><div class="vc-recording-candidate-name">${esc(fileName(item))}</div><div class="vc-recording-candidate-meta">Cargado: ${esc(fileCreatedLabel(item))}</div></div><button type="button" class="vc-recording-select" data-vc-file-index="${idx}">Usar este archivo</button></div>`).join('');
+    candidatesEl.hidden=false; setRecordingStatus(`Selecciona el ${label} que corresponde a esta sesión.`);
+    candidatesEl.querySelectorAll('[data-vc-file-index]').forEach(btn=>btn.addEventListener('click',()=>{ const idx=Number(btn.getAttribute('data-vc-file-index')); if(Number.isInteger(idx)&&matches[idx]) chooseFile(matches[idx]); }));
     return true;
   }
 
   async function verifyUpload() {
     if(verifying) return;
-    if(!uploadStartedAt) { setRecordingStatus('Primero pulsa “Cargar grabación” y termina la carga en OneDrive.','error'); return; }
+    const label=currentFileLabel();
+    if(!uploadStartedAt) { setRecordingStatus(`Primero pulsa “Cargar ${label}” y termina la carga en OneDrive.`,'error'); return; }
     verifying=true; verifyBtn.disabled=true; verifyBtn.textContent='Verificando…'; clearCandidates(); recordingDetectedEl.hidden=true; detectedFile=null; saveBtn.disabled=true; setRecordingStatus('Consultando las cargas pendientes de OneDrive…');
     try {
       const precise=String(uploadStartedAt).replace(/\.\d{3}Z$/,'Z');
       let items=await fetchPendingFiles(precise);
-      if(!items.some(isVideoFile)) items=await fetchPendingFiles(currentDayStartIso());
+      if(!items.some(candidateMatchesMode)) items=await fetchPendingFiles(currentDayStartIso());
       renderCandidates(items);
-    } catch(err) { console.error(err); setRecordingStatus('No fue posible consultar las grabaciones: '+err.message,'error'); }
-    finally { verifying=false; verifyBtn.disabled=false; verifyBtn.textContent=detectedFile?'Cambiar grabación':'Ya cargué la grabación · Verificar'; }
+    } catch(err) { console.error(err); setRecordingStatus('No fue posible consultar los archivos: '+err.message,'error'); }
+    finally { verifying=false; verifyBtn.disabled=false; verifyBtn.textContent=detectedFile?'Cambiar archivo':(isSupportMode()?'Ya cargué el archivo · Verificar':'Ya cargué la grabación · Verificar'); }
   }
 
-  function formHasWork() { return !!(f.mentor.value.trim()||f.avances.value.trim()||f.compromisos.value.trim()||detectedFile||uploadStartedAt); }
-  function requestClose() { if(saving) return; if(formHasWork()) { const msg=createdBitacora?'La bitácora ya fue creada, pero la asociación de la grabación no terminó. ¿Deseas cerrar de todas formas?':'¿Deseas descartar esta bitácora y cerrar la ventana?'; if(!window.confirm(msg)) return; } closeModal(); }
-  function setModalMode(nextMode) {
+  function formHasWork() {
+    if (isRequiredDocMode()) return !!(f.uploader.value.trim()||f.uploaderEmail.value.trim()||detectedFile||uploadStartedAt);
+    return !!(f.mentor.value.trim()||f.avances.value.trim()||f.compromisos.value.trim()||detectedFile||uploadStartedAt);
+  }
+  function requestClose() { if(saving) return; if(formHasWork()) { const msg=createdBitacora?'La bitácora ya existe, pero la asociación del archivo no terminó. ¿Deseas cerrar de todas formas?':'¿Deseas descartar esta bitácora y cerrar la ventana?'; if(!window.confirm(msg)) return; } closeModal(); }
+  function setModalMode(nextMode, docType='') {
     mode = nextMode;
-    const existing = mode === 'existing';
+    requiredDocType = isRequiredDocMode() ? String(docType || requiredDocType || 'Documento') : '';
+    const existing = isExistingMode();
+    const support = isSupportMode();
+    const required = isRequiredDocMode();
     detailFields.forEach(node => { node.hidden = existing; });
-    if (titleEl) titleEl.textContent = existing ? `Añadir archivo · Sesión ${existingSessionNum || ''}`.trim() : 'Registrar nueva bitácora';
-    if (subtitleEl) subtitleEl.textContent = existing
-      ? 'Carga una grabación en OneDrive, vuelve a esta ventana, verifícala y asóciala a la bitácora existente.'
-      : 'La sesión quedará asociada a la empresa consultada y aparecerá en el historial al guardar.';
+    if (titleEl) titleEl.textContent = required
+      ? `Cargar ${requiredDocType}`
+      : (existing ? `${support ? 'Añadir archivo de apoyo' : 'Añadir grabación'} · Sesión ${existingSessionNum || ''}`.trim() : 'Registrar nueva bitácora');
+    if (subtitleEl) subtitleEl.textContent = required
+      ? 'Este documento se asociará directamente a la empresa seleccionada y quedará marcado en el checklist documental.'
+      : (existing
+          ? (support
+              ? 'Adjunta un documento, presentación, imagen u otro soporte relacionado con esta sesión. Es opcional y quedará asociado a la misma bitácora.'
+              : 'Carga una grabación en OneDrive, vuelve a esta ventana, verifícala y asóciala a la bitácora existente.')
+          : 'La sesión quedará asociada a la empresa consultada y aparecerá en el historial al guardar.');
+    if (fileSectionLabelEl) fileSectionLabelEl.textContent = required ? requiredDocType : (support ? 'Archivo de apoyo de la sesión (opcional)' : 'Grabación de la sesión');
+    if (fileTitleEl) fileTitleEl.textContent = required ? `Cargar ${requiredDocType}` : (support ? 'Cargar archivo de apoyo' : 'Cargar grabación de esta sesión');
+    if (fileHelpEl) fileHelpEl.textContent = required
+      ? `Usa el mismo cargador de OneDrive. Cuando termine la carga, vuelve y verifica cuál archivo corresponde a ${requiredDocType}.`
+      : (support
+          ? 'Carga el archivo en OneDrive, vuelve a esta ventana y pulsa “Ya cargué el archivo · Verificar”. Puede ser PDF, Word, Excel, PowerPoint, imagen u otro soporte no audiovisual.'
+          : 'Carga la grabación en OneDrive, vuelve a esta ventana y pulsa “Ya cargué la grabación · Verificar”. Después confirma el archivo correcto.');
+    uploadBtn.textContent = required ? `Cargar ${requiredDocType}` : (support ? 'Cargar archivo de apoyo' : 'Cargar grabación');
   }
 
   function openModal(e) {
@@ -3572,7 +3815,7 @@ function resetView() {
     const bitacoraId = Number(bita?.BitacoraID ?? bita?.['BitácoraID'] ?? bita?.bitacoraId);
     if(!Number.isFinite(bitacoraId) || bitacoraId <= 0) { if(typeof toast==='function') toast('No pude identificar la bitácora de esta sesión.',true); return; }
     const currentCedula=String((bita?.['Número de documento del emprendedor'] ?? bita?.['Numero de documento del emprendedor'] ?? bita?.field_1 ?? data?.cedula ?? '')).replace(/\.0+$/,'').trim();
-    existingSessionNum=sessionNum; setModalMode('existing');
+    existingSessionNum=sessionNum; setModalMode('existing-recording');
     f.cedula.value=currentCedula;
     f.nombre.value=String(bita?.['Nombre completo del emprendedor'] ?? bita?.field_2 ?? findPrediagValue(['Nombre completo de quien diligencia el formulario']) ?? '—');
     f.empresa.value=String(bita?.['Empresa o emprendimiento'] ?? bita?.field_3 ?? data?.empresaConsulta ?? '—');
@@ -3587,20 +3830,87 @@ function resetView() {
     saveBtn.textContent='Asociar archivo';
     modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>f.uploader.focus(),50);
   }
+  function openExistingSupportModal(bita, sessionNum) {
+    const bitacoraId = Number(bita?.BitacoraID ?? bita?.['BitácoraID'] ?? bita?.bitacoraId);
+    if(!Number.isFinite(bitacoraId) || bitacoraId <= 0) { if(typeof toast==='function') toast('No pude identificar la bitácora de esta sesión.',true); return; }
+    const currentCedula=String((bita?.['Número de documento del emprendedor'] ?? bita?.['Numero de documento del emprendedor'] ?? bita?.field_1 ?? data?.cedula ?? '')).replace(/\.0+$/,'').trim();
+    existingSessionNum=sessionNum; setModalMode('existing-support');
+    f.cedula.value=currentCedula;
+    f.nombre.value=String(bita?.['Nombre completo del emprendedor'] ?? bita?.field_2 ?? findPrediagValue(['Nombre completo de quien diligencia el formulario']) ?? '—');
+    f.empresa.value=String(bita?.['Empresa o emprendimiento'] ?? bita?.field_3 ?? data?.empresaConsulta ?? '—');
+    const rawDate=bita?.['Fecha de la sesión'] ?? bita?.['Fecha de la sesion'] ?? bita?.field_4;
+    const parsedDate=rawDate?new Date(rawDate):new Date();
+    f.fecha.value=Number.isNaN(parsedDate.getTime())?localDateTimeValue():localDateTimeValue(parsedDate);
+    f.mentor.value=String(bita?.['Nombre del mentor'] ?? bita?.Mentor ?? bita?.field_5 ?? '');
+    f.avances.value=String(bita?.['Avances de la sesión'] ?? bita?.field_6 ?? '');
+    f.compromisos.value=String(bita?.['Compromisos y próximos pasos'] ?? bita?.field_7 ?? '');
+    f.uploader.value=f.mentor.value; f.uploaderEmail.value=''; setStatus(''); resetRecording();
+    createdBitacora={ BitacoraID:bitacoraId, FechaRegistro:String(bita?.FechaRegistro ?? bita?.Created ?? new Date().toISOString()) };
+    saveBtn.textContent='Asociar archivo';
+    modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>f.uploader.focus(),50);
+  }
+
+  function openRequiredDocModal(docType) {
+    const currentCedula = (typeof getCurrentCedula === 'function' ? getCurrentCedula() : '') || (typeof data !== 'undefined' && data?.cedula ? data.cedula : '');
+    if (!currentCedula || !data?.empresaId) { if(typeof toast==='function') toast('Primero selecciona una empresa.', true); return; }
+    existingSessionNum = null;
+    setModalMode('required-doc', docType);
+    f.cedula.value = String(currentCedula);
+    f.nombre.value = String(findPrediagValue(['Nombre completo de quien diligencia el formulario']) || '—');
+    f.empresa.value = String(data?.empresaConsulta || '—');
+    f.fecha.value = localDateTimeValue();
+    f.mentor.value = 'Carga documental';
+    f.avances.value = `Carga documental: ${docType}`;
+    f.compromisos.value = 'No aplica';
+    f.uploader.value = '';
+    f.uploaderEmail.value = '';
+    setStatus('');
+    resetRecording();
+    createdBitacora = { BitacoraID: 0, FechaRegistro: new Date().toISOString() };
+    saveBtn.textContent = 'Asociar documento';
+    modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>f.uploader.focus(),50);
+  }
+
   window.vcOpenRecordingForBitacora = openExistingRecordingModal;
+  window.vcOpenSupportFileForBitacora = openExistingSupportModal;
+  window.vcOpenRequiredDoc = openRequiredDocModal;
 
   function closeModal() { modal.classList.remove('active'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+
+  const uploadFrameModal = document.getElementById('vc-upload-frame-modal');
+  const uploadFrame = document.getElementById('vc-upload-frame');
+  const uploadFrameClose = document.getElementById('vc-upload-frame-close');
+  const uploadFrameDone = document.getElementById('vc-upload-frame-done');
+  const uploadFrameExternal = document.getElementById('vc-upload-frame-external');
+  function openUploadPortal() {
+    if (!uploadFrameModal || !uploadFrame) { window.open(VC_UPLOAD_REQUEST_URL,'_blank','noopener,noreferrer'); return; }
+    uploadFrame.src = VC_UPLOAD_REQUEST_URL;
+    uploadFrameModal.classList.add('active');
+    uploadFrameModal.setAttribute('aria-hidden','false');
+  }
+  function closeUploadPortal(clearFrame=true) {
+    if (!uploadFrameModal) return;
+    uploadFrameModal.classList.remove('active');
+    uploadFrameModal.setAttribute('aria-hidden','true');
+    if (clearFrame && uploadFrame) setTimeout(()=>{ uploadFrame.src='about:blank'; },120);
+  }
+  if (uploadFrameClose) uploadFrameClose.addEventListener('click',()=>closeUploadPortal());
+  if (uploadFrameExternal) uploadFrameExternal.addEventListener('click',()=>window.open(VC_UPLOAD_REQUEST_URL,'_blank','noopener,noreferrer'));
+  if (uploadFrameDone) uploadFrameDone.addEventListener('click',()=>{ closeUploadPortal(); setTimeout(()=>verifyUpload(),160); });
+  if (uploadFrameModal) uploadFrameModal.addEventListener('click',e=>{ if(e.target===uploadFrameModal) closeUploadPortal(); });
+
 
   document.querySelectorAll('[data-feoracle-link="bitacora"]').forEach(btn=>{ btn.removeAttribute('aria-disabled'); btn.removeAttribute('target'); btn.removeAttribute('rel'); btn.href='#'; btn.onclick=openModal; });
 
   uploadBtn.addEventListener('click',function() {
     const uploader=String(f.uploader.value||f.mentor.value||'').trim(); const email=String(f.uploaderEmail.value||'').trim();
     if(!uploader||!email) { setRecordingStatus('Completa el nombre y el correo de quien realizará la carga.','error'); if(!uploader) f.uploader.focus(); else f.uploaderEmail.focus(); return; }
-    f.uploader.value=uploader; detectedFile=null; if(mode!=='existing') createdBitacora=null; clearCandidates(); recordingDetectedEl.hidden=true; saveBtn.disabled=true; uploadStartedAt=new Date().toISOString();
-    try { sessionStorage.setItem('vcUploadContext',JSON.stringify({cedula:f.cedula.value.trim(),iniciativa:f.empresa.value.trim(),fechaSesion:f.fecha.value,mentor:f.mentor.value.trim(),cargadoPor:uploader,correoCargador:email,iniciadoEn:uploadStartedAt})); } catch(e) {}
-    window.open(VC_UPLOAD_REQUEST_URL,'_blank','noopener,noreferrer');
-    verifyBtn.hidden=false; verifyBtn.disabled=false; verifyBtn.textContent='Ya cargué la grabación · Verificar';
-    setRecordingStatus('OneDrive se abrió en otra pestaña. Termina la carga, vuelve aquí y pulsa “Ya cargué la grabación · Verificar”.');
+    f.uploader.value=uploader; detectedFile=null; if(!isExistingMode()) createdBitacora=null; clearCandidates(); recordingDetectedEl.hidden=true; saveBtn.disabled=true; uploadStartedAt=new Date().toISOString();
+    const tipoArchivo=currentTipoArchivo();
+    try { sessionStorage.setItem('vcUploadContext',JSON.stringify({cedula:f.cedula.value.trim(),iniciativa:f.empresa.value.trim(),fechaSesion:f.fecha.value,mentor:f.mentor.value.trim(),cargadoPor:uploader,correoCargador:email,tipoArchivo,iniciadoEn:uploadStartedAt})); } catch(e) {}
+    openUploadPortal();
+    verifyBtn.hidden=false; verifyBtn.disabled=false; verifyBtn.textContent=isSupportMode()?'Ya cargué el archivo · Verificar':'Ya cargué la grabación · Verificar';
+    setRecordingStatus(`El cargador de OneDrive se abrió dentro de Visión Circular. Cuando termine, pulsa “Ya terminé de cargar · Verificar” en la ventana de carga.`);
   });
 
   verifyBtn.addEventListener('click',verifyUpload);
@@ -3624,19 +3934,50 @@ function resetView() {
 
   form.addEventListener('submit',async function(e) {
     e.preventDefault(); if(!form.reportValidity()) return;
-    if(!detectedFile) { setRecordingStatus('Debes cargar, verificar y confirmar una grabación antes de guardar.','error'); saveBtn.disabled=true; return; }
+    if(!detectedFile) { setRecordingStatus(isRequiredDocMode()?`Debes cargar y confirmar ${requiredDocType} antes de asociarlo.`:(isSupportMode()?'Selecciona un archivo de apoyo antes de asociarlo.':'Debes cargar, verificar y confirmar una grabación antes de guardar.'),'error'); saveBtn.disabled=true; return; }
     saving=true; saveBtn.disabled=true; saveBtn.textContent=mode==='existing'?'Asociando…':(createdBitacora?'Reintentando asociación…':'Guardando…'); setStatus(mode==='existing'?'Asociando el archivo a la bitácora existente…':(createdBitacora?'Reintentando asociación de la grabación…':'Registrando la bitácora y asociando la grabación…'));
     const payload={cedula:f.cedula.value.trim(),nombre:f.nombre.value.trim(),empresa:f.empresa.value.trim(),fechaSesion:new Date(f.fecha.value).toISOString(),mentor:f.mentor.value.trim(),avances:f.avances.value.trim(),compromisos:f.compromisos.value.trim()};
     try {
       if(!createdBitacora) { const createRes=await fetch(CREATE_BITACORA_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); if(!createRes.ok) throw new Error(`Crear bitácora respondió ${createRes.status}`); const created=await createRes.json(); if(!created||created.ok!==true||!created.BitacoraID) throw new Error('Power Automate no confirmó la creación de la bitácora.'); createdBitacora=created; }
-      const associatePayload={archivoId:Number(detectedFile.ID||detectedFile.ItemInternalId),nombreArchivo:fileName(detectedFile),identificadorArchivo:String(detectedFile.IdentificadorArchivo||''),rutaArchivo:String(detectedFile.RutaArchivo||''),fechaCarga:String(detectedFile.FechaCarga||'').substring(0,10),bitacoraId:Number(createdBitacora.BitacoraID),cedula:payload.cedula,iniciativa:payload.empresa,fechaSesion:f.fecha.value.length===16?f.fecha.value+':00':f.fecha.value,fechaBitacora:String(createdBitacora.FechaRegistro||new Date().toISOString()),cargadoPor:f.uploader.value.trim()||f.mentor.value.trim(),correoCargador:f.uploaderEmail.value.trim()};
+      const associatePayload={archivoId:Number(detectedFile.ID||detectedFile.ItemInternalId),nombreArchivo:fileName(detectedFile),identificadorArchivo:String(detectedFile.IdentificadorArchivo||''),rutaArchivo:String(detectedFile.RutaArchivo||''),fechaCarga:String(detectedFile.FechaCarga||'').substring(0,10),bitacoraId:Number(createdBitacora.BitacoraID),cedula:payload.cedula,iniciativa:payload.empresa,fechaSesion:f.fecha.value.length===16?f.fecha.value+':00':f.fecha.value,fechaBitacora:String(createdBitacora.FechaRegistro||new Date().toISOString()),cargadoPor:f.uploader.value.trim()||f.mentor.value.trim(),correoCargador:f.uploaderEmail.value.trim(),tipoArchivo:currentTipoArchivo()};
       const assocRes=await fetch(ASSOCIATE_FILE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(associatePayload)});
-      if(!assocRes.ok) { let detail=''; try{detail=await assocRes.text();}catch(e){} throw new Error(`Asociar grabación respondió ${assocRes.status}${detail?': '+detail.slice(0,160):''}`); }
-      const associated=await assocRes.json(); if(!associated||associated.ok!==true) throw new Error('Power Automate no confirmó la asociación de la grabación.');
-      setStatus(mode==='existing'?'Archivo asociado correctamente a la sesión.':'Bitácora y grabación asociadas correctamente.'); setRecordingStatus('✓ Archivo asociado correctamente.','ok'); if(typeof toast==='function') toast(mode==='existing'?'Archivo asociado correctamente':'Bitácora y grabación registradas correctamente'); await refreshAfterSave(payload); setTimeout(closeModal,500);
-    } catch(err) { console.error(err); if(mode==='existing') { setStatus('No fue posible asociar el archivo: '+err.message,true); saveBtn.textContent='Reintentar asociación'; } else if(createdBitacora) { setStatus('La bitácora ya fue creada (ID '+createdBitacora.BitacoraID+'), pero la grabación no se pudo asociar. Pulsa “Reintentar asociación”.',true); saveBtn.textContent='Reintentar asociación'; } else { setStatus('No fue posible crear la bitácora: '+err.message,true); saveBtn.textContent='Guardar bitácora'; } if(typeof toast==='function') toast('Error: '+err.message,true); }
-    finally { saving=false; saveBtn.disabled=false; if(mode==='existing') saveBtn.textContent=detectedFile?'Asociar archivo':'Asociar archivo'; else if(!createdBitacora) saveBtn.textContent='Guardar bitácora'; }
+      if(!assocRes.ok) { let detail=''; try{detail=await assocRes.text();}catch(e){} throw new Error(`Asociar archivo respondió ${assocRes.status}${detail?': '+detail.slice(0,160):''}`); }
+      const associated=await assocRes.json(); if(!associated||associated.ok!==true) throw new Error('Power Automate no confirmó la asociación del archivo.');
+      const successMsg = isRequiredDocMode() ? `${requiredDocType} asociado correctamente a la empresa.` : (isSupportMode() ? 'Archivo de apoyo asociado correctamente a la sesión.' : (isExistingMode() ? 'Grabación asociada correctamente a la sesión.' : 'Bitácora y grabación asociadas correctamente.'));
+      setStatus(successMsg); setRecordingStatus('✓ Archivo asociado correctamente.','ok'); if(typeof toast==='function') toast(successMsg); await refreshAfterSave(payload); if(isRequiredDocMode() && requiredDocsComplete()) { try { localStorage.setItem(`vcRequiredDocsComplete:${data.empresaId}`,'1'); } catch(_) {} } setTimeout(closeModal,500);
+    } catch(err) {
+      console.error(err);
+      if(isRequiredDocMode()) { setStatus(`No fue posible asociar ${requiredDocType}: `+err.message,true); saveBtn.textContent='Reintentar asociación'; }
+      else if(isExistingMode()) { setStatus('No fue posible asociar el archivo: '+err.message,true); saveBtn.textContent='Reintentar asociación'; }
+      else if(createdBitacora) { setStatus('La bitácora ya fue creada (ID '+createdBitacora.BitacoraID+'), pero la grabación no se pudo asociar. Pulsa “Reintentar asociación”.',true); saveBtn.textContent='Reintentar asociación'; }
+      else { setStatus('No fue posible crear la bitácora: '+err.message,true); saveBtn.textContent='Guardar bitácora'; }
+      if(typeof toast==='function') toast('Error: '+err.message,true);
+    }
+    finally {
+      saving=false; saveBtn.disabled=false;
+      if(isRequiredDocMode()) saveBtn.textContent='Asociar documento';
+      else if(isExistingMode()) saveBtn.textContent='Asociar archivo';
+      else if(!createdBitacora) saveBtn.textContent='Guardar bitácora';
+    }
   });
+})();
+</script>
+
+
+<script id="vc-required-reminder-script">
+(function(){
+  const modal=document.getElementById('vc-required-reminder');
+  const go=document.getElementById('vc-required-reminder-go');
+  const skip=document.getElementById('vc-required-reminder-skip');
+  if(!modal||!go||!skip) return;
+  function show(){ modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); }
+  function hide(){ modal.classList.remove('active'); modal.setAttribute('aria-hidden','true'); }
+  window.vcHideRequiredReminder=hide;
+  window.vcShowRequiredReminder=show;
+  go.addEventListener('click',()=>{ hide(); setTimeout(()=>{ if(typeof goToRequiredDocs==='function') goToRequiredDocs(); },80); });
+  skip.addEventListener('click',()=>{ hide(); });
+  modal.addEventListener('click',e=>{ if(e.target===modal) hide(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&modal.classList.contains('active')) hide(); });
 })();
 </script>
 
