@@ -2147,7 +2147,7 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
           <div>
             <div class="vc-required-docs-kicker">Inicio del acompañamiento</div>
             <h3 class="vc-required-docs-title">Entregables iniciales del acompañamiento</h3>
-            <p class="vc-required-docs-sub">Carga la Línea Base y el Plan de Trabajo Individual una sola vez por empresa. La plataforma marcará cada entregable como completado cuando quede asociado.</p>
+            <p class="vc-required-docs-sub">Carga la Línea Base y el Plan de Trabajo Individual una sola vez por empresa. Al cargar, se abrirá Microsoft OneDrive en una nueva pestaña; después regresa aquí para verificar y asociar el archivo.</p>
           </div>
         </div>
         <div class="vc-required-grid">
@@ -3544,22 +3544,6 @@ function resetView() {
   </section>
 </div>
 
-<div class="vc-upload-frame-backdrop" id="vc-upload-frame-modal" aria-hidden="true">
-  <section class="vc-upload-frame-shell" role="dialog" aria-modal="true" aria-labelledby="vc-upload-frame-title">
-    <div class="vc-upload-frame-head">
-      <div><div class="vc-upload-frame-title" id="vc-upload-frame-title">Cargar archivo en OneDrive</div><div class="vc-upload-frame-help">Carga el archivo y después vuelve con el botón inferior para verificarlo.</div></div>
-      <button type="button" class="vc-upload-frame-close" id="vc-upload-frame-close" aria-label="Cerrar">×</button>
-    </div>
-    <div class="vc-upload-frame-body"><iframe id="vc-upload-frame" title="Carga de archivos Visión Circular" loading="eager" referrerpolicy="no-referrer"></iframe></div>
-    <div class="vc-upload-frame-foot">
-      <div class="vc-upload-frame-note">Si Microsoft impide mostrar el cargador dentro de esta ventana, usa “Abrir aparte”. La asociación del archivo se hará igualmente desde Visión Circular.</div>
-      <div class="vc-upload-frame-actions">
-        <button type="button" class="vc-upload-frame-btn secondary" id="vc-upload-frame-external">Abrir aparte</button>
-        <button type="button" class="vc-upload-frame-btn primary" id="vc-upload-frame-done">Ya terminé de cargar · Verificar</button>
-      </div>
-    </div>
-  </section>
-</div>
 
 <div class="vc-modal-backdrop" id="vc-bita-modal" aria-hidden="true">
   <section class="vc-modal" role="dialog" aria-modal="true" aria-labelledby="vc-bita-title">
@@ -3838,7 +3822,7 @@ function resetView() {
     if (fileSectionLabelEl) fileSectionLabelEl.textContent = required ? requiredDocType : (support ? 'Archivo de apoyo de la sesión (opcional)' : 'Grabación de la sesión');
     if (fileTitleEl) fileTitleEl.textContent = required ? `Cargar ${requiredDocType}` : (support ? 'Cargar archivo de apoyo' : 'Cargar grabación de esta sesión');
     if (fileHelpEl) fileHelpEl.textContent = required
-      ? `Carga ${requiredDocType} en OneDrive. Cuando termine, verifica el archivo correcto y asócialo directamente a la empresa.`
+      ? `Al pulsar cargar se abrirá una nueva pestaña de Microsoft OneDrive. Carga ${requiredDocType}, vuelve a esta pestaña y verifica el archivo correcto para asociarlo a la empresa.`
       : (support
           ? 'Carga el archivo en OneDrive, vuelve a esta ventana y pulsa “Ya cargué el archivo · Verificar”. Puede ser PDF, Word, Excel, PowerPoint, imagen u otro soporte no audiovisual.'
           : 'Carga la grabación en OneDrive, vuelve a esta ventana y pulsa “Ya cargué la grabación · Verificar”. Después confirma el archivo correcto.');
@@ -3923,28 +3907,9 @@ function resetView() {
 
   function closeModal() { modal.classList.remove('active'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
 
-  const uploadFrameModal = document.getElementById('vc-upload-frame-modal');
-  const uploadFrame = document.getElementById('vc-upload-frame');
-  const uploadFrameClose = document.getElementById('vc-upload-frame-close');
-  const uploadFrameDone = document.getElementById('vc-upload-frame-done');
-  const uploadFrameExternal = document.getElementById('vc-upload-frame-external');
   function openUploadPortal() {
-    if (!uploadFrameModal || !uploadFrame) { window.open(VC_UPLOAD_REQUEST_URL,'_blank','noopener,noreferrer'); return; }
-    uploadFrame.src = VC_UPLOAD_REQUEST_URL;
-    uploadFrameModal.classList.add('active');
-    uploadFrameModal.setAttribute('aria-hidden','false');
+    window.open(VC_UPLOAD_REQUEST_URL, '_blank', 'noopener,noreferrer');
   }
-  function closeUploadPortal(clearFrame=true) {
-    if (!uploadFrameModal) return;
-    uploadFrameModal.classList.remove('active');
-    uploadFrameModal.setAttribute('aria-hidden','true');
-    if (clearFrame && uploadFrame) setTimeout(()=>{ uploadFrame.src='about:blank'; },120);
-  }
-  if (uploadFrameClose) uploadFrameClose.addEventListener('click',()=>closeUploadPortal());
-  if (uploadFrameExternal) uploadFrameExternal.addEventListener('click',()=>window.open(VC_UPLOAD_REQUEST_URL,'_blank','noopener,noreferrer'));
-  if (uploadFrameDone) uploadFrameDone.addEventListener('click',()=>{ closeUploadPortal(); setTimeout(()=>verifyUpload(),160); });
-  if (uploadFrameModal) uploadFrameModal.addEventListener('click',e=>{ if(e.target===uploadFrameModal) closeUploadPortal(); });
-
 
   document.querySelectorAll('[data-feoracle-link="bitacora"]').forEach(btn=>{ btn.removeAttribute('aria-disabled'); btn.removeAttribute('target'); btn.removeAttribute('rel'); btn.href='#'; btn.onclick=openModal; });
 
@@ -3963,12 +3928,23 @@ function resetView() {
     }
 
     if (!isRequiredDocMode()) f.uploader.value=uploader;
-    detectedFile=null; if(!isExistingMode()) createdBitacora=null; clearCandidates(); recordingDetectedEl.hidden=true; saveBtn.disabled=true; uploadStartedAt=new Date().toISOString();
+    detectedFile=null; if(!isExistingMode() && !isRequiredDocMode()) createdBitacora=null; clearCandidates(); recordingDetectedEl.hidden=true; saveBtn.disabled=true; uploadStartedAt=new Date().toISOString();
     const tipoArchivo=currentTipoArchivo();
     try { sessionStorage.setItem('vcUploadContext',JSON.stringify({cedula:f.cedula.value.trim(),iniciativa:f.empresa.value.trim(),fechaSesion:f.fecha.value,mentor:f.mentor.value.trim(),cargadoPor:uploader,correoCargador:email,tipoArchivo,iniciadoEn:uploadStartedAt})); } catch(e) {}
     openUploadPortal();
-    verifyBtn.hidden=false; verifyBtn.disabled=false; verifyBtn.textContent=isSupportMode()?'Ya cargué el archivo · Verificar':'Ya cargué la grabación · Verificar';
-    setRecordingStatus(`El cargador de OneDrive se abrió dentro de Visión Circular. Cuando termine, pulsa “Ya terminé de cargar · Verificar” en la ventana de carga.`);
+    verifyBtn.hidden=false;
+    verifyBtn.disabled=false;
+    verifyBtn.textContent = isRequiredDocMode()
+      ? 'Ya cargué el documento · Verificar'
+      : (isSupportMode() ? 'Ya cargué el archivo · Verificar' : 'Ya cargué la grabación · Verificar');
+
+    setRecordingStatus(
+      isRequiredDocMode()
+        ? `Se abrió Microsoft OneDrive en una nueva pestaña. Carga ${requiredDocType}, vuelve aquí y pulsa “Ya cargué el documento · Verificar”.`
+        : (isSupportMode()
+            ? 'Se abrió Microsoft OneDrive en una nueva pestaña. Carga el archivo, vuelve aquí y pulsa “Ya cargué el archivo · Verificar”.'
+            : 'Se abrió Microsoft OneDrive en una nueva pestaña. Carga la grabación, vuelve aquí y pulsa “Ya cargué la grabación · Verificar”.')
+    );
   });
 
   verifyBtn.addEventListener('click',verifyUpload);
