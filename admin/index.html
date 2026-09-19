@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Visión Circular · Panel administrativo</title>
+<style>
+:root{
+  --navy:#1F3464;
+  --blue:#055382;
+  --sky:#69A6D8;
+  --green:#009669;
+  --lime:#ADCE57;
+  --gold:#FFD000;
+  --ink:#20304f;
+  --muted:#718096;
+  --line:#dfe9ed;
+  --bg:#f5f8f8;
+  --card:#ffffff;
+  --danger:#b84a4a;
+  --warn:#9b7100;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 95% 5%,rgba(105,166,216,.16),transparent 29rem),
+    radial-gradient(circle at 5% 25%,rgba(173,206,87,.11),transparent 24rem),
+    var(--bg);
+  color:var(--ink);
+}
+button,input{font:inherit}
+a{color:inherit}
+.header{
+  position:sticky;top:0;z-index:20;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:1450px;margin:auto;padding:16px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-mark{
+  width:48px;height:48px;border-radius:14px;
+  display:grid;place-items:center;
+  color:#fff;font-weight:950;font-size:20px;
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  box-shadow:0 8px 20px rgba(5,83,130,.16);
+}
+.eyebrow{
+  font-size:11px;font-weight:950;letter-spacing:.09em;text-transform:uppercase;color:var(--blue)
+}
+h1{font-size:22px;margin:3px 0 0;color:var(--navy);line-height:1.05}
+.header-actions{display:flex;gap:10px;align-items:center}
+.btn{
+  border:0;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:850;
+}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.secondary{background:#edf3f5;color:var(--navy)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.shell{max-width:1450px;margin:0 auto;padding:26px 28px 70px}
+.notice{
+  display:flex;align-items:flex-start;gap:12px;
+  background:#fff8dc;border:1px solid #f1df94;border-radius:16px;padding:14px 16px;
+  margin-bottom:18px;color:#604e10;font-size:13px;line-height:1.45;
+}
+.notice strong{color:#493a08}
+.summary{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:18px 0 22px;
+}
+.metric{
+  background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;
+  box-shadow:0 8px 24px rgba(31,52,100,.05);
+}
+.metric-label{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.metric-value{font-size:30px;font-weight:950;color:var(--navy);margin-top:8px}
+.metric-note{font-size:12px;color:var(--muted);margin-top:4px}
+.toolbar{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin:10px 0 14px;
+}
+.search{
+  flex:1;max-width:460px;border:1px solid var(--line);background:#fff;border-radius:13px;
+  padding:11px 13px;color:var(--ink);outline:none;
+}
+.statusline{font-size:12px;color:var(--muted)}
+.table-wrap{
+  background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  box-shadow:0 12px 36px rgba(31,52,100,.055);
+}
+table{width:100%;border-collapse:collapse}
+th{
+  text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.065em;color:#708096;
+  padding:14px 16px;background:#f7fafb;border-bottom:1px solid var(--line)
+}
+td{padding:16px;border-bottom:1px solid #edf2f4;vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#fbfdfd}
+.company-name{font-size:16px;font-weight:950;color:var(--navy)}
+.company-raw{font-size:11px;color:var(--muted);margin-top:4px;max-width:300px;line-height:1.35}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:850;
+  white-space:nowrap;
+}
+.pill.ok{background:#e9f8f1;color:#087654}
+.pill.pending{background:#fff5d8;color:#8a6500}
+.pill.empty{background:#f1f4f6;color:#718096}
+.mini-link{
+  display:inline-flex;align-items:center;gap:6px;margin-top:7px;
+  border:0;background:transparent;padding:0;color:var(--blue);font-weight:850;font-size:12px;cursor:pointer;
+  text-decoration:none;
+}
+.mini-link:hover{text-decoration:underline}
+.count{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
+  background:#eef5f8;color:var(--blue);font-weight:950;
+}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.action{
+  border:1px solid #d8e3e8;background:#fff;border-radius:10px;padding:8px 10px;
+  color:var(--navy);font-weight:850;font-size:12px;cursor:pointer;
+}
+.action.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.action:disabled{opacity:.45;cursor:not-allowed}
+.loading-row{text-align:center;padding:44px;color:var(--muted);font-weight:800}
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(22,34,49,.62);z-index:100;
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+.modal-backdrop.active{display:flex}
+.modal{
+  width:min(920px,96vw);max-height:88vh;background:#fff;border-radius:22px;overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.24);
+}
+.modal-head{
+  padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;align-items:flex-start;
+}
+.modal-title{font-size:20px;font-weight:950;color:var(--navy);margin-top:3px}
+.modal-close{
+  width:38px;height:38px;border:0;border-radius:50%;background:#eef3f5;color:var(--navy);font-size:21px;cursor:pointer
+}
+.modal-body{padding:20px;overflow:auto;max-height:calc(88vh - 82px)}
+.bitacora-card{
+  border:1px solid var(--line);border-radius:17px;padding:16px;margin-bottom:13px;background:#fff
+}
+.bitacora-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.bitacora-title{font-weight:950;color:var(--navy);font-size:16px}
+.bitacora-meta{font-size:12px;color:var(--muted);margin-top:4px}
+.bitacora-preview{
+  margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+.field{
+  background:#f8fafb;border-radius:12px;padding:12px;
+}
+.field.full{grid-column:1/-1}
+.field-label{font-size:10px;text-transform:uppercase;font-weight:950;letter-spacing:.055em;color:#7a8795}
+.field-value{font-size:13px;line-height:1.48;margin-top:5px;white-space:pre-wrap}
+.file-list{margin-top:12px;border-top:1px solid #edf2f4;padding-top:12px}
+.file-row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed #e4ebee
+}
+.file-row:last-child{border-bottom:0}
+.file-name{font-size:12px;font-weight:800;color:#31425f;overflow-wrap:anywhere}
+.file-type{font-size:10px;color:var(--muted);margin-top:2px}
+.empty-state{padding:28px;text-align:center;color:var(--muted)}
+.errorbox{
+  margin:16px 0;padding:14px 16px;border-radius:14px;background:#fff0f0;border:1px solid #f1c2c2;color:#8a3535;
+}
+@media(max-width:1000px){
+  .summary{grid-template-columns:repeat(2,1fr)}
+  table,thead,tbody,tr,th,td{display:block}
+  thead{display:none}
+  tbody tr{padding:12px 14px;border-bottom:1px solid var(--line)}
+  td{border:0;padding:7px 0}
+  td::before{content:attr(data-label);display:block;font-size:10px;font-weight:900;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+}
+@media(max-width:620px){
+  .shell,.header-inner{padding-left:16px;padding-right:16px}
+  .summary{grid-template-columns:1fr}
+  .header-inner{align-items:flex-start}
+  .header-actions{flex-direction:column}
+  .bitacora-preview{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark">VC</div>
+      <div>
+        <div class="eyebrow">Visión Circular · Uso interno</div>
+        <h1>Panel administrativo de seguimiento</h1>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn secondary" id="refresh-btn">Actualizar datos</button>
+    </div>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="notice">
+    <div>🔒</div>
+    <div><strong>Panel administrativo.</strong> Contiene información de participantes y registros de mentoría. Debe publicarse en un entorno con acceso restringido, no como una página pública de GitHub Pages.</div>
+  </div>
+
+  <section class="summary">
+    <div class="metric"><div class="metric-label">Empresas</div><div class="metric-value" id="m-companies">5</div><div class="metric-note">Iniciativas activas</div></div>
+    <div class="metric"><div class="metric-label">Línea Base</div><div class="metric-value" id="m-linea">0/5</div><div class="metric-note">Empresas con archivo asociado</div></div>
+    <div class="metric"><div class="metric-label">Plan de Trabajo</div><div class="metric-value" id="m-plan">0/5</div><div class="metric-note">Empresas con archivo asociado</div></div>
+    <div class="metric"><div class="metric-label">Bitácoras</div><div class="metric-value" id="m-bitas">0</div><div class="metric-note">Registros encontrados</div></div>
+  </section>
+
+  <div class="toolbar">
+    <input class="search" id="search" placeholder="Buscar empresa..." autocomplete="off">
+    <div class="statusline" id="status">Cargando información…</div>
+  </div>
+
+  <div id="errors"></div>
+
+  <section class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Empresa</th>
+          <th>Línea Base</th>
+          <th>Plan de Trabajo Individual</th>
+          <th>Bitácoras</th>
+          <th>Grabaciones</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="companies-body">
+        <tr><td colspan="6" class="loading-row">Consultando las empresas…</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<div class="modal-backdrop" id="modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div>
+        <div class="eyebrow" id="modal-eyebrow">Visión Circular</div>
+        <div class="modal-title" id="modal-title">Detalle</div>
+      </div>
+      <button class="modal-close" id="modal-close" aria-label="Cerrar">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const CONFIG = {
+  endpoint: 'https://defaultc06fb5591b684b84a14f47d0d837a5.ab.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/14/workflows/fa6c958a049e43919cb6a0946789c970/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=OvSwHW35AZx6Vji2AYt4VsmrqFRAcV_uivpX1TXlkZ8',
+  oneDriveDocumentsBase: 'https://universidadeaneduco-my.sharepoint.com/personal/foundershub_universidadean_edu_co/Documents',
+  companies: [
+    {id:1, label:'Plastiroad'},
+    {id:2, label:'Reusalo Tech 4.0'},
+    {id:3, label:'Homeko'},
+    {id:4, label:'Sórter'},
+    {id:5, label:'Sweven'}
+  ]
+};
+
+let state = { companies: [], filter: '' };
+
+const $ = s => document.querySelector(s);
+const body = $('#companies-body');
+const statusEl = $('#status');
+const errorsEl = $('#errors');
+const modal = $('#modal');
+const modalTitle = $('#modal-title');
+const modalEyebrow = $('#modal-eyebrow');
+const modalBody = $('#modal-body');
+
+function esc(v){
+  return String(v ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function norm(v){
+  return String(v ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+}
+function v(obj, keys){
+  for(const k of keys){
+    if(obj && obj[k] != null && String(obj[k]).trim() !== '') return obj[k];
+  }
+  return '';
+}
+function numId(x){
+  const n = Number(String(x ?? '').replace(',','.'));
+  return Number.isFinite(n) ? n : null;
+}
+function formatDate(value){
+  if(!value) return 'Sin fecha';
+  const d = new Date(value);
+  if(Number.isNaN(d.getTime())) return String(value);
+  return new Intl.DateTimeFormat('es-CO',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(d);
+}
+function fileUrl(file){
+  const explicit = v(file,['WebUrl','webUrl','UrlArchivo','URL','LinkArchivo']);
+  if(explicit) return String(explicit);
+
+  let path = String(v(file,['RutaArchivo','rutaArchivo']) || '');
+  if(!path) return '';
+  path = path.replace(/^\/+/, '');
+  if(path.toLowerCase().startsWith('documents/')) path = path.slice('documents/'.length);
+  const encoded = path.split('/').map(part => encodeURIComponent(part)).join('/');
+  return CONFIG.oneDriveDocumentsBase.replace(/\/$/,'') + '/' + encoded;
+}
+function isAssociated(file){
+  return norm(v(file,['Estado','estado'])) === 'asociado';
+}
+function fileType(file){
+  return String(v(file,['TipoArchivo','tipoArchivo']) || '').trim();
+}
+function requiredFiles(company, type){
+  const wanted = norm(type);
+  return (company.archivos||[]).filter(f => {
+    if(!isAssociated(f)) return false;
+    const tipo = norm(fileType(f));
+    const name = norm(v(f,['NombreArchivo','Title','{Name}']));
+    if(tipo === wanted || tipo.includes(wanted)) return true;
+    if(wanted === 'linea base') return name.includes('linea base');
+    if(wanted === 'plan de trabajo individual') return name.includes('plan de trabajo') || name.includes('pti');
+    return false;
+  });
+}
+function filesForBitacora(company, bita){
+  const bid = numId(v(bita,['BitacoraID','BitácoraID','bitacoraId']));
+  if(bid == null) return [];
+  return (company.archivos||[]).filter(f => isAssociated(f) && numId(v(f,['BitacoraID','BitácoraID','bitacoraId'])) === bid);
+}
+function recordingsCount(company){
+  return (company.archivos||[]).filter(f => {
+    if(!isAssociated(f)) return false;
+    const tipo = norm(fileType(f));
+    const name = norm(v(f,['NombreArchivo','Title','{Name}']));
+    return tipo.includes('grabacion') || /\.(mp4|mov|m4v|webm|avi|mkv)$/i.test(name);
+  }).length;
+}
+function latestFile(files){
+  return (files||[]).slice().sort((a,b)=>{
+    const db = Date.parse(v(b,['Modified','Created','FechaCarga'])||0);
+    const da = Date.parse(v(a,['Modified','Created','FechaCarga'])||0);
+    return db-da;
+  })[0] || null;
+}
+
+async function fetchCompany(def){
+  const res = await fetch(CONFIG.endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({empresaId:def.id})
+  });
+  if(!res.ok) throw new Error(`${def.label}: Power Automate respondió ${res.status}`);
+  const remote = await res.json();
+  return {
+    id:def.id,
+    label:def.label,
+    empresa:String(remote?.empresa||def.label),
+    cedula:String(remote?.cedula||''),
+    prediagnostico:Array.isArray(remote?.prediagnostico)?remote.prediagnostico:[],
+    bitacoras:Array.isArray(remote?.bitacoras)?remote.bitacoras:[],
+    archivos:Array.isArray(remote?.archivos)?remote.archivos:[]
+  };
+}
+
+function statusCell(files, label){
+  if(!files.length) return `<span class="pill pending">● Pendiente</span>`;
+  const f = latestFile(files);
+  const name = esc(v(f,['NombreArchivo','Title','{Name}']) || label);
+  const url = fileUrl(f);
+  return `
+    <span class="pill ok">✓ Cargado</span>
+    ${url ? `<br><a class="mini-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Abrir archivo ↗</a>` : ''}
+    <div class="company-raw">${name}</div>
+  `;
+}
+
+function render(){
+  const q = norm(state.filter);
+  const list = state.companies.filter(c => !q || norm(c.label).includes(q) || norm(c.empresa).includes(q));
+
+  if(!list.length){
+    body.innerHTML = `<tr><td colspan="6" class="loading-row">No hay empresas que coincidan con la búsqueda.</td></tr>`;
+    return;
+  }
+
+  body.innerHTML = list.map(c => {
+    const linea = requiredFiles(c,'Línea Base');
+    const plan = requiredFiles(c,'Plan de Trabajo Individual');
+    const bcount = c.bitacoras.length;
+    const recs = recordingsCount(c);
+    return `
+      <tr>
+        <td data-label="Empresa">
+          <div class="company-name">${esc(c.label)}</div>
+          <div class="company-raw">${esc(c.empresa)}</div>
+        </td>
+        <td data-label="Línea Base">${statusCell(linea,'Línea Base')}</td>
+        <td data-label="Plan de Trabajo Individual">${statusCell(plan,'Plan de Trabajo Individual')}</td>
+        <td data-label="Bitácoras">
+          <div class="count">${bcount}</div>
+          ${bcount ? `<button class="mini-link" onclick="openBitacoras(${c.id})">Ver bitácoras</button>` : `<div class="company-raw">Sin registros</div>`}
+        </td>
+        <td data-label="Grabaciones">
+          <span class="pill ${recs ? 'ok':'empty'}">${recs ? '✓ '+recs : '0'}</span>
+        </td>
+        <td data-label="Acciones">
+          <div class="actions">
+            <button class="action primary" onclick="openCompany(${c.id})">Ver seguimiento</button>
+            <button class="action" onclick="openFiles(${c.id})" ${c.archivos.length?'':'disabled'}>Ver archivos (${c.archivos.length})</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function updateMetrics(){
+  const n = state.companies.length || CONFIG.companies.length;
+  const linea = state.companies.filter(c => requiredFiles(c,'Línea Base').length).length;
+  const plan = state.companies.filter(c => requiredFiles(c,'Plan de Trabajo Individual').length).length;
+  const bitas = state.companies.reduce((s,c)=>s+c.bitacoras.length,0);
+  $('#m-companies').textContent = n;
+  $('#m-linea').textContent = `${linea}/${n}`;
+  $('#m-plan').textContent = `${plan}/${n}`;
+  $('#m-bitas').textContent = bitas;
+}
+
+function openModal(title, eyebrow, html){
+  modalTitle.textContent = title;
+  modalEyebrow.textContent = eyebrow;
+  modalBody.innerHTML = html;
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  modal.classList.remove('active');
+  modal.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
+$('#modal-close').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+function fileRows(files){
+  if(!files.length) return `<div class="empty-state">No hay archivos asociados.</div>`;
+  return files.map(f=>{
+    const name = v(f,['NombreArchivo','Title','{Name}']) || 'Archivo';
+    const url = fileUrl(f);
+    const tipo = fileType(f) || 'Archivo';
+    return `<div class="file-row">
+      <div>
+        <div class="file-name">${esc(name)}</div>
+        <div class="file-type">${esc(tipo)} · ${esc(formatDate(v(f,['FechaCarga','Created','Modified'])))}</div>
+      </div>
+      ${url ? `<a class="action primary" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Abrir ↗</a>` : `<button class="action" disabled>Sin enlace</button>`}
+    </div>`;
+  }).join('');
+}
+
+function openBitacoras(id){
+  const c = state.companies.find(x=>x.id===Number(id));
+  if(!c) return;
+  if(!c.bitacoras.length){
+    openModal(c.label,'Bitácoras',`<div class="empty-state">Esta empresa todavía no tiene bitácoras.</div>`);
+    return;
+  }
+  const html = c.bitacoras.slice().sort((a,b)=>Date.parse(v(b,['Fecha de la sesión','FechaSesion','field_4'])||0)-Date.parse(v(a,['Fecha de la sesión','FechaSesion','field_4'])||0)).map((b,i)=>{
+    const files = filesForBitacora(c,b);
+    const fecha = v(b,['Fecha de la sesión','FechaSesion','field_4']);
+    const mentor = v(b,['Nombre del mentor','Nombre del mentor\n','Mentor','field_5']) || 'Sin mentor';
+    const avances = v(b,['Avances de la sesión','Avances','field_6']);
+    const compromisos = v(b,['Compromisos y próximos pasos','Compromisos','field_7']);
+    const bid = v(b,['BitacoraID','BitácoraID','bitacoraId','ID']);
+    return `
+      <article class="bitacora-card">
+        <div class="bitacora-head">
+          <div>
+            <div class="bitacora-title">Bitácora ${esc(bid || (i+1))}</div>
+            <div class="bitacora-meta">${esc(formatDate(fecha))} · ${esc(mentor)}</div>
+          </div>
+          <span class="pill ${files.length?'ok':'empty'}">${files.length} archivo(s)</span>
+        </div>
+        <div class="bitacora-preview">
+          <div class="field full"><div class="field-label">Avances de la sesión</div><div class="field-value">${esc(avances || 'Sin información registrada')}</div></div>
+          <div class="field full"><div class="field-label">Compromisos y próximos pasos</div><div class="field-value">${esc(compromisos || 'Sin información registrada')}</div></div>
+        </div>
+        <div class="file-list">
+          <div class="field-label">Archivos asociados a esta sesión</div>
+          ${fileRows(files)}
+        </div>
+      </article>
+    `;
+  }).join('');
+  openModal(c.label,'Bitácoras de la empresa',html);
+}
+
+function openFiles(id){
+  const c = state.companies.find(x=>x.id===Number(id));
+  if(!c) return;
+  openModal(c.label,'Archivos asociados',fileRows(c.archivos.filter(isAssociated)));
+}
+
+function openCompany(id){
+  const c = state.companies.find(x=>x.id===Number(id));
+  if(!c) return;
+  const linea = requiredFiles(c,'Línea Base');
+  const plan = requiredFiles(c,'Plan de Trabajo Individual');
+  const html = `
+    <div class="bitacora-preview">
+      <div class="field">
+        <div class="field-label">Línea Base</div>
+        <div class="field-value">${linea.length?'✓ Cargada':'Pendiente'}</div>
+        <div class="file-list">${fileRows(linea)}</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Plan de Trabajo Individual</div>
+        <div class="field-value">${plan.length?'✓ Cargado':'Pendiente'}</div>
+        <div class="file-list">${fileRows(plan)}</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Bitácoras</div>
+        <div class="field-value">${c.bitacoras.length}</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Grabaciones</div>
+        <div class="field-value">${recordingsCount(c)}</div>
+      </div>
+    </div>
+    <div style="margin-top:16px" class="actions">
+      <button class="action primary" onclick="openBitacoras(${c.id})">Ver bitácoras</button>
+      <button class="action" onclick="openFiles(${c.id})" ${c.archivos.length?'':'disabled'}>Ver todos los archivos</button>
+    </div>
+  `;
+  openModal(c.label,'Resumen de seguimiento',html);
+}
+
+async function loadAll(){
+  statusEl.textContent='Actualizando información…';
+  errorsEl.innerHTML='';
+  body.innerHTML=`<tr><td colspan="6" class="loading-row">Consultando las empresas…</td></tr>`;
+  $('#refresh-btn').disabled=true;
+
+  const results = await Promise.allSettled(CONFIG.companies.map(fetchCompany));
+  const good = [];
+  const errors = [];
+  results.forEach((r,i)=>{
+    if(r.status==='fulfilled') good.push(r.value);
+    else errors.push(r.reason?.message || CONFIG.companies[i].label);
+  });
+
+  state.companies = good.sort((a,b)=>a.id-b.id);
+  updateMetrics();
+  render();
+
+  if(errors.length){
+    errorsEl.innerHTML=`<div class="errorbox"><strong>No fue posible consultar algunas empresas:</strong><br>${errors.map(esc).join('<br>')}</div>`;
+  }
+
+  statusEl.textContent=`Última actualización: ${new Intl.DateTimeFormat('es-CO',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'}).format(new Date())}`;
+  $('#refresh-btn').disabled=false;
+}
+$('#refresh-btn').addEventListener('click',loadAll);
+$('#search').addEventListener('input',e=>{state.filter=e.target.value;render()});
+
+loadAll();
+</script>
+</body>
+</html>
