@@ -1890,6 +1890,67 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
   .vc-recording-section {
     margin-top: 2px; padding-top: 2px;
   }
+  .vc-session-file-tabs{
+    display:flex;
+    gap:8px;
+    margin:4px 0 14px;
+    padding:5px;
+    border-radius:14px;
+    background:#f3f7f8;
+    border:1px solid rgba(5,83,130,.10);
+  }
+  .vc-session-file-tab{
+    flex:1;
+    border:0;
+    border-radius:10px;
+    padding:10px 12px;
+    font:inherit;
+    font-weight:900;
+    cursor:pointer;
+    background:transparent;
+    color:#66758a;
+  }
+  .vc-session-file-tab.active{
+    background:#fff;
+    color:#1F3464;
+    box-shadow:0 4px 14px rgba(31,52,100,.10);
+  }
+  .vc-session-file-pane[hidden]{display:none!important;}
+  .vc-extra-file-choice{
+    border:1px solid rgba(5,83,130,.16);
+    border-radius:16px;
+    padding:18px;
+    background:linear-gradient(135deg,#f8fbff,#f7fcf8);
+  }
+  .vc-extra-file-choice strong{
+    display:block;
+    color:#1F3464;
+    font-size:15px;
+    margin-bottom:5px;
+  }
+  .vc-extra-file-choice p{
+    margin:0 0 14px;
+    color:#66758a;
+    line-height:1.5;
+  }
+  .vc-extra-file-toggle{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:12px 14px;
+    border-radius:12px;
+    background:#fff;
+    border:1px solid rgba(0,150,105,.18);
+    cursor:pointer;
+    font-weight:800;
+    color:#1F3464;
+  }
+  .vc-extra-file-toggle input{
+    width:18px;
+    height:18px;
+    margin-top:1px;
+    accent-color:#009669;
+  }
   .vc-recording-card {
     border: 1.5px dashed rgba(5,83,130,.35); border-radius: 18px; padding: 18px;
     background: linear-gradient(135deg, rgba(105,166,216,.08), rgba(173,206,87,.08));
@@ -3586,34 +3647,56 @@ function resetView() {
           <textarea class="vc-bita-textarea" id="vc-bita-compromisos" required placeholder="Registra compromisos, responsables y próximos pasos acordados."></textarea>
         </div>
         <div class="vc-bita-field full vc-recording-section">
-          <label id="vc-file-section-label">Grabación de la sesión</label>
-          <div class="vc-recording-card">
-            <div class="vc-recording-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            </div>
-            <div class="vc-recording-copy">
-              <div class="vc-recording-title" id="vc-file-title">Cargar grabación de esta sesión</div>
-              <div class="vc-recording-help" id="vc-file-help">Carga la grabación en OneDrive, vuelve a esta ventana y pulsa “Ya cargué la grabación · Verificar”. Después confirma el archivo correcto.</div>
-            </div>
-            <button class="vc-recording-btn" id="vc-bita-upload" type="button">Cargar grabación</button>
+          <label id="vc-file-section-label">Archivos de la sesión</label>
+
+          <div class="vc-session-file-tabs" id="vc-session-file-tabs">
+            <button type="button" class="vc-session-file-tab active" id="vc-tab-recording">1. Grabación obligatoria</button>
+            <button type="button" class="vc-session-file-tab" id="vc-tab-extra">2. Archivo adicional (opcional)</button>
           </div>
-          <div class="vc-recording-meta">
-            <div class="vc-bita-field">
-              <label for="vc-bita-uploader">Nombre de quien carga</label>
-              <input class="vc-bita-input" id="vc-bita-uploader" autocomplete="name" placeholder="Nombre completo">
+
+          <div class="vc-session-file-pane" id="vc-recording-pane">
+            <div class="vc-recording-card">
+              <div class="vc-recording-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <div class="vc-recording-copy">
+                <div class="vc-recording-title" id="vc-file-title">Cargar grabación de esta sesión</div>
+                <div class="vc-recording-help" id="vc-file-help">Carga la grabación en OneDrive, vuelve a esta ventana y pulsa “Ya cargué la grabación · Verificar”. Después confirma el archivo correcto.</div>
+              </div>
+              <button class="vc-recording-btn" id="vc-bita-upload" type="button">Cargar grabación</button>
             </div>
-            <div class="vc-bita-field">
-              <label for="vc-bita-uploader-email">Correo de quien carga</label>
-              <input class="vc-bita-input" id="vc-bita-uploader-email" type="email" autocomplete="email" placeholder="correo@ejemplo.com">
+
+            <div class="vc-recording-meta">
+              <div class="vc-bita-field">
+                <label for="vc-bita-uploader">Nombre de quien carga</label>
+                <input class="vc-bita-input" id="vc-bita-uploader" autocomplete="name" placeholder="Nombre completo">
+              </div>
+              <div class="vc-bita-field">
+                <label for="vc-bita-uploader-email">Correo de quien carga</label>
+                <input class="vc-bita-input" id="vc-bita-uploader-email" type="email" autocomplete="email" placeholder="correo@ejemplo.com">
+              </div>
+            </div>
+
+            <div class="vc-recording-status" id="vc-recording-status" aria-live="polite">La grabación es obligatoria para guardar esta bitácora.</div>
+            <div class="vc-recording-help" id="vc-support-note" style="margin-top:8px">En la segunda pestaña puedes indicar si quieres añadir un archivo adicional a esta sesión.</div>
+
+            <div class="vc-recording-actions-manual">
+              <button type="button" id="vc-bita-verify-upload" class="vc-bita-btn secondary" hidden>Ya cargué la grabación · Verificar</button>
+            </div>
+            <div class="vc-recording-candidates" id="vc-recording-candidates" hidden></div>
+            <div class="vc-recording-detected" id="vc-recording-detected" hidden></div>
+          </div>
+
+          <div class="vc-session-file-pane" id="vc-extra-pane" hidden>
+            <div class="vc-extra-file-choice">
+              <strong>¿Quieres cargar un archivo adicional relacionado con esta sesión?</strong>
+              <p>Es opcional. Puede ser una presentación, PDF, Excel, Word, imagen u otro soporte. Primero se guardará la bitácora y su grabación. Después se abrirá automáticamente el cargador para asociar este archivo a la misma sesión.</p>
+              <label class="vc-extra-file-toggle">
+                <input type="checkbox" id="vc-extra-file-check">
+                <span>Sí, quiero cargar un archivo adicional al finalizar esta bitácora.</span>
+              </label>
             </div>
           </div>
-          <div class="vc-recording-status" id="vc-recording-status" aria-live="polite">La grabación es obligatoria para guardar esta bitácora.</div>
-          <div class="vc-recording-help" id="vc-support-note" style="margin-top:8px">Después de guardar la bitácora puedes añadir archivos de apoyo opcionales desde esta misma sesión.</div>
-          <div class="vc-recording-actions-manual">
-            <button type="button" id="vc-bita-verify-upload" class="vc-bita-btn secondary" hidden>Ya cargué la grabación · Verificar</button>
-          </div>
-          <div class="vc-recording-candidates" id="vc-recording-candidates" hidden></div>
-          <div class="vc-recording-detected" id="vc-recording-detected" hidden></div>
         </div>
       </div>
       <div class="vc-bita-status" id="vc-bita-status" aria-live="polite"></div>
@@ -3652,6 +3735,12 @@ function resetView() {
   const recordingMetaEl = document.querySelector('#vc-bita-form .vc-recording-meta');
   const supportNoteEl = document.getElementById('vc-support-note');
   const modalEyebrowEl = document.getElementById('vc-modal-eyebrow');
+  const sessionFileTabsEl = document.getElementById('vc-session-file-tabs');
+  const tabRecordingBtn = document.getElementById('vc-tab-recording');
+  const tabExtraBtn = document.getElementById('vc-tab-extra');
+  const recordingPaneEl = document.getElementById('vc-recording-pane');
+  const extraPaneEl = document.getElementById('vc-extra-pane');
+  const extraFileCheck = document.getElementById('vc-extra-file-check');
   const detailFields = Array.from(document.querySelectorAll('#vc-bita-form > .vc-bita-grid > .vc-bita-field:not(.vc-recording-section)'));
 
   const f = {
@@ -3674,6 +3763,16 @@ function resetView() {
   let mode = 'new';
   let existingSessionNum = null;
   let requiredDocType = '';
+
+  function setSessionFileTab(which='recording') {
+    const recordingActive = which !== 'extra';
+    if (recordingPaneEl) recordingPaneEl.hidden = !recordingActive;
+    if (extraPaneEl) extraPaneEl.hidden = recordingActive;
+    if (tabRecordingBtn) tabRecordingBtn.classList.toggle('active', recordingActive);
+    if (tabExtraBtn) tabExtraBtn.classList.toggle('active', !recordingActive);
+  }
+  if (tabRecordingBtn) tabRecordingBtn.addEventListener('click', () => setSessionFileTab('recording'));
+  if (tabExtraBtn) tabExtraBtn.addEventListener('click', () => setSessionFileTab('extra'));
 
   function esc(v) { return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
   function normalizeKey(s) { return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim(); }
@@ -3783,6 +3882,14 @@ function resetView() {
     const existing = isExistingMode();
     const support = isSupportMode();
     const required = isRequiredDocMode();
+
+    if (sessionFileTabsEl) sessionFileTabsEl.hidden = nextMode !== 'new';
+    if (nextMode === 'new') {
+      setSessionFileTab('recording');
+      if (extraFileCheck) extraFileCheck.checked = false;
+    } else {
+      setSessionFileTab('recording');
+    }
 
     // Línea Base y Plan de Trabajo Individual NO son bitácoras.
     // En este modo solo mostramos la carga/verificación del documento.
@@ -3978,7 +4085,31 @@ function resetView() {
       if(!assocRes.ok) { let detail=''; try{detail=await assocRes.text();}catch(e){} throw new Error(`Asociar archivo respondió ${assocRes.status}${detail?': '+detail.slice(0,160):''}`); }
       const associated=await assocRes.json(); if(!associated||associated.ok!==true) throw new Error('Power Automate no confirmó la asociación del archivo.');
       const successMsg = isRequiredDocMode() ? `${requiredDocType} asociado correctamente a la empresa.` : (isSupportMode() ? 'Archivo de apoyo asociado correctamente a la sesión.' : (isExistingMode() ? 'Grabación asociada correctamente a la sesión.' : 'Bitácora y grabación asociadas correctamente.'));
-      setStatus(successMsg); setRecordingStatus('✓ Archivo asociado correctamente.','ok'); if(typeof toast==='function') toast(successMsg); await refreshAfterSave(payload); if(isRequiredDocMode() && requiredDocsComplete()) { try { localStorage.setItem(`vcRequiredDocsComplete:${data.empresaId}`,'1'); } catch(_) {} } setTimeout(closeModal,500);
+      const wantsExtraFile = mode === 'new' && !!extraFileCheck?.checked;
+      const newBitacoraId = Number(createdBitacora?.BitacoraID);
+
+      setStatus(successMsg);
+      setRecordingStatus('✓ Archivo asociado correctamente.','ok');
+      if(typeof toast==='function') toast(successMsg);
+
+      await refreshAfterSave(payload);
+
+      if(isRequiredDocMode() && requiredDocsComplete()) {
+        try { localStorage.setItem(`vcRequiredDocsComplete:${data.empresaId}`,'1'); } catch(_) {}
+      }
+
+      if (wantsExtraFile && Number.isFinite(newBitacoraId)) {
+        const list = Array.isArray(data?.bitacoras) ? data.bitacoras : [];
+        const newBita = list.find(b => Number(b?.BitacoraID ?? b?.['BitácoraID'] ?? b?.bitacoraId) === newBitacoraId);
+        const sessionIndex = list.findIndex(b => Number(b?.BitacoraID ?? b?.['BitácoraID'] ?? b?.bitacoraId) === newBitacoraId);
+        if (newBita) {
+          setTimeout(() => openExistingSupportModal(newBita, sessionIndex >= 0 ? sessionIndex + 1 : ''), 250);
+        } else {
+          setTimeout(closeModal,500);
+        }
+      } else {
+        setTimeout(closeModal,500);
+      }
     } catch(err) {
       console.error(err);
       if(isRequiredDocMode()) { setStatus(`No fue posible asociar ${requiredDocType}: `+err.message,true); saveBtn.textContent='Reintentar asociación'; }
