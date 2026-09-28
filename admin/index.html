@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -433,6 +434,56 @@ tbody tr:hover{background:#FFFDF8}
 .action:disabled{opacity:.42;cursor:not-allowed;transform:none}
 .loading-row{text-align:center;padding:48px;color:var(--fh-muted);font-weight:800}
 
+
+/* Estado visible de entregables iniciales: Línea Base y Plan de Trabajo Individual */
+.doc-status{
+  min-width:180px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+}
+.doc-status .pill{margin-bottom:1px}
+.doc-status.complete .pill{
+  background:rgba(0,150,105,.10);
+  color:#087654;
+  border:1px solid rgba(0,150,105,.14);
+}
+.doc-status.pending .pill{
+  background:rgba(255,208,0,.16);
+  color:#806500;
+  border:1px solid rgba(255,208,0,.25);
+}
+.doc-file-name{
+  max-width:240px;
+  font-size:11px;
+  line-height:1.4;
+  font-weight:850;
+  color:var(--fh-black);
+  overflow-wrap:anywhere;
+}
+.doc-file-date{
+  font-size:10px;
+  line-height:1.35;
+  color:var(--fh-muted);
+}
+.doc-caption{
+  font-size:10px;
+  color:var(--fh-muted);
+  line-height:1.35;
+}
+.doc-status .mini-link{
+  margin-top:1px;
+  padding:6px 9px;
+  border-radius:9px;
+  background:rgba(105,166,216,.09);
+  text-decoration:none;
+}
+.doc-status .mini-link:hover{
+  background:rgba(105,166,216,.15);
+  text-decoration:none;
+}
+
 /* Modal */
 .modal-backdrop{
   position:fixed;
@@ -638,7 +689,7 @@ tbody tr:hover{background:#FFFDF8}
   <section class="summary">
     <div class="metric"><div class="metric-label">Empresas</div><div class="metric-value" id="m-companies">5</div><div class="metric-note">Iniciativas activas</div></div>
     <div class="metric"><div class="metric-label">Línea Base</div><div class="metric-value" id="m-linea">0/5</div><div class="metric-note">Empresas con archivo asociado</div></div>
-    <div class="metric"><div class="metric-label">Plan de Trabajo</div><div class="metric-value" id="m-plan">0/5</div><div class="metric-note">Empresas con archivo asociado</div></div>
+    <div class="metric"><div class="metric-label">Plan de Trabajo Individual</div><div class="metric-value" id="m-plan">0/5</div><div class="metric-note">Empresas con archivo asociado</div></div>
     <div class="metric"><div class="metric-label">Bitácoras</div><div class="metric-value" id="m-bitas">0</div><div class="metric-note">Registros encontrados</div></div>
   </section>
 
@@ -750,9 +801,21 @@ function requiredFiles(company, type){
     if(!isAssociated(f)) return false;
     const tipo = norm(fileType(f));
     const name = norm(v(f,['NombreArchivo','Title','{Name}']));
+    const hay = `${tipo} ${name}`;
+
     if(tipo === wanted || tipo.includes(wanted)) return true;
-    if(wanted === 'linea base') return name.includes('linea base');
-    if(wanted === 'plan de trabajo individual') return name.includes('plan de trabajo') || name.includes('pti');
+
+    if(wanted === 'linea base'){
+      return hay.includes('linea base');
+    }
+
+    if(wanted === 'plan de trabajo individual'){
+      return hay.includes('plan de trabajo individual')
+        || hay.includes('plan individual de trabajo')
+        || hay.includes('plan de trabajo')
+        || /(^|\s|[_-])pti(\s|[_-]|\.|$)/i.test(hay);
+    }
+
     return false;
   });
 }
@@ -797,14 +860,28 @@ async function fetchCompany(def){
 }
 
 function statusCell(files, label){
-  if(!files.length) return `<span class="pill pending">● Pendiente</span>`;
+  if(!files.length){
+    return `
+      <div class="doc-status pending">
+        <span class="pill pending">● Pendiente</span>
+        <div class="doc-caption">Sin archivo asociado</div>
+      </div>
+    `;
+  }
+
   const f = latestFile(files);
   const name = esc(v(f,['NombreArchivo','Title','{Name}']) || label);
   const url = fileUrl(f);
+  const dateRaw = v(f,['FechaCarga','Created','Modified']);
+  const dateText = dateRaw ? esc(formatDate(dateRaw)) : 'Sin fecha registrada';
+
   return `
-    <span class="pill ok">✓ Cargado</span>
-    ${url ? `<br><a class="mini-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Abrir archivo ↗</a>` : ''}
-    <div class="company-raw">${name}</div>
+    <div class="doc-status complete">
+      <span class="pill ok">✓ Archivo asociado</span>
+      <div class="doc-file-name">${name}</div>
+      <div class="doc-file-date">Última carga: ${dateText}</div>
+      ${url ? `<a class="mini-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Abrir archivo ↗</a>` : '<div class="doc-caption">Sin enlace disponible</div>'}
+    </div>
   `;
 }
 
@@ -944,12 +1021,12 @@ function openCompany(id){
     <div class="bitacora-preview">
       <div class="field">
         <div class="field-label">Línea Base</div>
-        <div class="field-value">${linea.length?'✓ Cargada':'Pendiente'}</div>
+        <div class="field-value">${statusCell(linea,'Línea Base')}</div>
         <div class="file-list">${fileRows(linea)}</div>
       </div>
       <div class="field">
         <div class="field-label">Plan de Trabajo Individual</div>
-        <div class="field-value">${plan.length?'✓ Cargado':'Pendiente'}</div>
+        <div class="field-value">${statusCell(plan,'Plan de Trabajo Individual')}</div>
         <div class="file-list">${fileRows(plan)}</div>
       </div>
       <div class="field">
