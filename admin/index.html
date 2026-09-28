@@ -795,6 +795,26 @@ function isAssociated(file){
 function fileType(file){
   return String(v(file,['TipoArchivo','tipoArchivo']) || '').trim();
 }
+function fileName(file){
+  return String(v(file,['NombreArchivo','Title','{Name}']) || '').trim();
+}
+function isRealRecording(file){
+  const name = fileName(file);
+  const mime = norm(v(file,['ContentType','MimeType','MIMEType','contentType','mimeType']));
+  // La grabación se determina por el archivo real, no por TipoArchivo.
+  // Esto evita que XLSX/PDF heredados como “Grabación” se cuenten o muestren como videos.
+  return /\.(mp4|mov|m4v|webm|avi|mkv)(?:$|[?#])/i.test(name) || mime.startsWith('video/');
+}
+function displayFileType(file){
+  const name = norm(fileName(file));
+  const tipo = norm(fileType(file));
+
+  if(isRealRecording(file)) return 'Grabación';
+  if(name.includes('linea base') || tipo.includes('linea base')) return 'Línea Base';
+  if(name.includes('plan de trabajo individual') || name.includes('plan individual de trabajo') || name.includes('plan de acompanamiento') || name.includes('plan de trabajo') || /(^|\s|[_-])pti(\s|[_-]|\.|$)/i.test(name)) return 'Plan de Trabajo Individual';
+  if(tipo.includes('archivo adicional') || tipo.includes('apoyo')) return 'Archivo adicional';
+  return 'Archivo';
+}
 function requiredFiles(company, type){
   const wanted = norm(type);
   return (company.archivos||[]).filter(f => {
@@ -825,12 +845,7 @@ function filesForBitacora(company, bita){
   return (company.archivos||[]).filter(f => isAssociated(f) && numId(v(f,['BitacoraID','BitácoraID','bitacoraId'])) === bid);
 }
 function recordingsCount(company){
-  return (company.archivos||[]).filter(f => {
-    if(!isAssociated(f)) return false;
-    const tipo = norm(fileType(f));
-    const name = norm(v(f,['NombreArchivo','Title','{Name}']));
-    return tipo.includes('grabacion') || /\.(mp4|mov|m4v|webm|avi|mkv)$/i.test(name);
-  }).length;
+  return (company.archivos||[]).filter(f => isAssociated(f) && isRealRecording(f)).length;
 }
 function latestFile(files){
   return (files||[]).slice().sort((a,b)=>{
@@ -956,9 +971,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 function fileRows(files){
   if(!files.length) return `<div class="empty-state">No hay archivos asociados.</div>`;
   return files.map(f=>{
-    const name = v(f,['NombreArchivo','Title','{Name}']) || 'Archivo';
+    const name = fileName(f) || 'Archivo';
     const url = fileUrl(f);
-    const tipo = fileType(f) || 'Archivo';
+    const tipo = displayFileType(f);
     return `<div class="file-row">
       <div>
         <div class="file-name">${esc(name)}</div>
@@ -976,18 +991,23 @@ function openBitacoras(id){
     openModal(c.label,'Bitácoras',`<div class="empty-state">Esta empresa todavía no tiene bitácoras.</div>`);
     return;
   }
-  const html = c.bitacoras.slice().sort((a,b)=>Date.parse(v(b,['Fecha de la sesión','FechaSesion','field_4'])||0)-Date.parse(v(a,['Fecha de la sesión','FechaSesion','field_4'])||0)).map((b,i)=>{
+  // Numeración visible consecutiva por empresa: la primera sesión es Bitácora 1,
+  // aunque el ID interno de SharePoint/Power Automate sea 8, 15, 23, etc.
+  const chronological = c.bitacoras.slice().sort((a,b)=>Date.parse(v(a,['Fecha de la sesión','FechaSesion','field_4'])||0)-Date.parse(v(b,['Fecha de la sesión','FechaSesion','field_4'])||0));
+  const ordinalById = new Map(chronological.map((b,i)=>[String(v(b,['BitacoraID','BitácoraID','bitacoraId','ID']) || `__${i}`), i+1]));
+  const html = chronological.slice().reverse().map((b,i)=>{
     const files = filesForBitacora(c,b);
     const fecha = v(b,['Fecha de la sesión','FechaSesion','field_4']);
     const mentor = v(b,['Nombre del mentor','Nombre del mentor\n','Mentor','field_5']) || 'Sin mentor';
     const avances = v(b,['Avances de la sesión','Avances','field_6']);
     const compromisos = v(b,['Compromisos y próximos pasos','Compromisos','field_7']);
     const bid = v(b,['BitacoraID','BitácoraID','bitacoraId','ID']);
+    const ordinal = ordinalById.get(String(bid)) || (chronological.length - i);
     return `
       <article class="bitacora-card">
         <div class="bitacora-head">
           <div>
-            <div class="bitacora-title">Bitácora ${esc(bid || (i+1))}</div>
+            <div class="bitacora-title">Bitácora ${esc(ordinal)}</div>
             <div class="bitacora-meta">${esc(formatDate(fecha))} · ${esc(mentor)}</div>
           </div>
           <span class="pill ${files.length?'ok':'empty'}">${files.length} archivo(s)</span>
@@ -1009,7 +1029,12 @@ function openBitacoras(id){
 function openFiles(id){
   const c = state.companies.find(x=>x.id===Number(id));
   if(!c) return;
-  openModal(c.label,'Archivos asociados',fileRows(c.archivos.filter(isAssociated)));
+  const files = c.archivos.filter(isAssociated).slice().sort((a,b)=>{
+    const da = Date.parse(v(a,['FechaCarga','Created','Modified'])||0);
+    const db = Date.parse(v(b,['FechaCarga','Created','Modified'])||0);
+    return db-da;
+  });
+  openModal(c.label,'Archivos asociados',fileRows(files));
 }
 
 function openCompany(id){
