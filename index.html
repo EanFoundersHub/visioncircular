@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -3817,7 +3818,7 @@ function resetView() {
     verifyBtn.textContent=isSupportMode()?'Ya cargué el archivo · Verificar':'Ya cargué la grabación · Verificar';
     saveBtn.disabled=true; saveBtn.textContent=isRequiredDocMode()?`Asociar ${requiredDocType}`:(isExistingMode()?'Asociar archivo':'Guardar bitácora');
     setRecordingStatus(isRequiredDocMode()
-      ? `Carga ${requiredDocType}, verifícalo y confirma el archivo correcto para asociarlo a esta empresa.`
+      ? `Carga ${requiredDocType}, verifica el archivo y confirma que corresponde a esta empresa.`
       : (isSupportMode()
           ? 'El archivo de apoyo es opcional. Cárgalo y verifícalo para asociarlo a esta sesión.'
           : (isExistingMode()?'Carga una grabación y luego verifícala para asociarla a esta sesión.':'La grabación es obligatoria para guardar esta bitácora.')));
@@ -3883,7 +3884,13 @@ function resetView() {
     const support = isSupportMode();
     const required = isRequiredDocMode();
 
-    if (sessionFileTabsEl) sessionFileTabsEl.hidden = nextMode !== 'new';
+    // Las pestañas de grabación/archivo adicional solo pertenecen a una bitácora nueva.
+    // Para Línea Base y Plan de Trabajo Individual se ocultan de forma forzada.
+    if (sessionFileTabsEl) {
+      const showSessionTabs = nextMode === 'new';
+      sessionFileTabsEl.hidden = !showSessionTabs;
+      sessionFileTabsEl.style.display = showSessionTabs ? '' : 'none';
+    }
     if (nextMode === 'new') {
       setSessionFileTab('recording');
       if (extraFileCheck) extraFileCheck.checked = false;
@@ -4003,7 +4010,8 @@ function resetView() {
     f.uploaderEmail.value = '';
     setStatus('');
     resetRecording();
-    createdBitacora = { BitacoraID: 0, FechaRegistro: new Date().toISOString() };
+    // Un entregable inicial se asocia a la empresa, no a una bitácora ficticia.
+    createdBitacora = null;
     saveBtn.textContent = `Asociar ${docType}`;
     modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>uploadBtn.focus(),50);
   }
@@ -4037,7 +4045,7 @@ function resetView() {
     if (!isRequiredDocMode()) f.uploader.value=uploader;
     detectedFile=null; if(!isExistingMode() && !isRequiredDocMode()) createdBitacora=null; clearCandidates(); recordingDetectedEl.hidden=true; saveBtn.disabled=true; uploadStartedAt=new Date().toISOString();
     const tipoArchivo=currentTipoArchivo();
-    try { sessionStorage.setItem('vcUploadContext',JSON.stringify({cedula:f.cedula.value.trim(),iniciativa:f.empresa.value.trim(),fechaSesion:f.fecha.value,mentor:f.mentor.value.trim(),cargadoPor:uploader,correoCargador:email,tipoArchivo,iniciadoEn:uploadStartedAt})); } catch(e) {}
+    try { sessionStorage.setItem('vcUploadContext',JSON.stringify({empresaId:Number(data?.empresaId)||null,cedula:f.cedula.value.trim(),iniciativa:f.empresa.value.trim(),fechaSesion:f.fecha.value,mentor:f.mentor.value.trim(),cargadoPor:uploader,correoCargador:email,tipoArchivo,iniciadoEn:uploadStartedAt})); } catch(e) {}
     openUploadPortal();
     verifyBtn.hidden=false;
     verifyBtn.disabled=false;
@@ -4076,11 +4084,48 @@ function resetView() {
   form.addEventListener('submit',async function(e) {
     e.preventDefault(); if(!form.reportValidity()) return;
     if(!detectedFile) { setRecordingStatus(isRequiredDocMode()?`Debes cargar y confirmar ${requiredDocType} antes de asociarlo.`:(isSupportMode()?'Selecciona un archivo de apoyo antes de asociarlo.':'Debes cargar, verificar y confirmar una grabación antes de guardar.'),'error'); saveBtn.disabled=true; return; }
-    saving=true; saveBtn.disabled=true; saveBtn.textContent=mode==='existing'?'Asociando…':(createdBitacora?'Reintentando asociación…':'Guardando…'); setStatus(mode==='existing'?'Asociando el archivo a la bitácora existente…':(createdBitacora?'Reintentando asociación de la grabación…':'Registrando la bitácora y asociando la grabación…'));
+    saving=true;
+    saveBtn.disabled=true;
+    saveBtn.textContent = isRequiredDocMode()
+      ? 'Asociando…'
+      : (isExistingMode() ? 'Asociando…' : (createdBitacora ? 'Reintentando asociación…' : 'Guardando…'));
+    setStatus(isRequiredDocMode()
+      ? `Asociando ${requiredDocType} a la empresa…`
+      : (isExistingMode()
+          ? 'Asociando el archivo a la bitácora existente…'
+          : (createdBitacora ? 'Reintentando asociación de la grabación…' : 'Registrando la bitácora y asociando la grabación…')));
+
     const payload={cedula:f.cedula.value.trim(),nombre:f.nombre.value.trim(),empresa:f.empresa.value.trim(),fechaSesion:new Date(f.fecha.value).toISOString(),mentor:f.mentor.value.trim(),avances:f.avances.value.trim(),compromisos:f.compromisos.value.trim()};
     try {
-      if(!createdBitacora) { const createRes=await fetch(CREATE_BITACORA_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); if(!createRes.ok) throw new Error(`Crear bitácora respondió ${createRes.status}`); const created=await createRes.json(); if(!created||created.ok!==true||!created.BitacoraID) throw new Error('Power Automate no confirmó la creación de la bitácora.'); createdBitacora=created; }
-      const associatePayload={archivoId:Number(detectedFile.ID||detectedFile.ItemInternalId),nombreArchivo:fileName(detectedFile),identificadorArchivo:String(detectedFile.IdentificadorArchivo||''),rutaArchivo:String(detectedFile.RutaArchivo||''),fechaCarga:String(detectedFile.FechaCarga||'').substring(0,10),bitacoraId:Number(createdBitacora.BitacoraID),cedula:payload.cedula,iniciativa:payload.empresa,fechaSesion:f.fecha.value.length===16?f.fecha.value+':00':f.fecha.value,fechaBitacora:String(createdBitacora.FechaRegistro||new Date().toISOString()),cargadoPor:isRequiredDocMode()?'Mentor':(f.uploader.value.trim()||f.mentor.value.trim()),correoCargador:isRequiredDocMode()?'':f.uploaderEmail.value.trim(),tipoArchivo:currentTipoArchivo()};
+      // Línea Base y Plan de Trabajo Individual NO crean bitácora.
+      if(!isRequiredDocMode() && !createdBitacora) {
+        const createRes=await fetch(CREATE_BITACORA_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        if(!createRes.ok) throw new Error(`Crear bitácora respondió ${createRes.status}`);
+        const created=await createRes.json();
+        if(!created||created.ok!==true||!created.BitacoraID) throw new Error('Power Automate no confirmó la creación de la bitácora.');
+        createdBitacora=created;
+      }
+
+      // Los entregables iniciales se asocian directamente a la empresa.
+      // Se incluye empresaId para que Power Automate pueda distinguir esta ruta
+      // y se envía bitacoraId nulo en lugar de inventar una BitacoraID = 0.
+      const associatePayload={
+        archivoId:Number(detectedFile.ID||detectedFile.ItemInternalId),
+        nombreArchivo:fileName(detectedFile),
+        identificadorArchivo:String(detectedFile.IdentificadorArchivo||''),
+        rutaArchivo:String(detectedFile.RutaArchivo||''),
+        fechaCarga:String(detectedFile.FechaCarga||'').substring(0,10),
+        empresaId:Number(data?.empresaId)||null,
+        bitacoraId:isRequiredDocMode()?null:Number(createdBitacora?.BitacoraID),
+        cedula:payload.cedula,
+        iniciativa:payload.empresa,
+        fechaSesion:isRequiredDocMode()?null:(f.fecha.value.length===16?f.fecha.value+':00':f.fecha.value),
+        fechaBitacora:isRequiredDocMode()?null:String(createdBitacora?.FechaRegistro||new Date().toISOString()),
+        cargadoPor:isRequiredDocMode()?'Mentor':(f.uploader.value.trim()||f.mentor.value.trim()),
+        correoCargador:isRequiredDocMode()?'':f.uploaderEmail.value.trim(),
+        tipoArchivo:currentTipoArchivo(),
+        asociacionEmpresa:isRequiredDocMode()
+      };
       const assocRes=await fetch(ASSOCIATE_FILE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(associatePayload)});
       if(!assocRes.ok) { let detail=''; try{detail=await assocRes.text();}catch(e){} throw new Error(`Asociar archivo respondió ${assocRes.status}${detail?': '+detail.slice(0,160):''}`); }
       const associated=await assocRes.json(); if(!associated||associated.ok!==true) throw new Error('Power Automate no confirmó la asociación del archivo.');
