@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -329,7 +328,7 @@ select.fh-query-input option { color: var(--fh-ink); }
 .fh-toast.error { color: #FFB3B3; border-color: #FFB3B3; }
 
 @media print {
-  .fh-header, .fh-actions, .fh-maintabs, .fh-bita-tabs, .fh-upload-screen, .fh-bita-cta { display: none !important; }
+  .fh-header, .fh-actions, .fh-maintabs, .fh-bita-tabs, .vc-bita-type-tabs, .fh-upload-screen, .fh-bita-cta { display: none !important; }
   body { background: white; }
   .fh-main { padding: 0; max-width: none; }
   .fh-section { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
@@ -1863,6 +1862,59 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
   .vc-bita-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   .vc-bita-field { display:flex; flex-direction:column; gap:7px; }
 
+  /* Tipo de bitácora: selector del formulario */
+  .vc-bita-type-choice {
+    display:flex; gap:10px; flex-wrap:wrap;
+    padding:6px; border:1px solid rgba(5,83,130,.12); border-radius:16px;
+    background:#f3f7f8;
+  }
+  .vc-bita-type-btn {
+    flex:1 1 220px; min-height:48px; border:0; border-radius:12px;
+    padding:12px 16px; font:inherit; font-weight:900; cursor:pointer;
+    background:transparent; color:#66758a;
+    transition:background .16s ease, color .16s ease, box-shadow .16s ease, transform .16s ease;
+  }
+  .vc-bita-type-btn:hover { background:rgba(255,255,255,.72); color:#1F3464; }
+  .vc-bita-type-btn.active {
+    background:#1F3464; color:#fff; box-shadow:0 7px 18px rgba(31,52,100,.16);
+  }
+  .vc-bita-type-btn:focus-visible { outline:3px solid rgba(105,166,216,.28); outline-offset:2px; }
+  .vc-bita-type-help { margin-top:2px; font-size:12px; line-height:1.45; color:var(--fh-muted); }
+
+  .vc-bita-step-nav {
+    grid-column:1 / -1; display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin:0 0 2px; padding:10px 12px; border-radius:14px;
+    background:rgba(105,166,216,.08); border:1px solid rgba(5,83,130,.10);
+  }
+  .vc-bita-step-nav[hidden] { display:none !important; }
+  .vc-bita-change-type {
+    border:0; background:transparent; color:var(--fh-teal-dark); padding:5px 2px;
+    font:inherit; font-size:13px; font-weight:900; cursor:pointer;
+  }
+  .vc-bita-change-type:hover { text-decoration:underline; }
+  .vc-bita-selected-type { color:var(--fh-charcoal); font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:.04em; }
+
+  /* División del historial: Mentoría / Asesoría comercial */
+  .vc-bita-type-tabs {
+    display:flex; gap:10px; flex-wrap:wrap; margin:0 0 14px;
+    padding:7px; border-radius:18px; border:1.5px solid var(--fh-line);
+    background:rgba(255,251,244,.82); box-shadow:var(--fh-shadow-soft);
+  }
+  .vc-bita-type-tab {
+    flex:1 1 220px; display:flex; align-items:center; justify-content:center; gap:9px;
+    min-height:48px; padding:11px 16px; border:0; border-radius:12px;
+    background:transparent; color:var(--fh-muted); font:inherit; font-weight:900; cursor:pointer;
+    transition:all .15s ease;
+  }
+  .vc-bita-type-tab:hover { background:rgba(71,190,194,.08); color:var(--fh-charcoal); }
+  .vc-bita-type-tab.active { background:var(--fh-black); color:#fff; }
+  .vc-bita-type-count {
+    display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:26px;
+    padding:0 8px; border-radius:999px; background:rgba(255,255,255,.14); font-size:12px; font-weight:900;
+  }
+  .vc-bita-type-tab:not(.active) .vc-bita-type-count { background:rgba(105,166,216,.12); color:var(--fh-teal-dark); }
+
+
 /* En cargas documentales, hidden debe ganar sobre cualquier display del formulario */
 #vc-bita-form .vc-bita-field[hidden],
 #vc-bita-form .vc-recording-meta[hidden],
@@ -2032,6 +2084,10 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
   .vc-required-name{font-weight:900;color:var(--fh-black, #1F3464);font-size:16px;margin-bottom:4px}
   .vc-required-status{font-size:12.5px;color:var(--fh-muted);line-height:1.35;overflow-wrap:anywhere}
   .vc-required-card.is-complete .vc-required-status{color:#39755f;font-weight:700}
+  .vc-required-file-state{display:flex;align-items:center;gap:6px;margin-bottom:5px;color:#007a56;font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.035em}
+  .vc-required-file-state::before{content:'✓';width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:rgba(0,150,105,.12);color:#007a56;font-size:11px;flex:0 0 18px}
+  .vc-required-file-name{display:block;color:var(--fh-black,#1F3464);font-size:12.5px;font-weight:800;line-height:1.35;overflow-wrap:anywhere}
+  .vc-required-file-meta{display:block;margin-top:3px;color:var(--fh-muted);font-size:10.5px;font-weight:600}
   .vc-required-action{appearance:none;border:0;border-radius:12px;padding:11px 14px;background:var(--fh-black, #1F3464);color:#fff;font-weight:900;font-size:12px;cursor:pointer;white-space:nowrap}
   .vc-required-card.is-complete .vc-required-action{background:#eef5f2;color:var(--fh-gold, #009669)}
   .vc-required-action:hover{transform:translateY(-1px)}
@@ -2255,6 +2311,7 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
     </div>
 
     <div id="pane-bitas" style="display:none;">
+      <div class="vc-bita-type-tabs" id="vc-bita-type-tabs" role="tablist" aria-label="Tipo de acompañamiento"></div>
       <div class="fh-bita-tabs" id="bita-tabs"></div>
       <div id="bita-content"></div>
     </div>
@@ -2272,6 +2329,27 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
 
 let data = { prediagnostico: null, bitacoras: [], archivos: [], cedula: null, empresaId: null, empresaConsulta: null, filename: null, consumedKeys: new Set() };
 let activeBitaSession = null;
+let activeBitaType = 'Mentoría';
+
+function normalizeBitaTypeValue(value) {
+  const source = value && typeof value === 'object' ? (value.Value ?? value.value ?? '') : value;
+  const raw = String(source ?? '').trim();
+  if (!raw) return 'Mentoría';
+  const normalized = raw.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  return normalized.includes('asesoria') && normalized.includes('comercial')
+    ? 'Asesoría comercial'
+    : 'Mentoría';
+}
+
+function getBitacoraType(row) {
+  if (!row || typeof row !== 'object') return 'Mentoría';
+  const raw = row.TipoAcompanamiento
+    ?? row['Tipo de acompañamiento']
+    ?? row['Tipo de acompanamiento']
+    ?? row.tipoAcompanamiento
+    ?? '';
+  return normalizeBitaTypeValue(raw);
+}
 
 function toast(msg, isError = false) {
   const t = document.getElementById('toast');
@@ -3137,8 +3215,30 @@ function renderRequiredDocs() {
     if (complete) {
       const latest = files.slice().sort((a,b) => Date.parse(b?.Modified || b?.Created || b?.FechaCarga || 0) - Date.parse(a?.Modified || a?.Created || a?.FechaCarga || 0))[0];
       const name = vcArchivoValue(latest, ['NombreArchivo', 'Title', '{Name}']) || 'Archivo asociado';
-      status.textContent = `Cargado · ${name}`;
-      btn.textContent = 'Reemplazar / añadir otro';
+      const dateRaw = vcArchivoValue(latest, ['Modified', 'Created', 'FechaCarga']);
+      let dateLabel = '';
+      if (dateRaw) {
+        const parsed = new Date(dateRaw);
+        if (!Number.isNaN(parsed.getTime())) {
+          try { dateLabel = new Intl.DateTimeFormat('es-CO',{day:'2-digit',month:'short',year:'numeric'}).format(parsed); } catch (_) {}
+        }
+      }
+      status.textContent = '';
+      const state = document.createElement('span');
+      state.className = 'vc-required-file-state';
+      state.textContent = 'Archivo asociado';
+      const fileNameEl = document.createElement('span');
+      fileNameEl.className = 'vc-required-file-name';
+      fileNameEl.textContent = name;
+      status.appendChild(state);
+      status.appendChild(fileNameEl);
+      if (dateLabel) {
+        const meta = document.createElement('span');
+        meta.className = 'vc-required-file-meta';
+        meta.textContent = `Última carga: ${dateLabel}`;
+        status.appendChild(meta);
+      }
+      btn.textContent = 'Reemplazar archivo';
     } else {
       status.textContent = 'Pendiente de cargar';
       btn.textContent = doc.key === 'linea' ? 'Cargar Línea Base' : 'Cargar Plan de Trabajo Individual';
@@ -3170,30 +3270,72 @@ function goToRequiredDocs() {
 }
 
 function renderBitacoras() {
+  const typeTabsEl = document.getElementById('vc-bita-type-tabs');
   const tabsEl = document.getElementById('bita-tabs');
   const content = document.getElementById('bita-content');
+  typeTabsEl.innerHTML = '';
   tabsEl.innerHTML = '';
   content.innerHTML = '';
 
   document.getElementById('bitas-count').textContent = data.bitacoras.length;
   window._bitaSessionMap = {};
 
-  if (!data.bitacoras.length) {
+  const typeOptions = ['Mentoría', 'Asesoría comercial'];
+  if (!typeOptions.includes(activeBitaType)) activeBitaType = 'Mentoría';
+
+  const counts = {
+    'Mentoría': data.bitacoras.filter(row => getBitacoraType(row) === 'Mentoría').length,
+    'Asesoría comercial': data.bitacoras.filter(row => getBitacoraType(row) === 'Asesoría comercial').length
+  };
+
+  typeOptions.forEach(type => {
+    const typeBtn = el('button', {
+      class: 'vc-bita-type-tab' + (activeBitaType === type ? ' active' : ''),
+      attrs: {
+        type: 'button',
+        role: 'tab',
+        'aria-selected': activeBitaType === type ? 'true' : 'false',
+        'data-bita-type': type
+      }
+    });
+    typeBtn.appendChild(document.createTextNode(type));
+    typeBtn.appendChild(el('span', { class: 'vc-bita-type-count', text: String(counts[type]) }));
+    typeBtn.addEventListener('click', () => {
+      activeBitaType = type;
+      activeBitaSession = null;
+      renderBitacoras();
+    });
+    typeTabsEl.appendChild(typeBtn);
+  });
+
+  const visibleBitacoras = data.bitacoras.filter(row => getBitacoraType(row) === activeBitaType);
+
+  if (!visibleBitacoras.length) {
+    tabsEl.style.display = 'none';
     const empty = el('div', { class: 'fh-bita-empty' });
     const ic = el('div', { class: 'fh-bita-empty-icon' });
     ic.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>';
     empty.appendChild(ic);
-    empty.appendChild(el('h4', { text: 'Aún no hay bitácoras registradas' }));
-    empty.appendChild(el('p', { text: 'Cuando registres una sesión, aparecerá aquí asociada a esta empresa.' }));
+    empty.appendChild(el('h4', {
+      text: activeBitaType === 'Asesoría comercial'
+        ? 'Aún no hay asesorías comerciales registradas'
+        : 'Aún no hay mentorías registradas'
+    }));
+    empty.appendChild(el('p', {
+      text: activeBitaType === 'Asesoría comercial'
+        ? 'Cuando registres una asesoría comercial, aparecerá aquí asociada a esta empresa.'
+        : 'Cuando registres una mentoría, aparecerá aquí asociada a esta empresa.'
+    }));
     content.appendChild(empty);
     return;
   }
 
-  data.bitacoras.forEach((row, index) => {
+  tabsEl.style.display = '';
+
+  visibleBitacoras.forEach((row, index) => {
     const sessionNum = index + 1;
     window._bitaSessionMap[sessionNum] = row;
 
-    const associatedFiles = findAssociatedFilesForBitacora(row);
     const recording = findRecordingForBitacora(row);
     const supportFiles = findSupportFilesForBitacora(row);
     const tab = el('button', {
@@ -3327,6 +3469,8 @@ function selectBitaSession(num) {
   const fechaRaw = pick(bita, ['Fecha de la sesión', 'Fecha de la sesion', 'field_4'], { consume: false });
   const fecha = formatExcelDate(fechaRaw) || '—';
   const mentor = pick(bita, ['Nombre del mentor', 'Mentor', 'field_5'], { consume: false }) || '—';
+  const tipoAcompanamiento = getBitacoraType(bita);
+  const responsableLabel = tipoAcompanamiento === 'Asesoría comercial' ? 'Asesor comercial' : 'Mentor';
   const emprendedor = pick(bita, ['Nombre completo del emprendedor', 'Nombre del emprendedor', 'field_2'], { consume: false }) || '—';
   const documento = pick(bita, ['Número de documento del emprendedor', 'Numero de documento del emprendedor', 'field_1'], { consume: false }) || data.cedula || '—';
   const empresa = pick(bita, ['Empresa o emprendimiento', 'Empresa / emprendimiento', 'field_3'], { consume: false }) || '—';
@@ -3338,7 +3482,7 @@ function selectBitaSession(num) {
   hL.appendChild(el('div', { class: 'fh-bita-header-title', text: `Sesión ${num} · ${fecha}` }));
   hL.appendChild(el('div', {
     class: 'fh-bita-header-meta',
-    text: `Mentor: ${mentor}`
+    text: `${responsableLabel}: ${mentor}`
   }));
   headerEl.appendChild(hL);
   content.appendChild(headerEl);
@@ -3619,6 +3763,18 @@ function resetView() {
     </div>
     <form class="vc-modal-body" id="vc-bita-form">
       <div class="vc-bita-grid">
+        <div class="vc-bita-field full" id="vc-bita-type-field">
+          <label>Tipo de bitácora *</label>
+          <div class="vc-bita-type-choice" role="group" aria-label="Selecciona el tipo de bitácora">
+            <button type="button" class="vc-bita-type-btn" data-vc-bita-type="Mentoría" aria-pressed="false">Mentoría</button>
+            <button type="button" class="vc-bita-type-btn" data-vc-bita-type="Asesoría comercial" aria-pressed="false">Asesoría comercial</button>
+          </div>
+          <div class="vc-bita-type-help" id="vc-bita-type-help">Selecciona una opción para continuar con el registro de la sesión.</div>
+        </div>
+        <div class="vc-bita-step-nav" id="vc-bita-step-nav" hidden>
+          <button type="button" class="vc-bita-change-type" id="vc-bita-change-type">← Cambiar tipo</button>
+          <span class="vc-bita-selected-type" id="vc-bita-selected-type"></span>
+        </div>
         <div class="vc-bita-field">
           <label for="vc-bita-cedula">Cédula</label>
           <input class="vc-bita-input" id="vc-bita-cedula" readonly>
@@ -3636,8 +3792,8 @@ function resetView() {
           <input class="vc-bita-input" id="vc-bita-empresa" readonly>
         </div>
         <div class="vc-bita-field full">
-          <label for="vc-bita-mentor">Nombre del mentor</label>
-          <input class="vc-bita-input" id="vc-bita-mentor" autocomplete="name" required placeholder="Nombre completo del mentor">
+          <label for="vc-bita-mentor" id="vc-bita-mentor-label">Nombre del mentor / asesor comercial</label>
+          <input class="vc-bita-input" id="vc-bita-mentor" autocomplete="name" required placeholder="Selecciona primero el tipo de bitácora">
         </div>
         <div class="vc-bita-field full">
           <label for="vc-bita-avances">Avances de la sesión</label>
@@ -3742,7 +3898,16 @@ function resetView() {
   const recordingPaneEl = document.getElementById('vc-recording-pane');
   const extraPaneEl = document.getElementById('vc-extra-pane');
   const extraFileCheck = document.getElementById('vc-extra-file-check');
+  const bitaTypeFieldEl = document.getElementById('vc-bita-type-field');
+  const bitaTypeHelpEl = document.getElementById('vc-bita-type-help');
+  const bitaTypeButtons = Array.from(document.querySelectorAll('[data-vc-bita-type]'));
+  const mentorLabelEl = document.getElementById('vc-bita-mentor-label');
   const detailFields = Array.from(document.querySelectorAll('#vc-bita-form > .vc-bita-grid > .vc-bita-field:not(.vc-recording-section)'));
+  const recordingSectionEl = document.querySelector('#vc-bita-form .vc-recording-section');
+  const bitaStepNavEl = document.getElementById('vc-bita-step-nav');
+  const changeTypeBtn = document.getElementById('vc-bita-change-type');
+  const selectedTypeLabelEl = document.getElementById('vc-bita-selected-type');
+  const formActionsEl = form.querySelector('.vc-bita-actions');
 
   const f = {
     cedula: document.getElementById('vc-bita-cedula'),
@@ -3764,6 +3929,89 @@ function resetView() {
   let mode = 'new';
   let existingSessionNum = null;
   let requiredDocType = '';
+  let selectedTipoAcompanamiento = '';
+
+  function setTipoAcompanamiento(value='') {
+    selectedTipoAcompanamiento = value ? normalizeBitaTypeValue(value) : '';
+    bitaTypeButtons.forEach(btn => {
+      const isActive = selectedTipoAcompanamiento && btn.dataset.vcBitaType === selectedTipoAcompanamiento;
+      btn.classList.toggle('active', !!isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+
+    const isCommercial = selectedTipoAcompanamiento === 'Asesoría comercial';
+    if (mentorLabelEl) {
+      mentorLabelEl.textContent = selectedTipoAcompanamiento
+        ? (isCommercial ? 'Nombre del asesor comercial' : 'Nombre del mentor')
+        : 'Nombre del mentor / asesor comercial';
+    }
+    if (f.mentor) {
+      f.mentor.placeholder = selectedTipoAcompanamiento
+        ? (isCommercial ? 'Nombre completo del asesor comercial' : 'Nombre completo del mentor')
+        : 'Selecciona primero el tipo de bitácora';
+    }
+    if (bitaTypeHelpEl) {
+      bitaTypeHelpEl.textContent = selectedTipoAcompanamiento
+        ? `Bitácora de ${selectedTipoAcompanamiento.toLowerCase()} seleccionada.`
+        : 'Selecciona una opción para continuar con el registro de la sesión.';
+    }
+    if (modalEyebrowEl && !isRequiredDocMode()) {
+      modalEyebrowEl.textContent = selectedTipoAcompanamiento
+        ? `Visión Circular · ${selectedTipoAcompanamiento}`
+        : 'Visión Circular · Bitácora';
+    }
+  }
+
+  function setNewBitacoraStep(step='type') {
+    if (mode !== 'new') return;
+    const choosingType = step === 'type';
+
+    detailFields.forEach(node => {
+      const show = choosingType ? node === bitaTypeFieldEl : node !== bitaTypeFieldEl;
+      node.hidden = !show;
+      node.style.display = show ? '' : 'none';
+    });
+    if (recordingSectionEl) {
+      recordingSectionEl.hidden = choosingType;
+      recordingSectionEl.style.display = choosingType ? 'none' : '';
+    }
+    if (bitaStepNavEl) bitaStepNavEl.hidden = choosingType;
+    if (statusEl) statusEl.hidden = choosingType;
+    if (formActionsEl) formActionsEl.hidden = choosingType;
+
+    if (choosingType) {
+      if (modalEyebrowEl) modalEyebrowEl.textContent = 'Visión Circular · Bitácora';
+      if (titleEl) titleEl.textContent = 'Selecciona el tipo de bitácora';
+      if (subtitleEl) subtitleEl.textContent = 'Elige Mentoría o Asesoría comercial. Después completarás la información de la sesión.';
+      if (bitaTypeHelpEl) bitaTypeHelpEl.textContent = 'Selecciona una opción para continuar.';
+    } else {
+      const isCommercial = selectedTipoAcompanamiento === 'Asesoría comercial';
+      if (modalEyebrowEl) modalEyebrowEl.textContent = `Visión Circular · ${selectedTipoAcompanamiento}`;
+      if (titleEl) titleEl.textContent = 'Registrar nueva bitácora';
+      if (subtitleEl) subtitleEl.textContent = isCommercial
+        ? 'Completa la información de la asesoría comercial. La sesión quedará asociada a la empresa consultada.'
+        : 'Completa la información de la mentoría. La sesión quedará asociada a la empresa consultada.';
+      if (selectedTypeLabelEl) selectedTypeLabelEl.textContent = selectedTipoAcompanamiento;
+    }
+  }
+
+  bitaTypeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      setTipoAcompanamiento(btn.dataset.vcBitaType || '');
+      setStatus('');
+      setNewBitacoraStep('details');
+      if (f.fecha) setTimeout(() => f.fecha.focus(), 40);
+    });
+  });
+
+  if (changeTypeBtn) {
+    changeTypeBtn.addEventListener('click', () => {
+      setTipoAcompanamiento('');
+      setStatus('');
+      setNewBitacoraStep('type');
+      setTimeout(() => { if (bitaTypeButtons[0]) bitaTypeButtons[0].focus(); }, 40);
+    });
+  }
 
   function setSessionFileTab(which='recording') {
     const recordingActive = which !== 'extra';
@@ -3863,7 +4111,7 @@ function resetView() {
 
   function formHasWork() {
     if (isRequiredDocMode()) return !!(f.uploader.value.trim()||f.uploaderEmail.value.trim()||detectedFile||uploadStartedAt);
-    return !!(f.mentor.value.trim()||f.avances.value.trim()||f.compromisos.value.trim()||detectedFile||uploadStartedAt);
+    return !!(selectedTipoAcompanamiento||f.mentor.value.trim()||f.avances.value.trim()||f.compromisos.value.trim()||detectedFile||uploadStartedAt);
   }
   function requestClose() {
     if(saving) return;
@@ -3883,6 +4131,17 @@ function resetView() {
     const existing = isExistingMode();
     const support = isSupportMode();
     const required = isRequiredDocMode();
+
+    // Restablece elementos que el primer paso de una bitácora nueva puede haber ocultado.
+    if (nextMode !== 'new') {
+      if (bitaStepNavEl) bitaStepNavEl.hidden = true;
+      if (statusEl) statusEl.hidden = false;
+      if (formActionsEl) formActionsEl.hidden = false;
+      if (recordingSectionEl) {
+        recordingSectionEl.hidden = false;
+        recordingSectionEl.style.display = '';
+      }
+    }
 
     // Las pestañas de grabación/archivo adicional solo pertenecen a una bitácora nueva.
     // Para Línea Base y Plan de Trabajo Individual se ocultan de forma forzada.
@@ -3922,7 +4181,11 @@ function resetView() {
     f.mentor.required = !required;
     f.avances.required = !required;
     f.compromisos.required = !required;
-    if (modalEyebrowEl) modalEyebrowEl.textContent = required ? 'Visión Circular · Entregable inicial' : 'Visión Circular · Mentoría';
+    if (modalEyebrowEl) {
+      modalEyebrowEl.textContent = required
+        ? 'Visión Circular · Entregable inicial'
+        : (selectedTipoAcompanamiento ? `Visión Circular · ${selectedTipoAcompanamiento}` : 'Visión Circular · Bitácora');
+    }
     if (titleEl) titleEl.textContent = required
       ? `Cargar ${requiredDocType}`
       : (existing ? `${support ? 'Añadir archivo de apoyo' : 'Añadir grabación'} · Sesión ${existingSessionNum || ''}`.trim() : 'Registrar nueva bitácora');
@@ -3947,19 +4210,20 @@ function resetView() {
     if(e) e.preventDefault();
     const currentCedula=(typeof getCurrentCedula==='function'?getCurrentCedula():'')||(typeof data!=='undefined'&&data?.cedula?data.cedula:'');
     if(!currentCedula) { if(typeof toast==='function') toast('Primero selecciona una empresa para asociar la bitácora.',true); return; }
-    existingSessionNum=null; setModalMode('new');
+    existingSessionNum=null; setModalMode('new'); setTipoAcompanamiento('');
     f.cedula.value=currentCedula;
     f.nombre.value=findPrediagValue(['Nombre completo de quien diligencia el formulario','Nombre completo del emprendedor','Nombre completo'])||'—';
     f.empresa.value=findPrediagValue(['Nombre del proyecto o iniciativa','Empresa o emprendimiento','Empresa'])||'—';
     f.fecha.value=localDateTimeValue(); f.mentor.value=''; f.avances.value=''; f.compromisos.value=''; f.uploader.value=''; f.uploaderEmail.value=''; setStatus(''); resetRecording();
-    modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>f.mentor.focus(),50);
+    setNewBitacoraStep('type');
+    modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>{ if(bitaTypeButtons[0]) bitaTypeButtons[0].focus(); },50);
   }
 
   function openExistingRecordingModal(bita, sessionNum) {
     const bitacoraId = Number(bita?.BitacoraID ?? bita?.['BitácoraID'] ?? bita?.bitacoraId);
     if(!Number.isFinite(bitacoraId) || bitacoraId <= 0) { if(typeof toast==='function') toast('No pude identificar la bitácora de esta sesión.',true); return; }
     const currentCedula=String((bita?.['Número de documento del emprendedor'] ?? bita?.['Numero de documento del emprendedor'] ?? bita?.field_1 ?? data?.cedula ?? '')).replace(/\.0+$/,'').trim();
-    existingSessionNum=sessionNum; setModalMode('existing-recording');
+    existingSessionNum=sessionNum; setModalMode('existing-recording'); setTipoAcompanamiento(getBitacoraType(bita));
     f.cedula.value=currentCedula;
     f.nombre.value=String(bita?.['Nombre completo del emprendedor'] ?? bita?.field_2 ?? findPrediagValue(['Nombre completo de quien diligencia el formulario']) ?? '—');
     f.empresa.value=String(bita?.['Empresa o emprendimiento'] ?? bita?.field_3 ?? data?.empresaConsulta ?? '—');
@@ -3978,7 +4242,7 @@ function resetView() {
     const bitacoraId = Number(bita?.BitacoraID ?? bita?.['BitácoraID'] ?? bita?.bitacoraId);
     if(!Number.isFinite(bitacoraId) || bitacoraId <= 0) { if(typeof toast==='function') toast('No pude identificar la bitácora de esta sesión.',true); return; }
     const currentCedula=String((bita?.['Número de documento del emprendedor'] ?? bita?.['Numero de documento del emprendedor'] ?? bita?.field_1 ?? data?.cedula ?? '')).replace(/\.0+$/,'').trim();
-    existingSessionNum=sessionNum; setModalMode('existing-support');
+    existingSessionNum=sessionNum; setModalMode('existing-support'); setTipoAcompanamiento(getBitacoraType(bita));
     f.cedula.value=currentCedula;
     f.nombre.value=String(bita?.['Nombre completo del emprendedor'] ?? bita?.field_2 ?? findPrediagValue(['Nombre completo de quien diligencia el formulario']) ?? '—');
     f.empresa.value=String(bita?.['Empresa o emprendimiento'] ?? bita?.field_3 ?? data?.empresaConsulta ?? '—');
@@ -3999,6 +4263,7 @@ function resetView() {
     if (!currentCedula || !data?.empresaId) { if(typeof toast==='function') toast('Primero selecciona una empresa.', true); return; }
     existingSessionNum = null;
     setModalMode('required-doc', docType);
+    setTipoAcompanamiento('');
     f.cedula.value = String(currentCedula);
     f.nombre.value = String(findPrediagValue(['Nombre completo de quien diligencia el formulario']) || '—');
     f.empresa.value = String(data?.empresaConsulta || '—');
@@ -4029,6 +4294,11 @@ function resetView() {
   document.querySelectorAll('[data-feoracle-link="bitacora"]').forEach(btn=>{ btn.removeAttribute('aria-disabled'); btn.removeAttribute('target'); btn.removeAttribute('rel'); btn.href='#'; btn.onclick=openModal; });
 
   uploadBtn.addEventListener('click',function() {
+    if (mode === 'new' && !selectedTipoAcompanamiento) {
+      setStatus('Selecciona si esta bitácora corresponde a Mentoría o Asesoría comercial.', true);
+      if (bitaTypeButtons[0]) bitaTypeButtons[0].focus();
+      return;
+    }
     const uploader = isRequiredDocMode()
       ? 'Mentor'
       : String(f.uploader.value||f.mentor.value||'').trim();
@@ -4082,7 +4352,13 @@ function resetView() {
   }
 
   form.addEventListener('submit',async function(e) {
-    e.preventDefault(); if(!form.reportValidity()) return;
+    e.preventDefault();
+    if (mode === 'new' && !selectedTipoAcompanamiento) {
+      setStatus('Selecciona si esta bitácora corresponde a Mentoría o Asesoría comercial.', true);
+      if (bitaTypeButtons[0]) bitaTypeButtons[0].focus();
+      return;
+    }
+    if(!form.reportValidity()) return;
     if(!detectedFile) { setRecordingStatus(isRequiredDocMode()?`Debes cargar y confirmar ${requiredDocType} antes de asociarlo.`:(isSupportMode()?'Selecciona un archivo de apoyo antes de asociarlo.':'Debes cargar, verificar y confirmar una grabación antes de guardar.'),'error'); saveBtn.disabled=true; return; }
     saving=true;
     saveBtn.disabled=true;
@@ -4095,7 +4371,7 @@ function resetView() {
           ? 'Asociando el archivo a la bitácora existente…'
           : (createdBitacora ? 'Reintentando asociación de la grabación…' : 'Registrando la bitácora y asociando la grabación…')));
 
-    const payload={cedula:f.cedula.value.trim(),nombre:f.nombre.value.trim(),empresa:f.empresa.value.trim(),fechaSesion:new Date(f.fecha.value).toISOString(),mentor:f.mentor.value.trim(),avances:f.avances.value.trim(),compromisos:f.compromisos.value.trim()};
+    const payload={cedula:f.cedula.value.trim(),nombre:f.nombre.value.trim(),empresa:f.empresa.value.trim(),fechaSesion:new Date(f.fecha.value).toISOString(),mentor:f.mentor.value.trim(),tipoAcompanamiento:selectedTipoAcompanamiento||'Mentoría',avances:f.avances.value.trim(),compromisos:f.compromisos.value.trim()};
     try {
       // Línea Base y Plan de Trabajo Individual NO crean bitácora.
       if(!isRequiredDocMode() && !createdBitacora) {
@@ -4137,6 +4413,7 @@ function resetView() {
       setRecordingStatus('✓ Archivo asociado correctamente.','ok');
       if(typeof toast==='function') toast(successMsg);
 
+      if (mode === 'new' && selectedTipoAcompanamiento) activeBitaType = selectedTipoAcompanamiento;
       await refreshAfterSave(payload);
 
       if(isRequiredDocMode() && requiredDocsComplete()) {
@@ -4146,7 +4423,8 @@ function resetView() {
       if (wantsExtraFile && Number.isFinite(newBitacoraId)) {
         const list = Array.isArray(data?.bitacoras) ? data.bitacoras : [];
         const newBita = list.find(b => Number(b?.BitacoraID ?? b?.['BitácoraID'] ?? b?.bitacoraId) === newBitacoraId);
-        const sessionIndex = list.findIndex(b => Number(b?.BitacoraID ?? b?.['BitácoraID'] ?? b?.bitacoraId) === newBitacoraId);
+        const typedList = newBita ? list.filter(b => getBitacoraType(b) === getBitacoraType(newBita)) : [];
+        const sessionIndex = typedList.findIndex(b => Number(b?.BitacoraID ?? b?.['BitácoraID'] ?? b?.bitacoraId) === newBitacoraId);
         if (newBita) {
           setTimeout(() => openExistingSupportModal(newBita, sessionIndex >= 0 ? sessionIndex + 1 : ''), 250);
         } else {
