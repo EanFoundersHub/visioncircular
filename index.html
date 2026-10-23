@@ -3162,10 +3162,13 @@ function findAssociatedFilesForBitacora(row) {
 
 function isRecordingAssociatedFile(file) {
   const name = vcArchivoValue(file, ['NombreArchivo', 'Title', '{Name}']);
-  if (/\.(mp4|mov|m4v|webm|avi|mkv)$/i.test(name)) return true;
   const tipo = norm(vcArchivoValue(file, ['TipoArchivo', 'tipoArchivo']));
-  const knownSupport = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|csv|txt|jpg|jpeg|png|gif|webp|zip|rar)$/i.test(name);
-  return !knownSupport && tipo.includes('grabacion');
+  // Priorizar el tipo registrado en SharePoint: HOMEXO/HOMEKO y SÓRTER
+  // pueden asociar cualquier formato como Grabación sin que pase a Archivo de apoyo.
+  if (tipo.includes('grabacion')) return true;
+  if (tipo.includes('apoyo') || tipo.includes('linea base') || tipo.includes('plan de trabajo')) return false;
+  // Compatibilidad con grabaciones antiguas sin TipoArchivo.
+  return /\.(mp4|mov|m4v|webm|avi|mkv)$/i.test(name);
 }
 
 function findRecordingForBitacora(row) {
@@ -4038,6 +4041,20 @@ function resetView() {
   function setStatus(msg='',err=false) { statusEl.textContent=msg; statusEl.classList.toggle('error',!!err); }
   function setRecordingStatus(msg,kind='') { recordingStatusEl.textContent=msg; recordingStatusEl.className='vc-recording-status'+(kind?' '+kind:''); }
   function isVideoFile(item) { return /\.(mp4|mov|m4v|webm|avi|mkv)$/i.test(String(item?.NombreArchivo||item?.Title||item?.['{Name}']||'')); }
+  function isMp4File(item) { return /\.mp4$/i.test(String(item?.NombreArchivo||item?.Title||item?.['{Name}']||'')); }
+  function allowsOtherRecordingFormats() {
+    // En el selector actual el ID 3 figura como "Homeko" (el usuario lo llamó HOMEXO)
+    // y el ID 4 como "Sórter". Ambos se tratan como excepciones.
+    const empresaId = Number(data?.empresaId);
+    if (empresaId === 3 || empresaId === 4) return true;
+    const empresa = normalizeLoose(data?.empresaConsulta || '');
+    return /(?:^| )(?:HOMEXO|HOMEKO|SORTER)(?: |$)/.test(empresa);
+  }
+  function recordingFormatHint() {
+    return allowsOtherRecordingFormats()
+      ? 'Excepción de esta empresa: puedes usar MP4 u otro formato (por ejemplo, MOV, MP3, PDF, Word o ZIP) en Grabación. Verifica que el archivo corresponda a la sesión.'
+      : 'Formato obligatorio en Grabación: MP4 (.mp4). Para otros documentos utiliza Archivo adicional.';
+  }
   function fileName(item) { return String(item?.NombreArchivo||item?.Title||item?.['{Name}']||'Archivo sin nombre'); }
   function fileCreatedTime(item) { const t=Date.parse(item?.Created||item?.Modified||item?.FechaCarga||''); return Number.isNaN(t)?0:t; }
   function fileCreatedLabel(item) { const t=fileCreatedTime(item); if(!t) return 'Hora no disponible'; try { return new Intl.DateTimeFormat('es-CO',{dateStyle:'short',timeStyle:'short',timeZone:'America/Bogota'}).format(new Date(t)); } catch(e) { return new Date(t).toLocaleString(); } }
@@ -4056,7 +4073,10 @@ function resetView() {
   function isRequiredDocMode() { return mode === 'required-doc'; }
   function isSupportMode() { return mode === 'existing-support' || isRequiredDocMode(); }
   function isExistingMode() { return mode === 'existing-recording' || mode === 'existing-support' || isRequiredDocMode(); }
-  function candidateMatchesMode(item) { return isSupportMode() ? !isVideoFile(item) : isVideoFile(item); }
+  function candidateMatchesMode(item) {
+    if (isSupportMode()) return !isVideoFile(item); // La carga de archivos de apoyo no cambia.
+    return allowsOtherRecordingFormats() || isMp4File(item);
+  }
   function currentFileLabel() { return isRequiredDocMode() ? requiredDocType : (isSupportMode() ? 'archivo de apoyo' : 'grabación'); }
   function currentTipoArchivo() { return isRequiredDocMode() ? requiredDocType : (isSupportMode() ? 'Archivo de apoyo' : 'Grabación'); }
 
@@ -4069,10 +4089,14 @@ function resetView() {
       ? `Carga ${requiredDocType}, verifica el archivo y confirma que corresponde a esta empresa.`
       : (isSupportMode()
           ? 'El archivo de apoyo es opcional. Cárgalo y verifícalo para asociarlo a esta sesión.'
-          : (isExistingMode()?'Carga una grabación y luego verifícala para asociarla a esta sesión.':'La grabación es obligatoria para guardar esta bitácora.')));
+          : (isExistingMode()?'Carga una grabación y luego verifícala para asociarla a esta sesión. ':'La grabación es obligatoria para guardar esta bitácora. ') + recordingFormatHint()));
   }
 
   function chooseFile(item) {
+    if (!candidateMatchesMode(item)) {
+      setRecordingStatus('El formato del archivo no está permitido para esta sección. ' + recordingFormatHint(), 'error');
+      return;
+    }
     detectedFile=item; clearCandidates(); const name=fileName(item);
     recordingDetectedEl.hidden=false;
     recordingDetectedEl.innerHTML=`<strong>✓ Archivo confirmado</strong>${esc(name)}<br><span style="color:var(--fh-muted)">${isRequiredDocMode() ? 'Se asociará directamente a esta empresa.' : 'Se asociará a esta bitácora al guardar.'}</span>`;
@@ -4086,7 +4110,7 @@ function resetView() {
     const label=currentFileLabel();
     if(!matches.length) {
       clearCandidates();
-      setRecordingStatus(`No encontré ningún ${label} pendiente. Confirma que la carga terminó en OneDrive y pulsa “Verificar” nuevamente.`,'error');
+      setRecordingStatus(`No encontré ningún ${label} pendiente con un formato permitido. Confirma que la carga terminó en OneDrive y pulsa “Verificar” nuevamente. ${isSupportMode() ? '' : recordingFormatHint()}`,'error');
       return false;
     }
     candidatesEl.innerHTML=`<div class="vc-recording-candidates-title">Encontré ${matches.length} ${label}${matches.length===1?'':'s'} pendiente${matches.length===1?'':'s'}. Confirma el correcto:</div>`+matches.map((item,idx)=>`<div class="vc-recording-candidate"><div class="vc-recording-candidate-copy"><div class="vc-recording-candidate-name">${esc(fileName(item))}</div><div class="vc-recording-candidate-meta">Cargado: ${esc(fileCreatedLabel(item))}</div></div><button type="button" class="vc-recording-select" data-vc-file-index="${idx}">Usar este archivo</button></div>`).join('');
@@ -4202,7 +4226,7 @@ function resetView() {
       ? `Al pulsar cargar se abrirá una nueva pestaña de Microsoft OneDrive. Carga ${requiredDocType}, vuelve a esta pestaña y verifica el archivo correcto para asociarlo a la empresa.`
       : (support
           ? 'Carga el archivo en OneDrive, vuelve a esta ventana y pulsa “Ya cargué el archivo · Verificar”. Puede ser PDF, Word, Excel, PowerPoint, imagen u otro soporte no audiovisual.'
-          : 'Carga la grabación en OneDrive, vuelve a esta ventana y pulsa “Ya cargué la grabación · Verificar”. Después confirma el archivo correcto.');
+          : 'Carga la grabación en OneDrive, vuelve a esta ventana y pulsa “Ya cargué la grabación · Verificar”. Después confirma el archivo correcto. ' + recordingFormatHint());
     uploadBtn.textContent = required ? `Cargar ${requiredDocType}` : (support ? 'Cargar archivo de apoyo' : 'Cargar grabación');
   }
 
@@ -4360,6 +4384,11 @@ function resetView() {
     }
     if(!form.reportValidity()) return;
     if(!detectedFile) { setRecordingStatus(isRequiredDocMode()?`Debes cargar y confirmar ${requiredDocType} antes de asociarlo.`:(isSupportMode()?'Selecciona un archivo de apoyo antes de asociarlo.':'Debes cargar, verificar y confirmar una grabación antes de guardar.'),'error'); saveBtn.disabled=true; return; }
+    if (!candidateMatchesMode(detectedFile)) {
+      setRecordingStatus('El archivo confirmado no cumple con los formatos permitidos. ' + recordingFormatHint(), 'error');
+      saveBtn.disabled=true;
+      return;
+    }
     saving=true;
     saveBtn.disabled=true;
     saveBtn.textContent = isRequiredDocMode()
