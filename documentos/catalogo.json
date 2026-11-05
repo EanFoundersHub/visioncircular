@@ -135,5 +135,131 @@
     "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
     "tipo": "pdf",
     "ruta": "documentos/bootcamp/comunicacion-narrativa/Presentación Taller Narrativa EAN ANDI.pdf"
+  },
+  {
+    "id": "innovacion-abierta-asistencia",
+    "titulo": "Informe de asistencia — Innovación Abierta",
+    "descripcion": "Informe de asistencia del entrenamiento de innovación abierta.",
+    "categoria": "Innovación abierta",
+    "subcategoria": "Informe de asistencia",
+    "tipo": "csv",
+    "ruta": "documentos/innovacion-abierta/Entrenamiento en Innovación Abierta - Construye Visión Circular - Informe de asistencia 10-16-26.csv"
+  },
+  {
+    "id": "inteligencia-mercado-asistencia",
+    "titulo": "Informe de asistencia — Inteligencia de Mercado",
+    "descripcion": "Informe de asistencia del entrenamiento de inteligencia de mercado y competencia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Informe de asistencia",
+    "tipo": "csv",
+    "ruta": "documentos/inteligencia-mercado/Etapa 1_ Entrenamiento Inteligencia de Mercado y Competencia_ - Informe de asistencia 9-30-26.csv"
+  },
+  {
+    "id": "oportunidades-asistencia",
+    "titulo": "Informe de asistencia — Oportunidades de innovación",
+    "descripcion": "Informe de asistencia del entrenamiento de oportunidades de innovación y sofisticación.",
+    "categoria": "Oportunidades de innovación y sofisticación",
+    "subcategoria": "Informe de asistencia",
+    "tipo": "csv",
+    "ruta": "documentos/oportunidades-innovacion/Entrenamiento Oportunidades de innovación y sofisticación - Visión Circular - Informe de asistencia 10-14-26.csv"
+  },
+  {
+    "id": "bootcamp-modelo-negocio-duplicado",
+    "titulo": "Modelo de Negocio de Impacto y Escalabilidad — copia adicional",
+    "descripcion": "Copia adicional incluida en la carpeta original del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
+    "tipo": "pdf",
+    "ruta": "documentos/bootcamp/modelo-negocio/Modelo de Negocio de Impacto y Escalables (1).pdf"
+  },
+  {
+    "id": "bootcamp-modelo-negocio-asistencia-1",
+    "titulo": "Asistencia — Modelo de negocio, parte 1",
+    "descripcion": "Informe de asistencia de la primera parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/modelo-negocio/Bootcamp fortalecimiento VC- Modelo de negocio de Impacto y escalabilidad Parte 1 - Informe de asistencia 8-26-26.csv"
+  },
+  {
+    "id": "bootcamp-modelo-negocio-asistencia-2",
+    "titulo": "Asistencia — Modelo de negocio, parte 2",
+    "descripcion": "Informe de asistencia de la segunda parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/modelo-negocio/Bootcamp fortalecimiento VC- Modelo de negocio de Impacto y escalabilidad Parte 2 - Informe de asistencia 8-28-26.csv"
+  },
+  {
+    "id": "bootcamp-fundraising-asistencia-1",
+    "titulo": "Asistencia — Fundraising, parte 1",
+    "descripcion": "Informe de asistencia de la primera parte del entrenamiento de Fundraising.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 2 · Fundraising",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/fundraising/Bootcamp fortalecimiento VC- Fundraising Parte 1 - Informe de asistencia 9-02-26.csv"
+  },
+  {
+    "id": "bootcamp-fundraising-asistencia-2",
+    "titulo": "Asistencia — Fundraising, parte 2",
+    "descripcion": "Informe de asistencia de la segunda parte del entrenamiento de Fundraising.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 2 · Fundraising",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/fundraising/Bootcamp fortalecimiento VC- Fundraising Parte 2 - Informe de asistencia 9-04-26.csv"
+  },
+  {
+    "id": "bootcamp-medicion-asistencia-1",
+    "titulo": "Asistencia — Medición de Impacto, parte 1",
+    "descripcion": "Informe de asistencia de la primera parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 3 · Medición de impacto",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/medicion-impacto/Bootcamp fortalecimiento VC- Medición de Impacto Parte 1 - Informe de asistencia 9-09-26.csv"
+  },
+  {
+    "id": "bootcamp-medicion-asistencia-2",
+    "titulo": "Asistencia — Medición de Impacto, parte 2",
+    "descripcion": "Informe de asistencia de la segunda parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 3 · Medición de impacto",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/medicion-impacto/Bootcamp fortalecimiento VC - Medición de Impacto- Parte 2 - Informe de asistencia 9-11-26.csv"
+  },
+  {
+    "id": "bootcamp-narrativa-asistencia-1",
+    "titulo": "Asistencia — Comunicación y Narrativa, parte 1",
+    "descripcion": "Informe de asistencia de la primera parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/comunicacion-narrativa/Bootcamp fortalecimiento VC- Comunicación y Narrativa de Impacto Parte 1 - Informe de asistencia 9-17-26.csv"
+  },
+  {
+    "id": "bootcamp-narrativa-asistencia-2",
+    "titulo": "Asistencia — Comunicación y Narrativa, parte 2",
+    "descripcion": "Informe de asistencia de la segunda parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/comunicacion-narrativa/Bootcamp fortalecimiento VC- Comunicación y Narrativa de Impacto- Parte 2 - Informe de asistencia 9-18-26.csv"
+  },
+  {
+    "id": "bootcamp-cronograma-mentores",
+    "titulo": "Cronograma del Bootcamp y asignación de mentores",
+    "descripcion": "Cronograma y asignación de mentores del Bootcamp de Fortalecimiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Cronogramas y recursos adicionales",
+    "tipo": "xlsx",
+    "ruta": "documentos/bootcamp/recursos-adicionales/Cronograma Bootcamp_Asignación mentores.xlsx"
+  },
+  {
+    "id": "bootcamp-resultados-satisfaccion",
+    "titulo": "Resultados de satisfacción del Bootcamp",
+    "descripcion": "Soporte de resultados de satisfacción del Bootcamp Construye Visión Circular.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Cronogramas y recursos adicionales",
+    "tipo": "xlsx",
+    "ruta": "documentos/bootcamp/recursos-adicionales/Soporte_Resultados_Satisfaccion_Bootcamp_Construye_Vision_Circular.xlsx"
   }
 ]
