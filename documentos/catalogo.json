@@ -1,1 +1,353 @@
-[]
+[
+  {
+    "id": "innovacion-abierta-presentacion",
+    "titulo": "Entrenamiento en Innovación Abierta",
+    "descripcion": "Presentación del entrenamiento de innovación abierta del programa Construye Visión Circular.",
+    "categoria": "Innovación abierta",
+    "subcategoria": "Presentación",
+    "tipo": "pdf",
+    "ruta": "documentos/innovacion-abierta/Entrenamiento_Innovacion_Abierta.pdf"
+  },
+  {
+    "id": "inteligencia-mercado-presentacion",
+    "titulo": "Business Intelligence para la Economía Circular",
+    "descripcion": "Presentación del entrenamiento de inteligencia de mercado y análisis de competencia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Presentación",
+    "tipo": "pptx",
+    "ruta": "documentos/inteligencia-mercado/Business Intelligence para la Economía Circular.pptx"
+  },
+  {
+    "id": "inteligencia-mercado-grabacion",
+    "titulo": "Grabación — Inteligencia de Mercado y Competencia",
+    "descripcion": "Grabación de la primera etapa del entrenamiento.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Grabación de entrenamiento",
+    "tipo": "mp4",
+    "ruta": "documentos/inteligencia-mercado/Etapa 1 Entrenamiento Inteligencia de Mercado y Competencia_-20260930_135854UTC-Meeting Recording.mp4",
+    "fecha": "2026-09-30"
+  },
+  {
+    "id": "inteligencia-mercado-business-dynamics",
+    "titulo": "Business Dynamics — Colombia",
+    "descripcion": "Documento de investigación de mercado sobre la dinámica empresarial en Colombia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Investigación de mercado",
+    "tipo": "pdf",
+    "ruta": "documentos/inteligencia-mercado/Business_Dynamics_Colombia.pdf"
+  },
+  {
+    "id": "inteligencia-mercado-consumer-lifestyles",
+    "titulo": "Consumer Lifestyles in Colombia",
+    "descripcion": "Documento de investigación sobre estilos de vida del consumidor en Colombia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Investigación de mercado",
+    "tipo": "pdf",
+    "ruta": "documentos/inteligencia-mercado/Consumer_Lifestyles_in_Colombia.pdf"
+  },
+  {
+    "id": "inteligencia-mercado-consumer-types",
+    "titulo": "Consumer Types in Colombia",
+    "descripcion": "Documento de investigación sobre tipos de consumidores en Colombia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Investigación de mercado",
+    "tipo": "pdf",
+    "ruta": "documentos/inteligencia-mercado/Consumer_Types_in_Colombia.pdf"
+  },
+  {
+    "id": "inteligencia-mercado-consumer-values",
+    "titulo": "Consumer Values and Behaviour in Colombia",
+    "descripcion": "Documento de investigación sobre valores y comportamiento del consumidor.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Investigación de mercado",
+    "tipo": "pdf",
+    "ruta": "documentos/inteligencia-mercado/Consumer_Values_and_Behaviour_in_Colombia.pdf"
+  },
+  {
+    "id": "inteligencia-mercado-income-expenditure",
+    "titulo": "Income and Expenditure — Colombia",
+    "descripcion": "Documento de investigación sobre ingresos y gastos en Colombia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Investigación de mercado",
+    "tipo": "pdf",
+    "ruta": "documentos/inteligencia-mercado/Income_and_Expenditure_Colombia.pdf"
+  },
+  {
+    "id": "oportunidades-presentacion",
+    "titulo": "Oportunidades de innovación y sofisticación",
+    "descripcion": "Presentación del entrenamiento de oportunidades de innovación y sofisticación.",
+    "categoria": "Oportunidades de innovación y sofisticación",
+    "subcategoria": "Presentación",
+    "tipo": "pdf",
+    "ruta": "documentos/oportunidades-innovacion/Presentación EAN_visoncircular_ innovacion.pdf"
+  },
+  {
+    "id": "oportunidades-link-taller",
+    "titulo": "Enlace del taller de oportunidades de innovación",
+    "descripcion": "Documento complementario del taller.",
+    "categoria": "Oportunidades de innovación y sofisticación",
+    "subcategoria": "Documento complementario",
+    "tipo": "docx",
+    "ruta": "documentos/oportunidades-innovacion/Link taller.docx"
+  },
+  {
+    "id": "bootcamp-modelo-negocio",
+    "titulo": "Modelo de Negocio de Impacto y Escalabilidad",
+    "descripcion": "Material del primer entrenamiento del Bootcamp de Fortalecimiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
+    "tipo": "pdf",
+    "ruta": "documentos/bootcamp/modelo-negocio/Modelo de Negocio de Impacto y Escalables.pdf"
+  },
+  {
+    "id": "bootcamp-fundraising-presentacion",
+    "titulo": "Nuevas dinámicas de financiación para el impacto social y ambiental",
+    "descripcion": "Material del entrenamiento de Fundraising.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 2 · Fundraising",
+    "tipo": "pdf",
+    "ruta": "documentos/bootcamp/fundraising/Nuevas Dinámicas de Financiación para el Impacto Social y Ambiental-Taller1.pptx (3) (1).pdf"
+  },
+  {
+    "id": "bootcamp-fundraising-grabacion",
+    "titulo": "Grabación — Fundraising, parte 1",
+    "descripcion": "Grabación de la primera parte del entrenamiento de Fundraising.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 2 · Fundraising",
+    "tipo": "mp4",
+    "ruta": "documentos/bootcamp/fundraising/Bootcamp fortalecimiento VC- Fundraising Parte 1-20260902_140101UTC-Meeting Recording.mp4",
+    "fecha": "2026-09-02"
+  },
+  {
+    "id": "bootcamp-medicion-impacto",
+    "titulo": "Entrenamiento de Medición de Impacto",
+    "descripcion": "Presentación del tercer entrenamiento del Bootcamp de Fortalecimiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 3 · Medición de impacto",
+    "tipo": "pdf",
+    "ruta": "documentos/bootcamp/medicion-impacto/Entrenamiento Medición de Impacto - Programa Construye Visión Circular.pdf"
+  },
+  {
+    "id": "bootcamp-comunicacion-narrativa",
+    "titulo": "Taller de Comunicación y Narrativa",
+    "descripcion": "Presentación del cuarto entrenamiento del Bootcamp de Fortalecimiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
+    "tipo": "pdf",
+    "ruta": "documentos/bootcamp/comunicacion-narrativa/Presentación Taller Narrativa EAN ANDI.pdf"
+  },
+  {
+    "id": "innovacion-abierta-asistencia",
+    "titulo": "Informe de asistencia — Innovación Abierta",
+    "descripcion": "Informe de asistencia del entrenamiento de innovación abierta.",
+    "categoria": "Innovación abierta",
+    "subcategoria": "Informe de asistencia",
+    "tipo": "csv",
+    "ruta": "documentos/innovacion-abierta/Entrenamiento en Innovación Abierta - Construye Visión Circular - Informe de asistencia 10-16-26.csv"
+  },
+  {
+    "id": "inteligencia-mercado-asistencia",
+    "titulo": "Informe de asistencia — Inteligencia de Mercado",
+    "descripcion": "Informe de asistencia del entrenamiento de inteligencia de mercado y competencia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Informe de asistencia",
+    "tipo": "csv",
+    "ruta": "documentos/inteligencia-mercado/Etapa 1_ Entrenamiento Inteligencia de Mercado y Competencia_ - Informe de asistencia 9-30-26.csv"
+  },
+  {
+    "id": "oportunidades-asistencia",
+    "titulo": "Informe de asistencia — Oportunidades de innovación",
+    "descripcion": "Informe de asistencia del entrenamiento de oportunidades de innovación y sofisticación.",
+    "categoria": "Oportunidades de innovación y sofisticación",
+    "subcategoria": "Informe de asistencia",
+    "tipo": "csv",
+    "ruta": "documentos/oportunidades-innovacion/Entrenamiento Oportunidades de innovación y sofisticación - Visión Circular - Informe de asistencia 10-14-26.csv"
+  },
+  {
+    "id": "bootcamp-modelo-negocio-duplicado",
+    "titulo": "Modelo de Negocio de Impacto y Escalabilidad — copia adicional",
+    "descripcion": "Copia adicional incluida en la carpeta original del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
+    "tipo": "pdf",
+    "ruta": "documentos/bootcamp/modelo-negocio/Modelo de Negocio de Impacto y Escalables (1).pdf"
+  },
+  {
+    "id": "bootcamp-modelo-negocio-asistencia-1",
+    "titulo": "Asistencia — Modelo de negocio, parte 1",
+    "descripcion": "Informe de asistencia de la primera parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/modelo-negocio/Bootcamp fortalecimiento VC- Modelo de negocio de Impacto y escalabilidad Parte 1 - Informe de asistencia 8-26-26.csv"
+  },
+  {
+    "id": "bootcamp-modelo-negocio-asistencia-2",
+    "titulo": "Asistencia — Modelo de negocio, parte 2",
+    "descripcion": "Informe de asistencia de la segunda parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/modelo-negocio/Bootcamp fortalecimiento VC- Modelo de negocio de Impacto y escalabilidad Parte 2 - Informe de asistencia 8-28-26.csv"
+  },
+  {
+    "id": "bootcamp-fundraising-asistencia-1",
+    "titulo": "Asistencia — Fundraising, parte 1",
+    "descripcion": "Informe de asistencia de la primera parte del entrenamiento de Fundraising.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 2 · Fundraising",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/fundraising/Bootcamp fortalecimiento VC- Fundraising Parte 1 - Informe de asistencia 9-02-26.csv"
+  },
+  {
+    "id": "bootcamp-fundraising-asistencia-2",
+    "titulo": "Asistencia — Fundraising, parte 2",
+    "descripcion": "Informe de asistencia de la segunda parte del entrenamiento de Fundraising.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 2 · Fundraising",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/fundraising/Bootcamp fortalecimiento VC- Fundraising Parte 2 - Informe de asistencia 9-04-26.csv"
+  },
+  {
+    "id": "bootcamp-medicion-asistencia-1",
+    "titulo": "Asistencia — Medición de Impacto, parte 1",
+    "descripcion": "Informe de asistencia de la primera parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 3 · Medición de impacto",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/medicion-impacto/Bootcamp fortalecimiento VC- Medición de Impacto Parte 1 - Informe de asistencia 9-09-26.csv"
+  },
+  {
+    "id": "bootcamp-medicion-asistencia-2",
+    "titulo": "Asistencia — Medición de Impacto, parte 2",
+    "descripcion": "Informe de asistencia de la segunda parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 3 · Medición de impacto",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/medicion-impacto/Bootcamp fortalecimiento VC - Medición de Impacto- Parte 2 - Informe de asistencia 9-11-26.csv"
+  },
+  {
+    "id": "bootcamp-narrativa-asistencia-1",
+    "titulo": "Asistencia — Comunicación y Narrativa, parte 1",
+    "descripcion": "Informe de asistencia de la primera parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/comunicacion-narrativa/Bootcamp fortalecimiento VC- Comunicación y Narrativa de Impacto Parte 1 - Informe de asistencia 9-17-26.csv"
+  },
+  {
+    "id": "bootcamp-narrativa-asistencia-2",
+    "titulo": "Asistencia — Comunicación y Narrativa, parte 2",
+    "descripcion": "Informe de asistencia de la segunda parte del entrenamiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
+    "tipo": "csv",
+    "ruta": "documentos/bootcamp/comunicacion-narrativa/Bootcamp fortalecimiento VC- Comunicación y Narrativa de Impacto- Parte 2 - Informe de asistencia 9-18-26.csv"
+  },
+  {
+    "id": "bootcamp-cronograma-mentores",
+    "titulo": "Cronograma del Bootcamp y asignación de mentores",
+    "descripcion": "Cronograma y asignación de mentores del Bootcamp de Fortalecimiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Cronogramas y recursos adicionales",
+    "tipo": "xlsx",
+    "ruta": "documentos/bootcamp/recursos-adicionales/Cronograma Bootcamp_Asignación mentores.xlsx"
+  },
+  {
+    "id": "bootcamp-resultados-satisfaccion",
+    "titulo": "Resultados de satisfacción del Bootcamp",
+    "descripcion": "Soporte de resultados de satisfacción del Bootcamp Construye Visión Circular.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Cronogramas y recursos adicionales",
+    "tipo": "xlsx",
+    "ruta": "documentos/bootcamp/recursos-adicionales/Soporte_Resultados_Satisfaccion_Bootcamp_Construye_Vision_Circular.xlsx"
+  },
+  {
+    "id": "innovacion-abierta-grabacion",
+    "titulo": "Grabación — Innovación Abierta",
+    "descripcion": "Grabación completa del entrenamiento de innovación abierta.",
+    "categoria": "Innovación abierta",
+    "subcategoria": "Grabación del entrenamiento",
+    "tipo": "mp4",
+    "videoRef": "innovacion-abierta",
+    "fecha": "2026-10-16", "duracionMinutos": 188.9, "tamanoBytes": 277880848,
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
+  },
+  {
+    "id": "oportunidades-innovacion-grabacion",
+    "titulo": "Grabación — Oportunidades de innovación y sofisticación",
+    "descripcion": "Grabación completa del entrenamiento de oportunidades de innovación y sofisticación.",
+    "categoria": "Oportunidades de innovación y sofisticación",
+    "subcategoria": "Grabación del entrenamiento",
+    "tipo": "mp4",
+    "videoRef": "oportunidades-innovacion",
+    "fecha": "2026-10-14", "duracionMinutos": 107.7, "tamanoBytes": 670166793,
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
+  },
+  {
+    "id": "bootcamp-modelo-negocio-grabacion-1",
+    "titulo": "Grabación — Modelo de negocio, parte 1",
+    "descripcion": "Primera parte del entrenamiento de modelo de negocio de impacto y escalabilidad.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
+    "tipo": "mp4",
+    "videoRef": "modelo-negocio-1",
+    "fecha": "2026-08-26", "duracionMinutos": 135.4, "tamanoBytes": 580294405,
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
+  },
+  {
+    "id": "bootcamp-modelo-negocio-grabacion-2",
+    "titulo": "Grabación — Modelo de negocio, parte 2",
+    "descripcion": "Segunda parte del entrenamiento de modelo de negocio de impacto y escalabilidad.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
+    "tipo": "mp4",
+    "videoRef": "modelo-negocio-2",
+    "fecha": "2026-08-28", "duracionMinutos": 89.0, "tamanoBytes": 560339611,
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
+  },
+  {
+    "id": "bootcamp-medicion-impacto-grabacion-1",
+    "titulo": "Grabación — Medición de Impacto, parte 1",
+    "descripcion": "Primera parte del entrenamiento de medición de impacto.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 3 · Medición de impacto",
+    "tipo": "mp4",
+    "videoRef": "medicion-impacto-1",
+    "fecha": "2026-09-09", "duracionMinutos": 95.4, "tamanoBytes": 165356948,
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
+  },
+  {
+    "id": "bootcamp-medicion-impacto-grabacion-2",
+    "titulo": "Grabación — Medición de Impacto, parte 2",
+    "descripcion": "Segunda parte del entrenamiento de medición de impacto.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 3 · Medición de impacto",
+    "tipo": "mp4",
+    "videoRef": "medicion-impacto-2",
+    "fecha": "2026-09-11", "duracionMinutos": 108.9, "tamanoBytes": 775996669,
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
+  },
+  {
+    "id": "bootcamp-comunicacion-narrativa-grabacion-1",
+    "titulo": "Grabación — Comunicación y Narrativa, parte 1",
+    "descripcion": "Primera parte del entrenamiento de comunicación y narrativa de impacto.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
+    "tipo": "mp4",
+    "videoRef": "comunicacion-narrativa-1",
+    "fecha": "2026-09-17", "duracionMinutos": 109.7, "tamanoBytes": 116613044,
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
+  },
+  {
+    "id": "bootcamp-comunicacion-narrativa-grabacion-2",
+    "titulo": "Grabación — Comunicación y Narrativa, parte 2",
+    "descripcion": "Segunda parte del entrenamiento de comunicación y narrativa de impacto.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
+    "tipo": "mp4",
+    "videoRef": "comunicacion-narrativa-2",
+    "fecha": "2026-09-18", "duracionMinutos": 109.7, "tamanoBytes": 116613044,
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
+  }
+]

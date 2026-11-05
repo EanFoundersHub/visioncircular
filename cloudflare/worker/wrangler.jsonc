@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vision-circular-videos",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-05",
+  "workers_dev": true,
+  "r2_buckets": [
+    {
+      "binding": "VIDEOS",
+      "bucket_name": "vision-circular-videos"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "LOGIN_LIMITER",
+      "namespace_id": "41001",
+      "simple": { "limit": 5, "period": 60 }
+    },
+    {
+      "name": "MEDIA_LIMITER",
+      "namespace_id": "41002",
+      "simple": { "limit": 300, "period": 60 }
+    }
+  ],
+  "secrets": {
+    "required": ["ACCESS_CODE", "SESSION_SECRET", "VIDEO_MAP"]
+  }
+}
