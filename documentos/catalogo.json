@@ -269,9 +269,9 @@
     "categoria": "Innovación abierta",
     "subcategoria": "Grabación del entrenamiento",
     "tipo": "mp4",
-    "r2Key": "innovacion-abierta/entrenamiento-innovacion-abierta-2026-10-16.mp4",
+    "videoRef": "innovacion-abierta",
     "fecha": "2026-10-16", "duracionMinutos": 188.9, "tamanoBytes": 277880848,
-    "codecVideo": "h264", "codecAudio": "aac", "estado": "pendiente_acceso_seguro"
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   },
   {
     "id": "oportunidades-innovacion-grabacion",
@@ -280,9 +280,9 @@
     "categoria": "Oportunidades de innovación y sofisticación",
     "subcategoria": "Grabación del entrenamiento",
     "tipo": "mp4",
-    "r2Key": "oportunidades-innovacion/entrenamiento-oportunidades-innovacion-2026-10-14.mp4",
+    "videoRef": "oportunidades-innovacion",
     "fecha": "2026-10-14", "duracionMinutos": 107.7, "tamanoBytes": 670166793,
-    "codecVideo": "h264", "codecAudio": "aac", "estado": "pendiente_acceso_seguro"
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   },
   {
     "id": "bootcamp-modelo-negocio-grabacion-1",
@@ -291,9 +291,9 @@
     "categoria": "Bootcamp Fortalecimiento",
     "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
     "tipo": "mp4",
-    "r2Key": "bootcamp-fortalecimiento/modelo-negocio-parte-1-2026-08-26.mp4",
+    "videoRef": "modelo-negocio-1",
     "fecha": "2026-08-26", "duracionMinutos": 135.4, "tamanoBytes": 580294405,
-    "codecVideo": "h264", "codecAudio": "aac", "estado": "pendiente_acceso_seguro"
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   },
   {
     "id": "bootcamp-modelo-negocio-grabacion-2",
@@ -302,9 +302,9 @@
     "categoria": "Bootcamp Fortalecimiento",
     "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
     "tipo": "mp4",
-    "r2Key": "bootcamp-fortalecimiento/modelo-negocio-parte-2-2026-08-28.mp4",
+    "videoRef": "modelo-negocio-2",
     "fecha": "2026-08-28", "duracionMinutos": 89.0, "tamanoBytes": 560339611,
-    "codecVideo": "h264", "codecAudio": "aac", "estado": "pendiente_acceso_seguro"
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   },
   {
     "id": "bootcamp-medicion-impacto-grabacion-1",
@@ -313,9 +313,9 @@
     "categoria": "Bootcamp Fortalecimiento",
     "subcategoria": "Entrenamiento 3 · Medición de impacto",
     "tipo": "mp4",
-    "r2Key": "bootcamp-fortalecimiento/medicion-impacto-parte-1-2026-09-09.mp4",
+    "videoRef": "medicion-impacto-1",
     "fecha": "2026-09-09", "duracionMinutos": 95.4, "tamanoBytes": 165356948,
-    "codecVideo": "h264", "codecAudio": "aac", "estado": "pendiente_acceso_seguro"
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   },
   {
     "id": "bootcamp-medicion-impacto-grabacion-2",
@@ -324,9 +324,9 @@
     "categoria": "Bootcamp Fortalecimiento",
     "subcategoria": "Entrenamiento 3 · Medición de impacto",
     "tipo": "mp4",
-    "r2Key": "bootcamp-fortalecimiento/medicion-impacto-parte-2-2026-09-11.mp4",
+    "videoRef": "medicion-impacto-2",
     "fecha": "2026-09-11", "duracionMinutos": 108.9, "tamanoBytes": 775996669,
-    "codecVideo": "h264", "codecAudio": "aac", "estado": "pendiente_acceso_seguro"
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   },
   {
     "id": "bootcamp-comunicacion-narrativa-grabacion-1",
@@ -335,9 +335,9 @@
     "categoria": "Bootcamp Fortalecimiento",
     "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
     "tipo": "mp4",
-    "r2Key": "bootcamp-fortalecimiento/comunicacion-narrativa-parte-1-2026-09-17.mp4",
+    "videoRef": "comunicacion-narrativa-1",
     "fecha": "2026-09-17", "duracionMinutos": 109.7, "tamanoBytes": 116613044,
-    "codecVideo": "h264", "codecAudio": "aac", "estado": "pendiente_acceso_seguro"
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   },
   {
     "id": "bootcamp-comunicacion-narrativa-grabacion-2",
@@ -346,8 +346,8 @@
     "categoria": "Bootcamp Fortalecimiento",
     "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
     "tipo": "mp4",
-    "r2Key": "bootcamp-fortalecimiento/comunicacion-narrativa-parte-2-2026-09-18.mp4",
+    "videoRef": "comunicacion-narrativa-2",
     "fecha": "2026-09-18", "duracionMinutos": 109.7, "tamanoBytes": 116613044,
-    "codecVideo": "h264", "codecAudio": "aac", "estado": "pendiente_acceso_seguro"
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   }
 ]
