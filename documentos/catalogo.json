@@ -1,1 +1,139 @@
-[]
+[
+  {
+    "id": "innovacion-abierta-presentacion",
+    "titulo": "Entrenamiento en Innovación Abierta",
+    "descripcion": "Presentación del entrenamiento de innovación abierta del programa Construye Visión Circular.",
+    "categoria": "Innovación abierta",
+    "subcategoria": "Presentación",
+    "tipo": "pdf",
+    "ruta": "documentos/innovacion-abierta/Entrenamiento_Innovacion_Abierta.pdf"
+  },
+  {
+    "id": "inteligencia-mercado-presentacion",
+    "titulo": "Business Intelligence para la Economía Circular",
+    "descripcion": "Presentación del entrenamiento de inteligencia de mercado y análisis de competencia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Presentación",
+    "tipo": "pptx",
+    "ruta": "documentos/inteligencia-mercado/Business Intelligence para la Economía Circular.pptx"
+  },
+  {
+    "id": "inteligencia-mercado-grabacion",
+    "titulo": "Grabación — Inteligencia de Mercado y Competencia",
+    "descripcion": "Grabación de la primera etapa del entrenamiento.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Grabación de entrenamiento",
+    "tipo": "mp4",
+    "ruta": "documentos/inteligencia-mercado/Etapa 1 Entrenamiento Inteligencia de Mercado y Competencia_-20260930_135854UTC-Meeting Recording.mp4",
+    "fecha": "2026-09-30"
+  },
+  {
+    "id": "inteligencia-mercado-business-dynamics",
+    "titulo": "Business Dynamics — Colombia",
+    "descripcion": "Documento de investigación de mercado sobre la dinámica empresarial en Colombia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Investigación de mercado",
+    "tipo": "pdf",
+    "ruta": "documentos/inteligencia-mercado/Business_Dynamics_Colombia.pdf"
+  },
+  {
+    "id": "inteligencia-mercado-consumer-lifestyles",
+    "titulo": "Consumer Lifestyles in Colombia",
+    "descripcion": "Documento de investigación sobre estilos de vida del consumidor en Colombia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Investigación de mercado",
+    "tipo": "pdf",
+    "ruta": "documentos/inteligencia-mercado/Consumer_Lifestyles_in_Colombia.pdf"
+  },
+  {
+    "id": "inteligencia-mercado-consumer-types",
+    "titulo": "Consumer Types in Colombia",
+    "descripcion": "Documento de investigación sobre tipos de consumidores en Colombia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Investigación de mercado",
+    "tipo": "pdf",
+    "ruta": "documentos/inteligencia-mercado/Consumer_Types_in_Colombia.pdf"
+  },
+  {
+    "id": "inteligencia-mercado-consumer-values",
+    "titulo": "Consumer Values and Behaviour in Colombia",
+    "descripcion": "Documento de investigación sobre valores y comportamiento del consumidor.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Investigación de mercado",
+    "tipo": "pdf",
+    "ruta": "documentos/inteligencia-mercado/Consumer_Values_and_Behaviour_in_Colombia.pdf"
+  },
+  {
+    "id": "inteligencia-mercado-income-expenditure",
+    "titulo": "Income and Expenditure — Colombia",
+    "descripcion": "Documento de investigación sobre ingresos y gastos en Colombia.",
+    "categoria": "Inteligencia de Mercado y Análisis de Competencia",
+    "subcategoria": "Investigación de mercado",
+    "tipo": "pdf",
+    "ruta": "documentos/inteligencia-mercado/Income_and_Expenditure_Colombia.pdf"
+  },
+  {
+    "id": "oportunidades-presentacion",
+    "titulo": "Oportunidades de innovación y sofisticación",
+    "descripcion": "Presentación del entrenamiento de oportunidades de innovación y sofisticación.",
+    "categoria": "Oportunidades de innovación y sofisticación",
+    "subcategoria": "Presentación",
+    "tipo": "pdf",
+    "ruta": "documentos/oportunidades-innovacion/Presentación EAN_visoncircular_ innovacion.pdf"
+  },
+  {
+    "id": "oportunidades-link-taller",
+    "titulo": "Enlace del taller de oportunidades de innovación",
+    "descripcion": "Documento complementario del taller.",
+    "categoria": "Oportunidades de innovación y sofisticación",
+    "subcategoria": "Documento complementario",
+    "tipo": "docx",
+    "ruta": "documentos/oportunidades-innovacion/Link taller.docx"
+  },
+  {
+    "id": "bootcamp-modelo-negocio",
+    "titulo": "Modelo de Negocio de Impacto y Escalabilidad",
+    "descripcion": "Material del primer entrenamiento del Bootcamp de Fortalecimiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 1 · Modelo de negocio de impacto",
+    "tipo": "pdf",
+    "ruta": "documentos/bootcamp/modelo-negocio/Modelo de Negocio de Impacto y Escalables.pdf"
+  },
+  {
+    "id": "bootcamp-fundraising-presentacion",
+    "titulo": "Nuevas dinámicas de financiación para el impacto social y ambiental",
+    "descripcion": "Material del entrenamiento de Fundraising.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 2 · Fundraising",
+    "tipo": "pdf",
+    "ruta": "documentos/bootcamp/fundraising/Nuevas Dinámicas de Financiación para el Impacto Social y Ambiental-Taller1.pptx (3) (1).pdf"
+  },
+  {
+    "id": "bootcamp-fundraising-grabacion",
+    "titulo": "Grabación — Fundraising, parte 1",
+    "descripcion": "Grabación de la primera parte del entrenamiento de Fundraising.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 2 · Fundraising",
+    "tipo": "mp4",
+    "ruta": "documentos/bootcamp/fundraising/Bootcamp fortalecimiento VC- Fundraising Parte 1-20260902_140101UTC-Meeting Recording.mp4",
+    "fecha": "2026-09-02"
+  },
+  {
+    "id": "bootcamp-medicion-impacto",
+    "titulo": "Entrenamiento de Medición de Impacto",
+    "descripcion": "Presentación del tercer entrenamiento del Bootcamp de Fortalecimiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 3 · Medición de impacto",
+    "tipo": "pdf",
+    "ruta": "documentos/bootcamp/medicion-impacto/Entrenamiento Medición de Impacto - Programa Construye Visión Circular.pdf"
+  },
+  {
+    "id": "bootcamp-comunicacion-narrativa",
+    "titulo": "Taller de Comunicación y Narrativa",
+    "descripcion": "Presentación del cuarto entrenamiento del Bootcamp de Fortalecimiento.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
+    "tipo": "pdf",
+    "ruta": "documentos/bootcamp/comunicacion-narrativa/Presentación Taller Narrativa EAN ANDI.pdf"
+  }
+]
