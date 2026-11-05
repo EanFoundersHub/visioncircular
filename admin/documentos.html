@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Biblioteca documental · Visión Circular</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--dark:#055382;--blue:#69A6D8;--aqua:#47BEC2;--cream:#F6F0E5;--ink:#171716}
+*{box-sizing:border-box}body{margin:0;font-family:Poppins,Arial,sans-serif;background:var(--cream);color:var(--ink)}
+header{background:#fff;border-bottom:4px solid var(--aqua);padding:22px max(20px,calc((100vw - 1100px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-size:19px;font-weight:700;color:var(--dark)}a{color:var(--dark)}.back{font-size:13px;font-weight:600}
+main{max-width:1100px;margin:30px auto;padding:0 20px}h1{font-size:clamp(26px,4vw,37px);color:var(--dark);margin:4px 0 6px}.intro{color:#56626b;margin-bottom:23px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}input,select{padding:13px 14px;border:1px solid #d6dde2;border-radius:12px;font:inherit;min-width:200px;flex:1;background:white}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{background:white;border:1px solid #e2e7e9;border-radius:16px;padding:20px;box-shadow:0 7px 22px #0c4b6510;display:flex;flex-direction:column}
+.tag{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#08767c;font-weight:700}h2{font-size:17px;margin:11px 0 7px;overflow-wrap:anywhere}.desc{font-size:13px;color:#66717a;line-height:1.6;flex:1}.actions{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}.btn{border:0;border-radius:9px;background:var(--dark);padding:10px 13px;color:white;text-decoration:none;font-size:12px;font-weight:600}.btn.secondary{background:#eaf5fc;color:var(--dark)}
+.empty{background:white;border:1px dashed #b9cfd7;border-radius:14px;padding:30px;text-align:center;color:#52616b;grid-column:1/-1}small{color:#718088}
+</style></head><body><header><div class="brand">Visión Circular · ANDI<br><small>Repositorio de consulta</small></div><a class="back" href="./">← Volver al panel administrativo</a></header>
+<main><div class="tag">Biblioteca documental</div><h1>Documentos y recursos</h1><p class="intro">Material de consulta para los equipos de Visión Circular y ANDI. Los archivos se alojan en el repositorio del proyecto.</p>
+<div class="controls"><input id="search" type="search" aria-label="Buscar documentos" placeholder="Buscar documento..."><select id="category" aria-label="Filtrar categoría"><option value="">Todas las categorías</option></select></div>
+<div id="library" class="grid" aria-live="polite"><div class="empty">Cargando biblioteca…</div></div></main>
+<script>
+const library=document.getElementById('library'),search=document.getElementById('search'),category=document.getElementById('category');
+let docs=[];
+function safePath(p){if(typeof p!=='string'||!/^documentos\/[A-Za-z0-9_./%() -]+$/.test(p)||p.includes('..'))return null;return '../'+p.split('/').map(encodeURIComponent).join('/');}
+function el(tag,className,text){const x=document.createElement(tag);if(className)x.className=className;if(text)x.textContent=text;return x}
+function render(){
+ library.replaceChildren();const query=search.value.toLocaleLowerCase('es');const selected=category.value;
+ const filtered=docs.filter(d=>(!selected||d.categoria===selected)&&[d.titulo,d.descripcion,d.categoria].join(' ').toLocaleLowerCase('es').includes(query));
+ if(!filtered.length){library.append(el('div','empty',docs.length?'No hay documentos que coincidan con tu búsqueda.':'Aún no hay documentos publicados. La biblioteca ya está lista para recibirlos.'));return}
+ filtered.forEach(d=>{const path=safePath(d.archivo);if(!path)return;const card=el('article','card'),tag=el('div','tag',d.categoria||'Documento'),title=el('h2','',d.titulo||'Documento'),desc=el('p','desc',d.descripcion||'Archivo de consulta'),actions=el('div','actions');const view=el('a','btn','Ver documento ↗');view.href=path;view.target='_blank';view.rel='noopener noreferrer';const download=el('a','btn secondary','Descargar');download.href=path;download.download='';actions.append(view,download);card.append(tag,title,desc,actions);library.append(card)})
+}
+fetch('../documentos/catalogo.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('No se pudo cargar el catálogo');return r.json()}).then(data=>{docs=Array.isArray(data)?data.filter(d=>d&&safePath(d.archivo)):[];[...new Set(docs.map(d=>d.categoria).filter(Boolean))].sort().forEach(c=>{const option=document.createElement('option');option.value=c;option.textContent=c;category.append(option)});render()}).catch(()=>{library.replaceChildren(el('div','empty','No fue posible cargar el catálogo de documentos.'))});
+search.addEventListener('input',render);category.addEventListener('change',render);
+</script></body></html>
