@@ -94,7 +94,8 @@
               {"id": "bootcamp-fundraising-asistencia-1", "orden": 2, "rol": "adicional"}
             ]},
             {"id": "parte-2", "titulo": "Parte 2 · 04/09/2026", "orden": 3, "recursos": [
-              {"id": "bootcamp-fundraising-asistencia-2", "orden": 1, "rol": "adicional"}
+              {"id": "bootcamp-fundraising-grabacion-2", "orden": 1, "rol": "grabacion"},
+              {"id": "bootcamp-fundraising-asistencia-2", "orden": 2, "rol": "adicional"}
             ]}
           ]
         },
@@ -270,6 +271,17 @@
     "tipo": "mp4",
     "ruta": "documentos/bootcamp/fundraising/Bootcamp fortalecimiento VC- Fundraising Parte 1-20260902_140101UTC-Meeting Recording.mp4",
     "fecha": "2026-09-02"
+  },
+  {
+    "id": "bootcamp-fundraising-grabacion-2",
+    "titulo": "Grabación — Fundraising, parte 2",
+    "descripcion": "Grabación de la segunda parte del entrenamiento de Fundraising.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 2 · Fundraising",
+    "tipo": "mp4",
+    "videoRef": "fundraising-2",
+    "fecha": "2026-09-04", "duracionMinutos": 109.9, "tamanoBytes": 547531343,
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_worker_activo"
   },
   {
     "id": "bootcamp-medicion-impacto",
@@ -500,7 +512,7 @@
     "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
     "tipo": "mp4",
     "videoRef": "comunicacion-narrativa-2",
-    "fecha": "2026-09-18", "duracionMinutos": 109.7, "tamanoBytes": 116613044,
+    "fecha": "2026-09-18", "duracionMinutos": 110.8, "tamanoBytes": 22693663,
     "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   }
   ]

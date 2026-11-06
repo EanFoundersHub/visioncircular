@@ -18,6 +18,7 @@ const env = {
   AUTH_REQUIRED: 'false',
   ACCESS_CODE: 'codigo-prueba', SESSION_SECRET: 'secreto-de-prueba-con-longitud-suficiente',
   VIDEO_MAP: JSON.stringify({ 'innovacion-abierta': 'private/test.mp4' }),
+  VIDEO_OVERRIDES: JSON.stringify({ 'fundraising-2': 'private/fundraising-2.mp4' }),
   LOGIN_LIMITER: limiter, MEDIA_LIMITER: limiter,
   VIDEOS: {
     head: async () => object(false),
@@ -50,6 +51,11 @@ test('sirve el reproductor anónimo sin cookies ni formulario', async () => {
 test('mantiene inaccesibles los identificadores no autorizados', async () => {
   const response = await worker.fetch(new Request('https://worker.test/video/private%2Ftest.mp4'), env);
   assert.equal(response.status, 404);
+});
+
+test('aplica el mapa privado de reemplazos y nuevos videos', async () => {
+  const response = await worker.fetch(new Request('https://worker.test/video/fundraising-2'), env);
+  assert.equal(response.status, 200);
 });
 
 test('deshabilita el endpoint de autenticación en modo anónimo', async () => {
