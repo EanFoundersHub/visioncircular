@@ -1,6 +1,6 @@
 # Gateway de videos con bucket privado
 
-Worker de Cloudflare que reproduce de forma anónima las ocho grabaciones
+Worker de Cloudflare que reproduce de forma anónima las nueve grabaciones
 autorizadas del bucket R2 `vision-circular-videos`. El bucket permanece privado:
 no necesita `r2.dev`, dominio público ni credenciales en el navegador.
 
@@ -10,8 +10,10 @@ descubra un identificador autorizado puede reproducir ese video.
 ## Seguridad
 
 - `VIDEOS`: binding privado al bucket R2.
-- Lista explícita de ocho identificadores públicos aceptados por el Worker.
+- Lista explícita de nueve identificadores públicos aceptados por el Worker.
 - `VIDEO_MAP`: mapa privado entre referencias públicas y claves de objetos R2.
+- `VIDEO_OVERRIDES`: altas y correcciones privadas que prevalecen sobre el mapa
+  original, sin publicar nombres internos en GitHub.
 - Límite de 600 solicitudes de medios por IP y minuto, suficientemente amplio
   para redes compartidas y útil para contener abuso básico.
 - HTTP Range para reproducción y búsqueda dentro del video.
@@ -52,6 +54,7 @@ reversión:
 npx wrangler secret put ACCESS_CODE
 npx wrangler secret put SESSION_SECRET
 npx wrangler secret put VIDEO_MAP
+npx wrangler secret put VIDEO_OVERRIDES
 ```
 
 ## Prueba manual

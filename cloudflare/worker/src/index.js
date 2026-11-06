@@ -5,7 +5,8 @@ const ALLOWED_PARENT = 'https://eanfoundershub.github.io';
 
 const PUBLIC_VIDEO_REFS = new Set([
   'innovacion-abierta', 'oportunidades-innovacion', 'modelo-negocio-1', 'modelo-negocio-2',
-  'medicion-impacto-1', 'medicion-impacto-2', 'comunicacion-narrativa-1', 'comunicacion-narrativa-2'
+  'fundraising-2', 'medicion-impacto-1', 'medicion-impacto-2',
+  'comunicacion-narrativa-1', 'comunicacion-narrativa-2'
 ]);
 
 const authRequired = env => String(env.AUTH_REQUIRED).toLowerCase() === 'true';
@@ -13,7 +14,11 @@ const authRequired = env => String(env.AUTH_REQUIRED).toLowerCase() === 'true';
 function videoMap(env) {
   try {
     const map = JSON.parse(env.VIDEO_MAP);
-    return map && typeof map === 'object' ? map : {};
+    const overrides = env.VIDEO_OVERRIDES ? JSON.parse(env.VIDEO_OVERRIDES) : {};
+    return {
+      ...(map && typeof map === 'object' ? map : {}),
+      ...(overrides && typeof overrides === 'object' ? overrides : {})
+    };
   } catch { return {}; }
 }
 

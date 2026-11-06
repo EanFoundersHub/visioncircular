@@ -94,7 +94,8 @@
               {"id": "bootcamp-fundraising-asistencia-1", "orden": 2, "rol": "adicional"}
             ]},
             {"id": "parte-2", "titulo": "Parte 2 · 04/09/2026", "orden": 3, "recursos": [
-              {"id": "bootcamp-fundraising-asistencia-2", "orden": 1, "rol": "adicional"}
+              {"id": "bootcamp-fundraising-grabacion-2", "orden": 1, "rol": "grabacion"},
+              {"id": "bootcamp-fundraising-asistencia-2", "orden": 2, "rol": "adicional"}
             ]}
           ]
         },
@@ -139,12 +140,13 @@
         {
           "id": "recursos-generales",
           "titulo": "Recursos generales del Bootcamp",
-          "descripcion": "Cronograma, asignación de mentores y resultados de satisfacción.",
+          "descripcion": "Cronograma, asistencia consolidada, asignación de mentores y resultados de satisfacción.",
           "orden": 5,
           "submodulos": [
             {"id": "recursos-adicionales", "titulo": "Cronogramas y resultados", "orden": 1, "recursos": [
               {"id": "bootcamp-cronograma-mentores", "orden": 1, "rol": "adicional"},
-              {"id": "bootcamp-resultados-satisfaccion", "orden": 2, "rol": "adicional"}
+              {"id": "bootcamp-resultados-satisfaccion", "orden": 2, "rol": "adicional"},
+              {"id": "bootcamp-matriz-asistencia", "orden": 3, "rol": "adicional"}
             ]}
           ]
         }
@@ -270,6 +272,17 @@
     "tipo": "mp4",
     "ruta": "documentos/bootcamp/fundraising/Bootcamp fortalecimiento VC- Fundraising Parte 1-20260902_140101UTC-Meeting Recording.mp4",
     "fecha": "2026-09-02"
+  },
+  {
+    "id": "bootcamp-fundraising-grabacion-2",
+    "titulo": "Grabación — Fundraising, parte 2",
+    "descripcion": "Grabación de la segunda parte del entrenamiento de Fundraising.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Entrenamiento 2 · Fundraising",
+    "tipo": "mp4",
+    "videoRef": "fundraising-2",
+    "fecha": "2026-09-04", "duracionMinutos": 109.9, "tamanoBytes": 547531343,
+    "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_worker_activo"
   },
   {
     "id": "bootcamp-medicion-impacto",
@@ -416,6 +429,15 @@
     "ruta": "documentos/bootcamp/recursos-adicionales/Soporte_Resultados_Satisfaccion_Bootcamp_Construye_Vision_Circular.xlsx"
   },
   {
+    "id": "bootcamp-matriz-asistencia",
+    "titulo": "Matriz consolidada de asistencia del Bootcamp",
+    "descripcion": "Consolidado de asistencia por iniciativa y por sesión para las ocho sesiones del Bootcamp.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Cronogramas y recursos adicionales",
+    "tipo": "xlsx",
+    "ruta": "documentos/bootcamp/recursos-adicionales/Matriz_Asistencia_Bootcamp_Construye_Vision_Circular_Ajustada.xlsx"
+  },
+  {
     "id": "innovacion-abierta-grabacion",
     "titulo": "Grabación — Innovación Abierta",
     "descripcion": "Grabación completa del entrenamiento de innovación abierta.",
@@ -500,7 +522,7 @@
     "subcategoria": "Entrenamiento 4 · Comunicación y narrativa",
     "tipo": "mp4",
     "videoRef": "comunicacion-narrativa-2",
-    "fecha": "2026-09-18", "duracionMinutos": 109.7, "tamanoBytes": 116613044,
+    "fecha": "2026-09-18", "duracionMinutos": 110.8, "tamanoBytes": 22693663,
     "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   }
   ]

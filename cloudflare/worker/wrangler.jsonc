@@ -26,6 +26,6 @@
     }
   ],
   "secrets": {
-    "required": ["ACCESS_CODE", "SESSION_SECRET", "VIDEO_MAP"]
+    "required": ["ACCESS_CODE", "SESSION_SECRET", "VIDEO_MAP", "VIDEO_OVERRIDES"]
   }
 }
