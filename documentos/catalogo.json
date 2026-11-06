@@ -141,6 +141,7 @@
           "id": "recursos-generales",
           "titulo": "Documentos Complementarios Bootcamp",
           "descripcion": "Cronograma, asistencia consolidada, asignación de mentores y resultados de satisfacción.",
+          "tipo": "complementario",
           "orden": 5,
           "submodulos": [
             {"id": "recursos-adicionales", "titulo": "Cronogramas y resultados", "orden": 1, "recursos": [
