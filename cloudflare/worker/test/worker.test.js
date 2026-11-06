@@ -25,9 +25,11 @@ const env = {
 };
 
 async function login() {
+  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const csrf = (await page.text()).match(/name="csrf" value="([^"]+)"/)?.[1];
   const response = await worker.fetch(new Request('https://worker.test/auth', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'CF-Connecting-IP': '127.0.0.1' },
-    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE })
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE, csrf })
   }), env);
   return { response, cookie: response.headers.get('Set-Cookie').split(';')[0] };
 }
@@ -38,12 +40,52 @@ test('rechaza video sin sesión', async () => {
 });
 
 test('rechaza código incorrecto sin emitir cookie', async () => {
+  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const csrf = (await page.text()).match(/name="csrf" value="([^"]+)"/)?.[1];
   const response = await worker.fetch(new Request('https://worker.test/auth', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ video: 'innovacion-abierta', code: 'incorrecto' })
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: 'incorrecto', csrf })
   }), env);
   assert.equal(response.status, 200);
   assert.equal(response.headers.has('Set-Cookie'), false);
+});
+
+test('acepta el formulario embebido desde GitHub Pages con CSRF válido', async () => {
+  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const csrf = (await page.text()).match(/name="csrf" value="([^"]+)"/)?.[1];
+  const response = await worker.fetch(new Request('https://worker.test/auth', {
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: 'https://eanfoundershub.github.io' },
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE, csrf })
+  }), env);
+  assert.equal(response.status, 303);
+});
+
+test('acepta Origin null del iframe solo con CSRF firmado', async () => {
+  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const csrf = (await page.text()).match(/name="csrf" value="([^"]+)"/)?.[1];
+  const response = await worker.fetch(new Request('https://worker.test/auth', {
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: 'null' },
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE, csrf })
+  }), env);
+  assert.equal(response.status, 303);
+});
+
+test('rechaza Origin null cuando falta el CSRF firmado', async () => {
+  const response = await worker.fetch(new Request('https://worker.test/auth', {
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: 'null' },
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE })
+  }), env);
+  assert.equal(response.status, 403);
+});
+
+test('rechaza orígenes ajenos aunque presenten un CSRF válido', async () => {
+  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const csrf = (await page.text()).match(/name="csrf" value="([^"]+)"/)?.[1];
+  const response = await worker.fetch(new Request('https://worker.test/auth', {
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: 'https://example.com' },
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE, csrf })
+  }), env);
+  assert.equal(response.status, 403);
 });
 
 test('emite sesión protegida por ocho horas', async () => {
