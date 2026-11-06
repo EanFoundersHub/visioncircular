@@ -1,4 +1,157 @@
-[
+{
+  "version": 2,
+  "programas": [
+    {
+      "id": "entrenamientos",
+      "titulo": "Entrenamientos",
+      "descripcion": "Entrenamientos especializados del programa Construye Visión Circular.",
+      "orden": 1,
+      "modulos": [
+        {
+          "id": "innovacion-abierta",
+          "titulo": "Innovación abierta",
+          "descripcion": "Herramientas y metodologías para conectar retos empresariales con soluciones innovadoras.",
+          "orden": 1,
+          "submodulos": [
+            {"id": "sesion-principal", "titulo": "Sesión principal · 16/10/2026", "orden": 1, "recursos": [
+              {"id": "innovacion-abierta-grabacion", "orden": 1, "rol": "grabacion"},
+              {"id": "innovacion-abierta-presentacion", "orden": 2, "rol": "presentacion"},
+              {"id": "innovacion-abierta-asistencia", "orden": 3, "rol": "adicional"}
+            ]}
+          ]
+        },
+        {
+          "id": "inteligencia-mercado",
+          "titulo": "Inteligencia de Mercado y Análisis de Competencia",
+          "descripcion": "Información de mercado, consumidores y competencia para orientar decisiones empresariales.",
+          "orden": 2,
+          "submodulos": [
+            {"id": "etapa-1", "titulo": "Etapa 1 · 30/09/2026", "orden": 1, "recursos": [
+              {"id": "inteligencia-mercado-grabacion", "orden": 1, "rol": "grabacion"},
+              {"id": "inteligencia-mercado-presentacion", "orden": 2, "rol": "presentacion"},
+              {"id": "inteligencia-mercado-business-dynamics", "orden": 3, "rol": "consulta"},
+              {"id": "inteligencia-mercado-consumer-lifestyles", "orden": 4, "rol": "consulta"},
+              {"id": "inteligencia-mercado-consumer-types", "orden": 5, "rol": "consulta"},
+              {"id": "inteligencia-mercado-consumer-values", "orden": 6, "rol": "consulta"},
+              {"id": "inteligencia-mercado-income-expenditure", "orden": 7, "rol": "consulta"},
+              {"id": "inteligencia-mercado-asistencia", "orden": 8, "rol": "adicional"}
+            ]}
+          ]
+        },
+        {
+          "id": "oportunidades-innovacion",
+          "titulo": "Oportunidades de innovación y sofisticación",
+          "descripcion": "Identificación y desarrollo de oportunidades para sofisticar productos, servicios y modelos de negocio.",
+          "orden": 3,
+          "submodulos": [
+            {"id": "sesion-principal", "titulo": "Sesión principal · 14/10/2026", "orden": 1, "recursos": [
+              {"id": "oportunidades-innovacion-grabacion", "orden": 1, "rol": "grabacion"},
+              {"id": "oportunidades-presentacion", "orden": 2, "rol": "presentacion"},
+              {"id": "oportunidades-link-taller", "orden": 3, "rol": "adicional"},
+              {"id": "oportunidades-asistencia", "orden": 4, "rol": "adicional"}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bootcamp-fortalecimiento",
+      "titulo": "Bootcamp Fortalecimiento",
+      "descripcion": "Ruta secuencial de fortalecimiento empresarial organizada en cuatro entrenamientos.",
+      "orden": 2,
+      "modulos": [
+        {
+          "id": "modelo-negocio",
+          "titulo": "Entrenamiento 1 · Modelo de negocio de impacto y escalabilidad",
+          "descripcion": "Diseño y fortalecimiento de modelos de negocio con impacto y potencial de escalamiento.",
+          "orden": 1,
+          "submodulos": [
+            {"id": "material-general", "titulo": "Material general", "orden": 1, "recursos": [
+              {"id": "bootcamp-modelo-negocio-duplicado", "orden": 1, "rol": "consulta"}
+            ]},
+            {"id": "parte-1", "titulo": "Parte 1 · 26/08/2026", "orden": 2, "recursos": [
+              {"id": "bootcamp-modelo-negocio-grabacion-1", "orden": 1, "rol": "grabacion"},
+              {"id": "bootcamp-modelo-negocio", "orden": 2, "rol": "presentacion"},
+              {"id": "bootcamp-modelo-negocio-asistencia-1", "orden": 3, "rol": "adicional"}
+            ]},
+            {"id": "parte-2", "titulo": "Parte 2 · 28/08/2026", "orden": 3, "recursos": [
+              {"id": "bootcamp-modelo-negocio-grabacion-2", "orden": 1, "rol": "grabacion"},
+              {"id": "bootcamp-modelo-negocio-asistencia-2", "orden": 2, "rol": "adicional"}
+            ]}
+          ]
+        },
+        {
+          "id": "fundraising",
+          "titulo": "Entrenamiento 2 · Fundraising",
+          "descripcion": "Nuevas dinámicas de financiación para iniciativas de impacto social y ambiental.",
+          "orden": 2,
+          "submodulos": [
+            {"id": "material-general", "titulo": "Material general", "orden": 1, "recursos": [
+              {"id": "bootcamp-fundraising-presentacion", "orden": 1, "rol": "presentacion"}
+            ]},
+            {"id": "parte-1", "titulo": "Parte 1 · 02/09/2026", "orden": 2, "recursos": [
+              {"id": "bootcamp-fundraising-grabacion", "orden": 1, "rol": "grabacion"},
+              {"id": "bootcamp-fundraising-asistencia-1", "orden": 2, "rol": "adicional"}
+            ]},
+            {"id": "parte-2", "titulo": "Parte 2 · 04/09/2026", "orden": 3, "recursos": [
+              {"id": "bootcamp-fundraising-asistencia-2", "orden": 1, "rol": "adicional"}
+            ]}
+          ]
+        },
+        {
+          "id": "medicion-impacto",
+          "titulo": "Entrenamiento 3 · Medición de impacto",
+          "descripcion": "Conceptos y herramientas para definir, medir y comunicar resultados de impacto.",
+          "orden": 3,
+          "submodulos": [
+            {"id": "material-general", "titulo": "Material general", "orden": 1, "recursos": [
+              {"id": "bootcamp-medicion-impacto", "orden": 1, "rol": "presentacion"}
+            ]},
+            {"id": "parte-1", "titulo": "Parte 1 · 09/09/2026", "orden": 2, "recursos": [
+              {"id": "bootcamp-medicion-impacto-grabacion-1", "orden": 1, "rol": "grabacion"},
+              {"id": "bootcamp-medicion-asistencia-1", "orden": 2, "rol": "adicional"}
+            ]},
+            {"id": "parte-2", "titulo": "Parte 2 · 11/09/2026", "orden": 3, "recursos": [
+              {"id": "bootcamp-medicion-impacto-grabacion-2", "orden": 1, "rol": "grabacion"},
+              {"id": "bootcamp-medicion-asistencia-2", "orden": 2, "rol": "adicional"}
+            ]}
+          ]
+        },
+        {
+          "id": "comunicacion-narrativa",
+          "titulo": "Entrenamiento 4 · Comunicación y narrativa",
+          "descripcion": "Construcción de narrativas claras para comunicar el impacto de las iniciativas.",
+          "orden": 4,
+          "submodulos": [
+            {"id": "material-general", "titulo": "Material general", "orden": 1, "recursos": [
+              {"id": "bootcamp-comunicacion-narrativa", "orden": 1, "rol": "presentacion"}
+            ]},
+            {"id": "parte-1", "titulo": "Parte 1 · 17/09/2026", "orden": 2, "recursos": [
+              {"id": "bootcamp-comunicacion-narrativa-grabacion-1", "orden": 1, "rol": "grabacion"},
+              {"id": "bootcamp-narrativa-asistencia-1", "orden": 2, "rol": "adicional"}
+            ]},
+            {"id": "parte-2", "titulo": "Parte 2 · 18/09/2026", "orden": 3, "recursos": [
+              {"id": "bootcamp-comunicacion-narrativa-grabacion-2", "orden": 1, "rol": "grabacion"},
+              {"id": "bootcamp-narrativa-asistencia-2", "orden": 2, "rol": "adicional"}
+            ]}
+          ]
+        },
+        {
+          "id": "recursos-generales",
+          "titulo": "Recursos generales del Bootcamp",
+          "descripcion": "Cronograma, asignación de mentores y resultados de satisfacción.",
+          "orden": 5,
+          "submodulos": [
+            {"id": "recursos-adicionales", "titulo": "Cronogramas y resultados", "orden": 1, "recursos": [
+              {"id": "bootcamp-cronograma-mentores", "orden": 1, "rol": "adicional"},
+              {"id": "bootcamp-resultados-satisfaccion", "orden": 2, "rol": "adicional"}
+            ]}
+          ]
+        }
+      ]
+    }
+  ],
+  "recursos": [
   {
     "id": "innovacion-abierta-presentacion",
     "titulo": "Entrenamiento en Innovación Abierta",
@@ -350,4 +503,5 @@
     "fecha": "2026-09-18", "duracionMinutos": 109.7, "tamanoBytes": 116613044,
     "codecVideo": "h264", "codecAudio": "aac", "estado": "acceso_seguro_activo"
   }
-]
+  ]
+}

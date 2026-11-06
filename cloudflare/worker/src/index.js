@@ -1,4 +1,5 @@
 const SESSION_SECONDS = 8 * 60 * 60;
+const CSRF_SECONDS = 15 * 60;
 const COOKIE_NAME = '__Host-vc_session';
 const ALLOWED_PARENT = 'https://eanfoundershub.github.io';
 
@@ -41,6 +42,25 @@ async function issueSession(secret) {
   return `${payload}.${base64url(await hmac(payload, secret))}`;
 }
 
+async function issueCsrf(video, secret) {
+  const payload = base64url(encoder.encode(JSON.stringify({ video, exp: Math.floor(Date.now() / 1000) + CSRF_SECONDS, nonce: crypto.randomUUID() })));
+  return `${payload}.${base64url(await hmac(payload, secret))}`;
+}
+
+async function verifyCsrf(token, video, secret) {
+  if (!token) return false;
+  const [payload, signature, extra] = token.split('.');
+  if (!payload || !signature || extra) return false;
+  const expected = await hmac(payload, secret), actual = decode64url(signature);
+  if (actual.length !== expected.length) return false;
+  let difference = 0; for (let index = 0; index < expected.length; index++) difference |= expected[index] ^ actual[index];
+  if (difference !== 0) return false;
+  try {
+    const value = JSON.parse(new TextDecoder().decode(decode64url(payload)));
+    return value.video === video && value.exp > Date.now() / 1000 && typeof value.nonce === 'string';
+  } catch { return false; }
+}
+
 async function readSession(request, secret) {
   const cookie = request.headers.get('Cookie') || '';
   const token = cookie.split(';').map(item => item.trim()).find(item => item.startsWith(`${COOKIE_NAME}=`))?.slice(COOKIE_NAME.length + 1);
@@ -66,18 +86,21 @@ function page(content, status = 200, bodyClass = '') {
   return new Response(`<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{font-family:Poppins,Arial,sans-serif;color:#171716}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,#055382,#47bec2);padding:20px}.box{width:min(440px,100%);background:#fff;border-radius:20px;padding:28px;box-shadow:0 18px 44px #002d4866}h1{font-size:22px;margin:0 0 8px;color:#055382}p{font-size:13px;line-height:1.6;color:#5d6972}label{display:block;font-size:12px;font-weight:800;margin:18px 0 7px}input,button{width:100%;min-height:48px;border-radius:11px;font:inherit}input{border:1px solid #ccd9de;padding:12px}button{margin-top:12px;border:0;background:#055382;color:#fff;font-weight:800;cursor:pointer}.error{color:#a33a32;font-weight:700}video{display:block;width:100%;height:100%;background:#111}body.player{display:block;padding:0;background:#111;min-height:0;height:100vh}</style></head><body class="${bodyClass}">${content}</body></html>`, { status, headers: securityHeaders() });
 }
 
-function loginPage(video, error = '') {
-  return page(`<main class="box"><h1>Acceso a la grabación</h1><p>Ingresa el código compartido por el equipo de Visión Circular.</p>${error ? `<p class="error">${error}</p>` : ''}<form method="post" action="/auth"><input type="hidden" name="video" value="${video}"><label for="code">Código de acceso</label><input id="code" name="code" type="password" required autocomplete="current-password" maxlength="128"><button type="submit">Ingresar y reproducir</button></form></main>`);
+async function loginPage(video, env, error = '') {
+  const csrf = await issueCsrf(video, env.SESSION_SECRET);
+  return page(`<main class="box"><h1>Acceso a la grabación</h1><p>Ingresa una vez el código compartido por el equipo. La sesión permanecerá activa durante ocho horas.</p>${error ? `<p class="error">${error}</p>` : ''}<form method="post" action="/auth"><input type="hidden" name="video" value="${video}"><input type="hidden" name="csrf" value="${csrf}"><label for="code">Código de acceso</label><input id="code" name="code" type="password" required autocomplete="current-password" maxlength="128"><button type="submit">Ingresar y reproducir</button></form></main>`);
 }
 
 async function authenticate(request, env) {
   const origin = request.headers.get('Origin');
-  if (origin && origin !== new URL(request.url).origin) return new Response('Solicitud no permitida', { status: 403, headers: securityHeaders('text/plain; charset=utf-8') });
+  const allowedOrigins = new Set([new URL(request.url).origin, ALLOWED_PARENT]);
+  if (origin && origin !== 'null' && !allowedOrigins.has(origin)) return new Response('Solicitud no permitida: origen no autorizado', { status: 403, headers: securityHeaders('text/plain; charset=utf-8') });
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   if (!(await env.LOGIN_LIMITER.limit({ key: `login:${ip}` })).success) return page('<main class="box"><h1>Demasiados intentos</h1><p>Espera un minuto antes de volver a intentarlo.</p></main>', 429);
-  const form = await request.formData(), video = String(form.get('video') || ''), code = String(form.get('code') || '');
+  const form = await request.formData(), video = String(form.get('video') || ''), code = String(form.get('code') || ''), csrf = String(form.get('csrf') || '');
   if (!videoKey(env, video)) return page('<main class="box"><h1>Grabación no válida</h1></main>', 404);
-  if (!code || !(await sameSecret(code, env.ACCESS_CODE))) return loginPage(video, 'El código no es correcto.');
+  if (!(await verifyCsrf(csrf, video, env.SESSION_SECRET))) return new Response('Solicitud no permitida: formulario inválido o vencido', { status: 403, headers: securityHeaders('text/plain; charset=utf-8') });
+  if (!code || !(await sameSecret(code, env.ACCESS_CODE))) return loginPage(video, env, 'El código no es correcto.');
   const token = await issueSession(env.SESSION_SECRET);
   return new Response(null, { status: 303, headers: {
     Location: `/player?video=${encodeURIComponent(video)}`,
@@ -89,8 +112,8 @@ async function authenticate(request, env) {
 async function player(request, env, video) {
   if (!videoKey(env, video)) return page('<main class="box"><h1>Grabación no encontrada</h1></main>', 404);
   const session = await readSession(request, env.SESSION_SECRET);
-  if (!session) return loginPage(video);
-  return page(`<main><video controls playsinline preload="metadata" src="/video/${encodeURIComponent(video)}"></video></main>`, 200, 'player');
+  if (!session) return loginPage(video, env);
+  return page(`<main><video controls autoplay playsinline preload="metadata" src="/video/${encodeURIComponent(video)}"></video></main>`, 200, 'player');
 }
 
 async function streamVideo(request, env, video) {
