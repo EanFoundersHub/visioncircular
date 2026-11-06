@@ -140,12 +140,13 @@
         {
           "id": "recursos-generales",
           "titulo": "Recursos generales del Bootcamp",
-          "descripcion": "Cronograma, asignación de mentores y resultados de satisfacción.",
+          "descripcion": "Cronograma, asistencia consolidada, asignación de mentores y resultados de satisfacción.",
           "orden": 5,
           "submodulos": [
             {"id": "recursos-adicionales", "titulo": "Cronogramas y resultados", "orden": 1, "recursos": [
               {"id": "bootcamp-cronograma-mentores", "orden": 1, "rol": "adicional"},
-              {"id": "bootcamp-resultados-satisfaccion", "orden": 2, "rol": "adicional"}
+              {"id": "bootcamp-resultados-satisfaccion", "orden": 2, "rol": "adicional"},
+              {"id": "bootcamp-matriz-asistencia", "orden": 3, "rol": "adicional"}
             ]}
           ]
         }
@@ -426,6 +427,15 @@
     "subcategoria": "Cronogramas y recursos adicionales",
     "tipo": "xlsx",
     "ruta": "documentos/bootcamp/recursos-adicionales/Soporte_Resultados_Satisfaccion_Bootcamp_Construye_Vision_Circular.xlsx"
+  },
+  {
+    "id": "bootcamp-matriz-asistencia",
+    "titulo": "Matriz consolidada de asistencia del Bootcamp",
+    "descripcion": "Consolidado de asistencia por iniciativa y por sesión para las ocho sesiones del Bootcamp.",
+    "categoria": "Bootcamp Fortalecimiento",
+    "subcategoria": "Cronogramas y recursos adicionales",
+    "tipo": "xlsx",
+    "ruta": "documentos/bootcamp/recursos-adicionales/Matriz_Asistencia_Bootcamp_Construye_Vision_Circular_Ajustada.xlsx"
   },
   {
     "id": "innovacion-abierta-grabacion",
