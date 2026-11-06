@@ -4,6 +4,9 @@
   "main": "src/index.js",
   "compatibility_date": "2026-11-05",
   "workers_dev": true,
+  "vars": {
+    "AUTH_REQUIRED": "false"
+  },
   "r2_buckets": [
     {
       "binding": "VIDEOS",
@@ -19,7 +22,7 @@
     {
       "name": "MEDIA_LIMITER",
       "namespace_id": "41002",
-      "simple": { "limit": 300, "period": 60 }
+      "simple": { "limit": 600, "period": 60 }
     }
   ],
   "secrets": {

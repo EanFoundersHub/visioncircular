@@ -15,6 +15,7 @@ function object(range) {
   };
 }
 const env = {
+  AUTH_REQUIRED: 'false',
   ACCESS_CODE: 'codigo-prueba', SESSION_SECRET: 'secreto-de-prueba-con-longitud-suficiente',
   VIDEO_MAP: JSON.stringify({ 'innovacion-abierta': 'private/test.mp4' }),
   LOGIN_LIMITER: limiter, MEDIA_LIMITER: limiter,
@@ -23,68 +24,90 @@ const env = {
     get: async (_key, options) => object(Boolean(options?.range))
   }
 };
+const authEnv = { ...env, AUTH_REQUIRED: 'true' };
 
 async function login() {
-  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), authEnv);
   const csrf = (await page.text()).match(/name="csrf" value="([^"]+)"/)?.[1];
   const response = await worker.fetch(new Request('https://worker.test/auth', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'CF-Connecting-IP': '127.0.0.1' },
-    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE, csrf })
-  }), env);
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: authEnv.ACCESS_CODE, csrf })
+  }), authEnv);
   return { response, cookie: response.headers.get('Set-Cookie').split(';')[0] };
 }
 
-test('rechaza video sin sesión', async () => {
+test('sirve el reproductor anónimo sin cookies ni formulario', async () => {
   const response = await worker.fetch(new Request('https://worker.test/video/innovacion-abierta'), env);
+  assert.equal(response.status, 200);
+
+  const player = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const html = await player.text();
+  assert.equal(player.status, 200);
+  assert.match(html, /<video controls/);
+  assert.doesNotMatch(html, /type="password"|type="email"|<form/i);
+});
+
+test('mantiene inaccesibles los identificadores no autorizados', async () => {
+  const response = await worker.fetch(new Request('https://worker.test/video/private%2Ftest.mp4'), env);
+  assert.equal(response.status, 404);
+});
+
+test('deshabilita el endpoint de autenticación en modo anónimo', async () => {
+  const response = await worker.fetch(new Request('https://worker.test/auth', { method: 'POST' }), env);
+  assert.equal(response.status, 404);
+});
+
+test('permite revertir al modo autenticado', async () => {
+  const response = await worker.fetch(new Request('https://worker.test/video/innovacion-abierta'), authEnv);
   assert.equal(response.status, 401);
 });
 
 test('rechaza código incorrecto sin emitir cookie', async () => {
-  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), authEnv);
   const csrf = (await page.text()).match(/name="csrf" value="([^"]+)"/)?.[1];
   const response = await worker.fetch(new Request('https://worker.test/auth', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({ video: 'innovacion-abierta', code: 'incorrecto', csrf })
-  }), env);
+  }), authEnv);
   assert.equal(response.status, 200);
   assert.equal(response.headers.has('Set-Cookie'), false);
 });
 
 test('acepta el formulario embebido desde GitHub Pages con CSRF válido', async () => {
-  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), authEnv);
   const csrf = (await page.text()).match(/name="csrf" value="([^"]+)"/)?.[1];
   const response = await worker.fetch(new Request('https://worker.test/auth', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: 'https://eanfoundershub.github.io' },
-    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE, csrf })
-  }), env);
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: authEnv.ACCESS_CODE, csrf })
+  }), authEnv);
   assert.equal(response.status, 303);
 });
 
 test('acepta Origin null del iframe solo con CSRF firmado', async () => {
-  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), authEnv);
   const csrf = (await page.text()).match(/name="csrf" value="([^"]+)"/)?.[1];
   const response = await worker.fetch(new Request('https://worker.test/auth', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: 'null' },
-    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE, csrf })
-  }), env);
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: authEnv.ACCESS_CODE, csrf })
+  }), authEnv);
   assert.equal(response.status, 303);
 });
 
 test('rechaza Origin null cuando falta el CSRF firmado', async () => {
   const response = await worker.fetch(new Request('https://worker.test/auth', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: 'null' },
-    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE })
-  }), env);
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: authEnv.ACCESS_CODE })
+  }), authEnv);
   assert.equal(response.status, 403);
 });
 
 test('rechaza orígenes ajenos aunque presenten un CSRF válido', async () => {
-  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), env);
+  const page = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta'), authEnv);
   const csrf = (await page.text()).match(/name="csrf" value="([^"]+)"/)?.[1];
   const response = await worker.fetch(new Request('https://worker.test/auth', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Origin: 'https://example.com' },
-    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE, csrf })
-  }), env);
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: authEnv.ACCESS_CODE, csrf })
+  }), authEnv);
   assert.equal(response.status, 403);
 });
 
@@ -97,22 +120,34 @@ test('emite sesión protegida por ocho horas', async () => {
 
 test('sirve reproductor solo con sesión válida', async () => {
   const { cookie } = await login();
-  const response = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta', { headers: { Cookie: cookie } }), env);
+  const response = await worker.fetch(new Request('https://worker.test/player?video=innovacion-abierta', { headers: { Cookie: cookie } }), authEnv);
   assert.equal(response.status, 200); assert.match(await response.text(), /<video controls/);
 });
 
-test('responde rangos parciales para búsqueda del video', async () => {
-  const { cookie } = await login();
-  const response = await worker.fetch(new Request('https://worker.test/video/innovacion-abierta', { headers: { Cookie: cookie, Range: 'bytes=2-5' } }), env);
+test('responde rangos parciales anónimos para adelantar el video', async () => {
+  const response = await worker.fetch(new Request('https://worker.test/video/innovacion-abierta', { headers: { Range: 'bytes=2-5' } }), env);
   assert.equal(response.status, 206); assert.equal(response.headers.get('Content-Range'), 'bytes 2-5/10');
   assert.equal(response.headers.get('Accept-Ranges'), 'bytes'); assert.equal(await response.text(), '2345');
 });
 
 test('bloquea intentos cuando el limitador responde negativamente', async () => {
-  const blocked = { ...env, LOGIN_LIMITER: { limit: async () => ({ success: false }) } };
+  const blocked = { ...authEnv, LOGIN_LIMITER: { limit: async () => ({ success: false }) } };
   const response = await worker.fetch(new Request('https://worker.test/auth', {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ video: 'innovacion-abierta', code: env.ACCESS_CODE })
+    body: new URLSearchParams({ video: 'innovacion-abierta', code: authEnv.ACCESS_CODE })
   }), blocked);
   assert.equal(response.status, 429);
+});
+
+test('limita solicitudes anónimas por IP sin depender de Origin', async () => {
+  let key;
+  const blocked = {
+    ...env,
+    MEDIA_LIMITER: { limit: async value => { key = value.key; return { success: false }; } }
+  };
+  const response = await worker.fetch(new Request('https://worker.test/video/innovacion-abierta', {
+    headers: { 'CF-Connecting-IP': '203.0.113.25', Origin: 'https://example.com' }
+  }), blocked);
+  assert.equal(response.status, 429);
+  assert.equal(key, 'media:anonymous:203.0.113.25');
 });
