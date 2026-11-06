@@ -8,6 +8,8 @@ const PUBLIC_VIDEO_REFS = new Set([
   'medicion-impacto-1', 'medicion-impacto-2', 'comunicacion-narrativa-1', 'comunicacion-narrativa-2'
 ]);
 
+const authRequired = env => String(env.AUTH_REQUIRED).toLowerCase() === 'true';
+
 function videoMap(env) {
   try {
     const map = JSON.parse(env.VIDEO_MAP);
@@ -92,6 +94,7 @@ async function loginPage(video, env, error = '') {
 }
 
 async function authenticate(request, env) {
+  if (!authRequired(env)) return new Response('No encontrado', { status: 404, headers: securityHeaders('text/plain; charset=utf-8') });
   const origin = request.headers.get('Origin');
   const allowedOrigins = new Set([new URL(request.url).origin, ALLOWED_PARENT]);
   if (origin && origin !== 'null' && !allowedOrigins.has(origin)) return new Response('Solicitud no permitida: origen no autorizado', { status: 403, headers: securityHeaders('text/plain; charset=utf-8') });
@@ -111,15 +114,25 @@ async function authenticate(request, env) {
 
 async function player(request, env, video) {
   if (!videoKey(env, video)) return page('<main class="box"><h1>Grabación no encontrada</h1></main>', 404);
-  const session = await readSession(request, env.SESSION_SECRET);
-  if (!session) return loginPage(video, env);
+  if (authRequired(env)) {
+    const session = await readSession(request, env.SESSION_SECRET);
+    if (!session) return loginPage(video, env);
+  }
   return page(`<main><video controls autoplay playsinline preload="metadata" src="/video/${encodeURIComponent(video)}"></video></main>`, 200, 'player');
 }
 
 async function streamVideo(request, env, video) {
   const key = videoKey(env, video); if (!key) return new Response('No encontrado', { status: 404, headers: securityHeaders('text/plain; charset=utf-8') });
-  const session = await readSession(request, env.SESSION_SECRET); if (!session) return new Response('Sesión requerida', { status: 401, headers: securityHeaders('text/plain; charset=utf-8') });
-  if (!(await env.MEDIA_LIMITER.limit({ key: `media:${session.sid}` })).success) return new Response('Límite temporal alcanzado', { status: 429, headers: securityHeaders('text/plain; charset=utf-8') });
+  let limiterKey;
+  if (authRequired(env)) {
+    const session = await readSession(request, env.SESSION_SECRET);
+    if (!session) return new Response('Sesión requerida', { status: 401, headers: securityHeaders('text/plain; charset=utf-8') });
+    limiterKey = `media:session:${session.sid}`;
+  } else {
+    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+    limiterKey = `media:anonymous:${ip}`;
+  }
+  if (!(await env.MEDIA_LIMITER.limit({ key: limiterKey })).success) return new Response('Límite temporal alcanzado', { status: 429, headers: securityHeaders('text/plain; charset=utf-8') });
   const rangeHeader = request.headers.get('Range');
   if (rangeHeader && !/^bytes=\d*-\d*$/.test(rangeHeader)) return new Response('Rango no válido', { status: 416, headers: { ...securityHeaders('text/plain; charset=utf-8'), 'Accept-Ranges': 'bytes' } });
   const object = request.method === 'HEAD' ? await env.VIDEOS.head(key) : await env.VIDEOS.get(key, rangeHeader ? { range: request.headers } : {});
@@ -138,7 +151,7 @@ async function streamVideo(request, env, video) {
 export default {
   async fetch(request, env) {
     try {
-      if (!env.ACCESS_CODE || !env.SESSION_SECRET || !env.VIDEO_MAP) return new Response('Servicio no configurado', { status: 503 });
+      if (!env.VIDEO_MAP || (authRequired(env) && (!env.ACCESS_CODE || !env.SESSION_SECRET))) return new Response('Servicio no configurado', { status: 503 });
       const url = new URL(request.url);
       if (request.method === 'POST' && url.pathname === '/auth') return authenticate(request, env);
       if (request.method === 'GET' && url.pathname === '/player') return player(request, env, url.searchParams.get('video') || '');
