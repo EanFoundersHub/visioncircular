@@ -1894,7 +1894,7 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
   .vc-bita-change-type:hover { text-decoration:underline; }
   .vc-bita-selected-type { color:var(--fh-charcoal); font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:.04em; }
 
-  /* División del historial: Mentoría / Asesoría comercial */
+  /* División del historial: Mentoría / Asesoría comercial / Asesoría financiera */
   .vc-bita-type-tabs {
     display:flex; gap:10px; flex-wrap:wrap; margin:0 0 14px;
     padding:7px; border-radius:18px; border:1.5px solid var(--fh-line);
@@ -2336,9 +2336,9 @@ function normalizeBitaTypeValue(value) {
   const raw = String(source ?? '').trim();
   if (!raw) return 'Mentoría';
   const normalized = raw.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  return normalized.includes('asesoria') && normalized.includes('comercial')
-    ? 'Asesoría comercial'
-    : 'Mentoría';
+  if (normalized.includes('asesoria') && normalized.includes('financiera')) return 'Asesoría financiera';
+  if (normalized.includes('asesoria') && normalized.includes('comercial')) return 'Asesoría comercial';
+  return 'Mentoría';
 }
 
 function getBitacoraType(row) {
@@ -3283,12 +3283,13 @@ function renderBitacoras() {
   document.getElementById('bitas-count').textContent = data.bitacoras.length;
   window._bitaSessionMap = {};
 
-  const typeOptions = ['Mentoría', 'Asesoría comercial'];
+  const typeOptions = ['Mentoría', 'Asesoría comercial', 'Asesoría financiera'];
   if (!typeOptions.includes(activeBitaType)) activeBitaType = 'Mentoría';
 
   const counts = {
     'Mentoría': data.bitacoras.filter(row => getBitacoraType(row) === 'Mentoría').length,
-    'Asesoría comercial': data.bitacoras.filter(row => getBitacoraType(row) === 'Asesoría comercial').length
+    'Asesoría comercial': data.bitacoras.filter(row => getBitacoraType(row) === 'Asesoría comercial').length,
+    'Asesoría financiera': data.bitacoras.filter(row => getBitacoraType(row) === 'Asesoría financiera').length
   };
 
   typeOptions.forEach(type => {
@@ -3322,12 +3323,16 @@ function renderBitacoras() {
     empty.appendChild(el('h4', {
       text: activeBitaType === 'Asesoría comercial'
         ? 'Aún no hay asesorías comerciales registradas'
-        : 'Aún no hay mentorías registradas'
+        : activeBitaType === 'Asesoría financiera'
+          ? 'Aún no hay asesorías financieras registradas'
+          : 'Aún no hay mentorías registradas'
     }));
     empty.appendChild(el('p', {
       text: activeBitaType === 'Asesoría comercial'
         ? 'Cuando registres una asesoría comercial, aparecerá aquí asociada a esta empresa.'
-        : 'Cuando registres una mentoría, aparecerá aquí asociada a esta empresa.'
+        : activeBitaType === 'Asesoría financiera'
+          ? 'Cuando registres una asesoría financiera, aparecerá aquí asociada a esta empresa.'
+          : 'Cuando registres una mentoría, aparecerá aquí asociada a esta empresa.'
     }));
     content.appendChild(empty);
     return;
@@ -3771,6 +3776,7 @@ function resetView() {
           <div class="vc-bita-type-choice" role="group" aria-label="Selecciona el tipo de bitácora">
             <button type="button" class="vc-bita-type-btn" data-vc-bita-type="Mentoría" aria-pressed="false">Mentoría</button>
             <button type="button" class="vc-bita-type-btn" data-vc-bita-type="Asesoría comercial" aria-pressed="false">Asesoría comercial</button>
+            <button type="button" class="vc-bita-type-btn" data-vc-bita-type="Asesoría financiera" aria-pressed="false">Asesoría financiera</button>
           </div>
           <div class="vc-bita-type-help" id="vc-bita-type-help">Selecciona una opción para continuar con el registro de la sesión.</div>
         </div>
@@ -3795,7 +3801,7 @@ function resetView() {
           <input class="vc-bita-input" id="vc-bita-empresa" readonly>
         </div>
         <div class="vc-bita-field full">
-          <label for="vc-bita-mentor" id="vc-bita-mentor-label">Nombre del mentor / asesor comercial</label>
+          <label for="vc-bita-mentor" id="vc-bita-mentor-label">Nombre del mentor / asesor comercial / asesor financiero</label>
           <input class="vc-bita-input" id="vc-bita-mentor" autocomplete="name" required placeholder="Selecciona primero el tipo de bitácora">
         </div>
         <div class="vc-bita-field full">
@@ -3943,14 +3949,15 @@ function resetView() {
     });
 
     const isCommercial = selectedTipoAcompanamiento === 'Asesoría comercial';
+    const isFinancial = selectedTipoAcompanamiento === 'Asesoría financiera';
     if (mentorLabelEl) {
       mentorLabelEl.textContent = selectedTipoAcompanamiento
-        ? (isCommercial ? 'Nombre del asesor comercial' : 'Nombre del mentor')
-        : 'Nombre del mentor / asesor comercial';
+        ? (isFinancial ? 'Nombre del asesor financiero' : isCommercial ? 'Nombre del asesor comercial' : 'Nombre del mentor')
+        : 'Nombre del mentor / asesor comercial / asesor financiero';
     }
     if (f.mentor) {
       f.mentor.placeholder = selectedTipoAcompanamiento
-        ? (isCommercial ? 'Nombre completo del asesor comercial' : 'Nombre completo del mentor')
+        ? (isFinancial ? 'Nombre completo del asesor financiero' : isCommercial ? 'Nombre completo del asesor comercial' : 'Nombre completo del mentor')
         : 'Selecciona primero el tipo de bitácora';
     }
     if (bitaTypeHelpEl) {
@@ -3985,15 +3992,18 @@ function resetView() {
     if (choosingType) {
       if (modalEyebrowEl) modalEyebrowEl.textContent = 'Visión Circular · Bitácora';
       if (titleEl) titleEl.textContent = 'Selecciona el tipo de bitácora';
-      if (subtitleEl) subtitleEl.textContent = 'Elige Mentoría o Asesoría comercial. Después completarás la información de la sesión.';
+      if (subtitleEl) subtitleEl.textContent = 'Elige Mentoría, Asesoría comercial o Asesoría financiera. Después completarás la información de la sesión.';
       if (bitaTypeHelpEl) bitaTypeHelpEl.textContent = 'Selecciona una opción para continuar.';
     } else {
       const isCommercial = selectedTipoAcompanamiento === 'Asesoría comercial';
+      const isFinancial = selectedTipoAcompanamiento === 'Asesoría financiera';
       if (modalEyebrowEl) modalEyebrowEl.textContent = `Visión Circular · ${selectedTipoAcompanamiento}`;
       if (titleEl) titleEl.textContent = 'Registrar nueva bitácora';
-      if (subtitleEl) subtitleEl.textContent = isCommercial
-        ? 'Completa la información de la asesoría comercial. La sesión quedará asociada a la empresa consultada.'
-        : 'Completa la información de la mentoría. La sesión quedará asociada a la empresa consultada.';
+      if (subtitleEl) subtitleEl.textContent = isFinancial
+        ? 'Completa la información de la asesoría financiera. La sesión quedará asociada a la empresa consultada.'
+        : isCommercial
+          ? 'Completa la información de la asesoría comercial. La sesión quedará asociada a la empresa consultada.'
+          : 'Completa la información de la mentoría. La sesión quedará asociada a la empresa consultada.';
       if (selectedTypeLabelEl) selectedTypeLabelEl.textContent = selectedTipoAcompanamiento;
     }
   }
@@ -4319,7 +4329,7 @@ function resetView() {
 
   uploadBtn.addEventListener('click',function() {
     if (mode === 'new' && !selectedTipoAcompanamiento) {
-      setStatus('Selecciona si esta bitácora corresponde a Mentoría o Asesoría comercial.', true);
+      setStatus('Selecciona si esta bitácora corresponde a Mentoría, Asesoría comercial o Asesoría financiera.', true);
       if (bitaTypeButtons[0]) bitaTypeButtons[0].focus();
       return;
     }
@@ -4339,7 +4349,7 @@ function resetView() {
     if (!isRequiredDocMode()) f.uploader.value=uploader;
     detectedFile=null; if(!isExistingMode() && !isRequiredDocMode()) createdBitacora=null; clearCandidates(); recordingDetectedEl.hidden=true; saveBtn.disabled=true; uploadStartedAt=new Date().toISOString();
     const tipoArchivo=currentTipoArchivo();
-    try { sessionStorage.setItem('vcUploadContext',JSON.stringify({empresaId:Number(data?.empresaId)||null,cedula:f.cedula.value.trim(),iniciativa:f.empresa.value.trim(),fechaSesion:f.fecha.value,mentor:f.mentor.value.trim(),cargadoPor:uploader,correoCargador:email,tipoArchivo,iniciadoEn:uploadStartedAt})); } catch(e) {}
+    try { sessionStorage.setItem('vcUploadContext',JSON.stringify({empresaId:Number(data?.empresaId)||null,cedula:f.cedula.value.trim(),iniciativa:f.empresa.value.trim(),fechaSesion:f.fecha.value,mentor:f.mentor.value.trim(),cargadoPor:uploader,correoCargador:email,tipoArchivo,tipoAcompanamiento:selectedTipoAcompanamiento||'Mentoría',iniciadoEn:uploadStartedAt})); } catch(e) {}
     openUploadPortal();
     verifyBtn.hidden=false;
     verifyBtn.disabled=false;
@@ -4378,7 +4388,7 @@ function resetView() {
   form.addEventListener('submit',async function(e) {
     e.preventDefault();
     if (mode === 'new' && !selectedTipoAcompanamiento) {
-      setStatus('Selecciona si esta bitácora corresponde a Mentoría o Asesoría comercial.', true);
+      setStatus('Selecciona si esta bitácora corresponde a Mentoría, Asesoría comercial o Asesoría financiera.', true);
       if (bitaTypeButtons[0]) bitaTypeButtons[0].focus();
       return;
     }
@@ -4429,6 +4439,7 @@ function resetView() {
         cargadoPor:isRequiredDocMode()?'Mentor':(f.uploader.value.trim()||f.mentor.value.trim()),
         correoCargador:isRequiredDocMode()?'':f.uploaderEmail.value.trim(),
         tipoArchivo:currentTipoArchivo(),
+        tipoAcompanamiento:isRequiredDocMode()?null:payload.tipoAcompanamiento,
         asociacionEmpresa:isRequiredDocMode()
       };
       const assocRes=await fetch(ASSOCIATE_FILE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(associatePayload)});
