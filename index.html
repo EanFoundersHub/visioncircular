@@ -1862,6 +1862,25 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
   .vc-bita-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   .vc-bita-field { display:flex; flex-direction:column; gap:7px; }
 
+  /* Ayuda compacta para fecha de sesión: botón i con explicación desplegable */
+  .vc-bita-date-label-row { display:flex; align-items:center; gap:9px; min-height:20px; }
+  .vc-bita-date-info { position:relative; flex:0 0 auto; }
+  .vc-bita-date-info summary {
+    display:grid; place-items:center; width:19px; height:19px; border-radius:50%;
+    background:var(--fh-teal-pale); border:1px solid var(--fh-teal-dark);
+    color:var(--fh-teal-dark); font:900 12px/1 'Poppins',sans-serif; cursor:pointer; list-style:none;
+  }
+  .vc-bita-date-info summary::-webkit-details-marker { display:none; }
+  .vc-bita-date-info summary:focus-visible { outline:3px solid rgba(105,166,216,.35); outline-offset:3px; }
+  .vc-bita-date-tooltip {
+    position:absolute; z-index:30; top:calc(100% + 9px); right:-10px;
+    width:min(295px,75vw); padding:12px 14px; border-radius:12px;
+    background:#fff; color:var(--fh-charcoal); border:1px solid var(--fh-line);
+    box-shadow:0 12px 28px rgba(19,56,93,.18); font-size:12px; line-height:1.5; font-weight:500;
+    text-transform:none; letter-spacing:normal;
+  }
+  @media(max-width:680px) { .vc-bita-date-tooltip { right:-25px; width:min(270px,75vw); } }
+
   /* Tipo de bitácora: selector del formulario */
   .vc-bita-type-choice {
     display:flex; gap:10px; flex-wrap:wrap;
@@ -3789,9 +3808,14 @@ function resetView() {
           <input class="vc-bita-input" id="vc-bita-cedula" readonly>
         </div>
         <div class="vc-bita-field">
-          <label for="vc-bita-fecha">Fecha y hora reales de la sesión (obligatorio)</label>
+          <div class="vc-bita-date-label-row">
+            <label for="vc-bita-fecha">Fecha y hora reales de la sesión (obligatorio)</label>
+            <details class="vc-bita-date-info">
+              <summary aria-label="Información sobre la fecha y hora de la sesión" title="Información sobre la fecha y hora">i</summary>
+              <div class="vc-bita-date-tooltip" id="vc-bita-fecha-help">Selecciona manualmente la fecha y hora en que ocurrió la mentoría o asesoría.</div>
+            </details>
+          </div>
           <input class="vc-bita-input" id="vc-bita-fecha" type="datetime-local" required autocomplete="off" aria-describedby="vc-bita-fecha-help">
-          <small id="vc-bita-fecha-help" style="color:var(--fh-muted);font-size:12px;line-height:1.45">Selecciona manualmente la fecha y hora en que ocurrió la mentoría o asesoría. No se utilizará automáticamente la hora del registro.</small>
         </div>
         <div class="vc-bita-field full">
           <label for="vc-bita-nombre">Nombre del emprendedor</label>
