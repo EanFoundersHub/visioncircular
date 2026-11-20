@@ -436,6 +436,25 @@ tbody tr:hover{background:#FFFDF8}
 
 
 /* Estado visible de entregables iniciales: Línea Base y Plan de Trabajo Individual */
+ .hitos-cell{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  min-width:150px;
+}
+.hito-status{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  padding:7px 8px;
+  border:1px solid rgba(105,166,216,.12);
+  border-radius:10px;
+  background:rgba(255,255,255,.72);
+}
+.hito-status .pill{font-size:9px;padding:5px 8px}
+.hito-status .doc-file-name{font-size:10px;max-width:190px}
+.hito-status .mini-link{font-size:10px;padding:4px 7px}
 .doc-status{
   min-width:180px;
   display:flex;
@@ -712,13 +731,14 @@ tbody tr:hover{background:#FFFDF8}
           <th>Empresa</th>
           <th>Línea Base</th>
           <th>Plan de Trabajo Individual</th>
+          <th>Evidencias de hitos</th>
           <th>Bitácoras</th>
           <th>Grabaciones</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody id="companies-body">
-        <tr><td colspan="6" class="loading-row">Consultando las empresas…</td></tr>
+        <tr><td colspan="7" class="loading-row">Consultando las empresas…</td></tr>
       </tbody>
     </table>
   </section>
@@ -816,6 +836,9 @@ function displayFileType(file){
 
   if(isRealRecording(file)) return 'Grabación';
   if(name.includes('linea base') || tipo.includes('linea base')) return 'Línea Base';
+  if(tipo.includes('evidencia hito 1') || name.includes('evidencia hito 1')) return 'Evidencia Hito 1';
+  if(tipo.includes('evidencia hito 2') || name.includes('evidencia hito 2')) return 'Evidencia Hito 2';
+  if(tipo.includes('evidencia hito 3') || name.includes('evidencia hito 3')) return 'Evidencia Hito 3';
   if(name.includes('plan de trabajo individual') || name.includes('plan individual de trabajo') || name.includes('plan de acompanamiento') || name.includes('plan de trabajo') || /(^|\s|[_-])pti(\s|[_-]|\.|$)/i.test(name)) return 'Plan de Trabajo Individual';
   if(tipo.includes('archivo adicional') || tipo.includes('apoyo')) return 'Archivo adicional';
   return 'Archivo';
@@ -841,9 +864,21 @@ function requiredFiles(company, type){
         || /(^|\s|[_-])pti(\s|[_-]|\.|$)/i.test(hay);
     }
 
+    if(wanted.startsWith('evidencia hito ')){
+      return hay.includes(wanted);
+    }
+
     return false;
   });
 }
+function milestoneStatusCell(files, label){
+  if(!files.length) return `<div class="hito-status"><span class="pill pending">● ${esc(label)}</span><div class="doc-caption">Pendiente</div></div>`;
+  const f = latestFile(files);
+  const name = esc(fileName(f) || label);
+  const url = fileUrl(f);
+  return `<div class="hito-status"><span class="pill ok">✓ ${esc(label)}</span><div class="doc-file-name">${name}</div>${url ? `<a class="mini-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Abrir ↗</a>` : `<div class="doc-caption">Sin enlace disponible</div>`}</div>`;
+}
+
 function filesForBitacora(company, bita){
   const bid = numId(v(bita,['BitacoraID','BitácoraID','bitacoraId']));
   if(bid == null) return [];
@@ -910,13 +945,16 @@ function render(){
   const list = state.companies.filter(c => !q || norm(c.label).includes(q) || norm(c.empresa).includes(q));
 
   if(!list.length){
-    body.innerHTML = `<tr><td colspan="6" class="loading-row">No hay empresas que coincidan con la búsqueda.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="7" class="loading-row">No hay empresas que coincidan con la búsqueda.</td></tr>`;
     return;
   }
 
   body.innerHTML = list.map(c => {
     const linea = requiredFiles(c,'Línea Base');
     const plan = requiredFiles(c,'Plan de Trabajo Individual');
+    const hito1 = requiredFiles(c,'Evidencia Hito 1');
+    const hito2 = requiredFiles(c,'Evidencia Hito 2');
+    const hito3 = requiredFiles(c,'Evidencia Hito 3');
     const bcount = c.bitacoras.length;
     const recs = recordingsCount(c);
     return `
@@ -927,6 +965,13 @@ function render(){
         </td>
         <td data-label="Línea Base">${statusCell(linea,'Línea Base')}</td>
         <td data-label="Plan de Trabajo Individual">${statusCell(plan,'Plan de Trabajo Individual')}</td>
+        <td data-label="Evidencias de hitos">
+          <div class="hitos-cell">
+            ${milestoneStatusCell(hito1,'Hito 1')}
+            ${milestoneStatusCell(hito2,'Hito 2')}
+            ${milestoneStatusCell(hito3,'Hito 3')}
+          </div>
+        </td>
         <td data-label="Bitácoras">
           <div class="count">${bcount}</div>
           ${bcount ? `<button class="mini-link" onclick="openBitacoras(${c.id})">Ver bitácoras</button>` : `<div class="company-raw">Sin registros</div>`}
@@ -1047,6 +1092,9 @@ function openCompany(id){
   if(!c) return;
   const linea = requiredFiles(c,'Línea Base');
   const plan = requiredFiles(c,'Plan de Trabajo Individual');
+  const hito1 = requiredFiles(c,'Evidencia Hito 1');
+  const hito2 = requiredFiles(c,'Evidencia Hito 2');
+  const hito3 = requiredFiles(c,'Evidencia Hito 3');
   const html = `
     <div class="bitacora-preview">
       <div class="field">
@@ -1058,6 +1106,16 @@ function openCompany(id){
         <div class="field-label">Plan de Trabajo Individual</div>
         <div class="field-value">${statusCell(plan,'Plan de Trabajo Individual')}</div>
         <div class="file-list">${fileRows(plan)}</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Evidencias de hitos</div>
+        <div class="field-value">
+          <div class="hitos-cell">
+            ${milestoneStatusCell(hito1,'Hito 1')}
+            ${milestoneStatusCell(hito2,'Hito 2')}
+            ${milestoneStatusCell(hito3,'Hito 3')}
+          </div>
+        </div>
       </div>
       <div class="field">
         <div class="field-label">Bitácoras</div>
@@ -1079,7 +1137,7 @@ function openCompany(id){
 async function loadAll(){
   statusEl.textContent='Actualizando información…';
   errorsEl.innerHTML='';
-  body.innerHTML=`<tr><td colspan="6" class="loading-row">Consultando las empresas…</td></tr>`;
+  body.innerHTML=`<tr><td colspan="7" class="loading-row">Consultando las empresas…</td></tr>`;
   $('#refresh-btn').disabled=true;
 
   const results = await Promise.allSettled(CONFIG.companies.map(fetchCompany));
