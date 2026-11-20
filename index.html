@@ -2301,6 +2301,33 @@ body::before, body::after { border-color: rgba(105,166,216,.20); }
         </div>
       </section>
 
+      <section class="vc-required-docs vc-milestone-docs" id="vc-milestone-docs" aria-label="Evidencias de hitos del acompañamiento">
+        <div class="vc-required-docs-head">
+          <div>
+            <div class="vc-required-docs-kicker">Seguimiento del acompañamiento</div>
+            <h3 class="vc-required-docs-title">Evidencias de hitos</h3>
+            <p class="vc-required-docs-sub">Carga los documentos que evidencian el cumplimiento de cada hito. Cada evidencia se asocia directamente a esta empresa y puede reemplazarse cuando sea necesario.</p>
+          </div>
+        </div>
+        <div class="vc-required-grid">
+          <article class="vc-required-card" id="vc-milestone-hito1">
+            <div class="vc-required-check" id="vc-milestone-hito1-check">1</div>
+            <div><div class="vc-required-name">Evidencia Hito 1</div><div class="vc-required-status" id="vc-milestone-hito1-status">Pendiente de cargar</div></div>
+            <button type="button" class="vc-required-action" id="vc-milestone-hito1-btn">Cargar Evidencia Hito 1</button>
+          </article>
+          <article class="vc-required-card" id="vc-milestone-hito2">
+            <div class="vc-required-check" id="vc-milestone-hito2-check">2</div>
+            <div><div class="vc-required-name">Evidencia Hito 2</div><div class="vc-required-status" id="vc-milestone-hito2-status">Pendiente de cargar</div></div>
+            <button type="button" class="vc-required-action" id="vc-milestone-hito2-btn">Cargar Evidencia Hito 2</button>
+          </article>
+          <article class="vc-required-card" id="vc-milestone-hito3">
+            <div class="vc-required-check" id="vc-milestone-hito3-check">3</div>
+            <div><div class="vc-required-name">Evidencia Hito 3</div><div class="vc-required-status" id="vc-milestone-hito3-status">Pendiente de cargar</div></div>
+            <button type="button" class="vc-required-action" id="vc-milestone-hito3-btn">Cargar Evidencia Hito 3</button>
+          </article>
+        </div>
+      </section>
+
     <div class="fh-maintabs">
       <button class="fh-maintab active" data-pane="prediag" onclick="switchMainTab('prediag')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -2837,6 +2864,7 @@ function renderDashboard() {
   renderPrediagnostico();
   renderBitacoras();
   renderRequiredDocs();
+  renderMilestoneDocs();
   switchMainTab('prediag');
 }
 
@@ -3203,6 +3231,72 @@ const VC_REQUIRED_DOCS = [
   { key: 'linea', type: 'Línea Base', label: 'Línea Base' },
   { key: 'plan', type: 'Plan de Trabajo Individual', label: 'Plan de Trabajo Individual' }
 ];
+
+const VC_MILESTONE_DOCS = [
+  { key: 'hito1', type: 'Evidencia Hito 1', label: 'Evidencia Hito 1' },
+  { key: 'hito2', type: 'Evidencia Hito 2', label: 'Evidencia Hito 2' },
+  { key: 'hito3', type: 'Evidencia Hito 3', label: 'Evidencia Hito 3' }
+];
+
+function findMilestoneEvidenceFiles(type) {
+  const wanted = norm(type);
+  if (!Array.isArray(data.archivos)) return [];
+  return data.archivos.filter(file => {
+    const estado = norm(vcArchivoValue(file, ['Estado', 'estado']));
+    if (estado !== 'asociado') return false;
+    const tipo = norm(vcArchivoValue(file, ['TipoArchivo', 'tipoArchivo']));
+    return tipo === wanted || tipo.includes(wanted);
+  });
+}
+
+function renderMilestoneDocs() {
+  VC_MILESTONE_DOCS.forEach(doc => {
+    const card = document.getElementById(`vc-milestone-${doc.key}`);
+    const check = document.getElementById(`vc-milestone-${doc.key}-check`);
+    const status = document.getElementById(`vc-milestone-${doc.key}-status`);
+    const btn = document.getElementById(`vc-milestone-${doc.key}-btn`);
+    if (!card || !check || !status || !btn) return;
+    const files = findMilestoneEvidenceFiles(doc.type);
+    const complete = files.length > 0;
+    card.classList.toggle('is-complete', complete);
+    check.textContent = complete ? '✓' : String(VC_MILESTONE_DOCS.indexOf(doc) + 1);
+    if (complete) {
+      const latest = files.slice().sort((a,b) => Date.parse(b?.Modified || b?.Created || b?.FechaCarga || 0) - Date.parse(a?.Modified || a?.Created || a?.FechaCarga || 0))[0];
+      const name = vcArchivoValue(latest, ['NombreArchivo', 'Title', '{Name}']) || 'Archivo asociado';
+      const dateRaw = vcArchivoValue(latest, ['Modified', 'Created', 'FechaCarga']);
+      let dateLabel = '';
+      if (dateRaw) {
+        const parsed = new Date(dateRaw);
+        if (!Number.isNaN(parsed.getTime())) {
+          try { dateLabel = new Intl.DateTimeFormat('es-CO',{day:'2-digit',month:'short',year:'numeric'}).format(parsed); } catch (_) {}
+        }
+      }
+      status.textContent = '';
+      const state = document.createElement('span');
+      state.className = 'vc-required-file-state';
+      state.textContent = 'Archivo asociado';
+      const fileNameEl = document.createElement('span');
+      fileNameEl.className = 'vc-required-file-name';
+      fileNameEl.textContent = name;
+      status.appendChild(state);
+      status.appendChild(fileNameEl);
+      if (dateLabel) {
+        const meta = document.createElement('span');
+        meta.className = 'vc-required-file-meta';
+        meta.textContent = `Última carga: ${dateLabel}`;
+        status.appendChild(meta);
+      }
+      btn.textContent = 'Reemplazar archivo';
+    } else {
+      status.textContent = 'Pendiente de cargar';
+      btn.textContent = `Cargar ${doc.label}`;
+    }
+    btn.onclick = () => {
+      if (typeof window.vcOpenRequiredDoc === 'function') window.vcOpenRequiredDoc(doc.type);
+      else if (typeof toast === 'function') toast('El cargador documental todavía no está disponible.', true);
+    };
+  });
+}
 
 function findRequiredDocFiles(type) {
   const wanted = norm(type);
